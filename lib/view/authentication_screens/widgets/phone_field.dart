@@ -1,47 +1,31 @@
-import 'dart:developer';
-
 import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:provider/provider.dart';
 
-class PhoneNumberField extends StatelessWidget {
-  const PhoneNumberField({
+class PhoneField extends StatelessWidget {
+  const PhoneField({
     super.key,
+    required this.authProvider,
     required this.phoneNumberController,
-    this.condition,
-    required this.message,
   });
-  final dynamic condition;
-  final String message;
+
+  final AuthenticationProvider authProvider;
   final TextEditingController phoneNumberController;
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthenticationProvider>(context);
-
     return IntlPhoneField(
-      validator: (value) {
-        if (value == null || value.completeNumber.isEmpty) {
-          return message;
-        } else {
-          return null;
-        }
-      },
+      disableLengthCheck: true,
       showCountryFlag: false,
       pickerDialogStyle: PickerDialogStyle(
         backgroundColor: ConstantColors.white,
         countryNameStyle: const TextStyle(fontWeight: FontWeight.w500),
         searchFieldPadding: const EdgeInsets.all(8),
       ),
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
-      disableLengthCheck: false,
-
+      autovalidateMode: AutovalidateMode.disabled,
       onChanged: (value) {
-        log(value.countryCode);
-
         authProvider.countryCode(value);
       },
       controller: phoneNumberController,

@@ -1,6 +1,7 @@
 import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
+import 'package:chahele_project/utils/widgets/custom_toast.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/login_buttons.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/pinput.dart';
 import 'package:chahele_project/view/home_screen/home_screen.dart';
@@ -10,10 +11,11 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key, required this.verificationId});
+  const OtpScreen(
+      {super.key, required this.verificationId, required this.phoneNumber});
 
   final String verificationId;
-
+  final String phoneNumber;
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
@@ -78,7 +80,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             ),
                             const Gap(8),
                             Text(
-                              "Enter the verification code we just sent to your number +91********81",
+                              "Enter the verification code we just sent to your number ${widget.phoneNumber}",
                               style: TextStyle(
                                 color: ConstantColors.white.withOpacity(0.7),
                                 fontWeight: FontWeight.w400,
@@ -88,6 +90,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                       ),
                       const Gap(8),
+                      //OTP field
                       Center(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,15 +101,24 @@ class _OtpScreenState extends State<OtpScreen> {
                                 value = pinController.text;
                               },
                             ),
-                            const Gap(24),
-                            LoginButtons(
-                              screenWidth: screenWidth,
-                              text: "Verify",
-                              onPressed: () {
-                                verifyOtp();
-                              },
+                            const Gap(32),
+                            //Verify button
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: LoginButtons(
+                                screenWidth: screenWidth,
+                                text: "Verify",
+                                onPressed: () {
+                                  if (pinController.text.isEmpty) {
+                                    failedToast(context, "Enter OTP");
+                                  } else {
+                                    verifyOtp();
+                                  }
+                                },
+                              ),
                             ),
-                            const Gap(16),
+
+                            //Recent field
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -157,7 +169,9 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
               (route) => false);
         },
-        onFailure: () {},
+        onFailure: () {
+          failedToast(context, "Invalid OTP");
+        },
         verificationId: widget.verificationId,
         otpCode: otp);
   }
