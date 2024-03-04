@@ -6,4 +6,7 @@ class ConstantColors {
   static const Color white = Color(0xffffffff);
   static const Color black = Color(0xff000000);
   static const Color headingBlue = Color(0xff062E58);
+  static const Color syllabusStackColor = Color(0xffE7F3FF);
+  static const Color syllabusStackOp80 = Color(0xccE7F3FF);
+  static const Color viewAll = Color(0xff1283FB);
 }
