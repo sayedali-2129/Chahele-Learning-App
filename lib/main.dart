@@ -1,4 +1,7 @@
 import 'package:chahele_project/controller/authentication_provider.dart';
+import 'package:chahele_project/controller/image_provider.dart';
+import 'package:chahele_project/controller/standard_provider.dart';
+import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/firebase_options.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -19,9 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => AuthenticationProvider(),
-        )
+        ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
+        ChangeNotifierProvider(create: (context) => StandardProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => ImagePickProvider()),
       ],
       child: MaterialApp(
         supportedLocales: const [
@@ -30,7 +34,10 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: const [
           CountryLocalizations.delegate,
         ],
-        theme: ThemeData(fontFamily: 'Poppins'),
+        // ignore: deprecated_member_use
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+        ),
         debugShowCheckedModeBanner: false,
         home: const LoginScreen(),
       ),

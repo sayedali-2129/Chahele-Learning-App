@@ -1,17 +1,17 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
-import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:flutter/material.dart';
 
-class SyllubusContainer extends StatelessWidget {
-  const SyllubusContainer({
+class StandardContainer extends StatelessWidget {
+  const StandardContainer({
     super.key,
+    required this.standard,
+    required this.image,
   });
+  final String standard;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
-//     Random random = Random();
-// int randomIndex = random.nextInt(ConstImages.)
-// Image randomImage = randomImages[randomIndex];
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,
@@ -29,10 +29,8 @@ class SyllubusContainer extends StatelessWidget {
                   offset: Offset(10, 5))
             ],
             borderRadius: BorderRadius.circular(24),
-            image: const DecorationImage(
-                image: AssetImage(ConstImages.syllabusBg1),
-                fit: BoxFit.cover,
-                opacity: 0.7),
+            image: DecorationImage(
+                image: NetworkImage(image), fit: BoxFit.cover, opacity: 0.7),
           ),
         ),
         Positioned(
@@ -54,13 +52,18 @@ class SyllubusContainer extends StatelessWidget {
                     topLeft: Radius.circular(7.9),
                   ),
                   color: ConstantColors.syllabusStackColor),
-              child: const Center(
-                child: Text(
-                  "State",
-                  style: TextStyle(
-                      color: ConstantColors.headingBlue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Center(
+                  child: Text(
+                    standard,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(
+                        color: ConstantColors.headingBlue,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ),

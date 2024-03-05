@@ -1,3 +1,4 @@
+import 'package:chahele_project/utils/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ExamScreen extends StatelessWidget {
@@ -6,9 +7,9 @@ class ExamScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text("Exams"),
-      ),
-    );
+        body: Scaffold(
+            body: CustomScrollView(
+      slivers: [HeadingAppBar(heading: "Exams")],
+    )));
   }
 }

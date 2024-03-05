@@ -3,6 +3,8 @@ class ConstantImage {
   static const String otpSvg = "assets/svg/images/otp svg.svg";
   static const String appBarLogoSvg = "assets/svg/images/appbar logo.svg";
   static const String adBannerSampleSvg = "assets/svg/images/ad final.svg";
+  static const String notificationSampleImg = "assets/images/noti sample.png";
+  static const String imageAvathar = "assets/svg/images/addImageAvatar.svg";
 }
 
 class ConstImages {

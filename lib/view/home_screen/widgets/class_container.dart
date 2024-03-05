@@ -1,12 +1,15 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
-import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:flutter/material.dart';
 
 class ClassContainer extends StatelessWidget {
   const ClassContainer({
     super.key,
     required this.screenWidth,
+    required this.medium,
+    required this.image,
   });
+  final String medium;
+  final String image;
 
   final double screenWidth;
 
@@ -18,10 +21,10 @@ class ClassContainer extends StatelessWidget {
         Container(
           width: screenWidth,
           height: 180,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(24)),
-            image: DecorationImage(
-                image: AssetImage(ConstImages.classBg1), fit: BoxFit.cover),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(24)),
+            image:
+                DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),
           ),
         ),
         Positioned(
@@ -37,13 +40,20 @@ class ClassContainer extends StatelessWidget {
                   topLeft: Radius.circular(9.82),
                 ),
               ),
-              child: const Center(
-                child: Text(
-                  "English V",
-                  style: TextStyle(
-                      color: ConstantColors.headingBlue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Center(
+                    child: Text(
+                      medium,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: const TextStyle(
+                          color: ConstantColors.headingBlue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
                 ),
               ),
             ),

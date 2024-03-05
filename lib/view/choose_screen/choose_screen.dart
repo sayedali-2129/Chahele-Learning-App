@@ -1,3 +1,4 @@
+import 'package:chahele_project/utils/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ChooseScreen extends StatelessWidget {
@@ -6,8 +7,14 @@ class ChooseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text("Choose"),
+      body: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            HeadingAppBar(
+              heading: "Choose Plan",
+            ),
+          ],
+        ),
       ),
     );
   }
