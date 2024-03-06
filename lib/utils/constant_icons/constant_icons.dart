@@ -23,6 +23,10 @@ class ConstantIcons {
   static const String examsSelectedSvg = "assets/svg/icons/exams selected.svg";
   static const String profileSelectedSvg =
       "assets/svg/icons/profile selected.svg";
+  static const String warningIconSvg = "assets/svg/icons/warning icon.svg";
+  static const String chahelLogoSmallSvg =
+      "assets/svg/icons/chahel logo small.svg";
+
 //Profile Icons
   static const String editIcon = "assets/svg/icons/edit icon.svg";
   static const String myAccountIcon = "assets/svg/icons/my account.svg";
@@ -32,4 +36,10 @@ class ConstantIcons {
   static const String rateUsIcon = "assets/svg/icons/rate us icon.svg";
   static const String helpIcon = "assets/svg/icons/help&support.svg";
   static const String tAndcIcon = "assets/svg/icons/T&C icon.svg";
+  static const String deleteIcon = "assets/svg/icons/delete icon.svg";
+
+  //Exam T&C Icons
+  static const String markIcon = "assets/svg/icons/mark icon.svg";
+  static const String timeIcon = "assets/svg/icons/time icon.svg";
+  static const String questionIcon = "assets/svg/icons/question icon.svg";
 }

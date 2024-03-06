@@ -80,4 +80,9 @@ class AuthenticationProvider with ChangeNotifier {
       onFailure();
     }
   }
+
+  Future<void> logOutUser() async {
+    await firebaseAuth.signOut();
+    notifyListeners();
+  }
 }

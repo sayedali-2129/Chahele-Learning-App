@@ -185,7 +185,7 @@ class MoreOptionContainer extends StatelessWidget {
               radius: 30,
               backgroundColor: ConstantColors.iconBlue.withOpacity(0.05),
               child: SvgPicture.asset(
-                ConstantIcons.logoutIcon,
+                ConstantIcons.deleteIcon,
                 height: 25,
                 // width: 1,
               ),

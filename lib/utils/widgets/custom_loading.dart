@@ -31,11 +31,11 @@ void customLoading(BuildContext context, String message) {
                 child: Lottie.asset(ConstantIcons.loadingBookLottie,
                     height: 250, width: 250),
               ),
-              const Positioned(
+              Positioned(
                 bottom: 60,
                 child: Text(
-                  "Sending OTP",
-                  style: TextStyle(
+                  message,
+                  style: const TextStyle(
                       color: ConstantColors.black, fontWeight: FontWeight.w500),
                 ),
               )

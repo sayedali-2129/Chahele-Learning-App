@@ -9,11 +9,13 @@ class ButtonWidget extends StatelessWidget {
     required this.buttonColor,
     required this.buttonText,
     this.onPressed,
+    this.textColor = ConstantColors.white,
   });
   final double buttonHeight;
   final double buttonWidth;
   final Color buttonColor;
   final String buttonText;
+  final Color? textColor;
   final void Function()? onPressed;
 
   @override
@@ -29,7 +31,7 @@ class ButtonWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)))),
           child: Text(
             buttonText,
-            style: const TextStyle(color: ConstantColors.white),
+            style: TextStyle(color: textColor),
           )),
     );
   }

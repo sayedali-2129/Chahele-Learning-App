@@ -5,6 +5,8 @@ class ConstantImage {
   static const String adBannerSampleSvg = "assets/svg/images/ad final.svg";
   static const String notificationSampleImg = "assets/images/noti sample.png";
   static const String imageAvathar = "assets/svg/images/addImageAvatar.svg";
+  static const String addUSerImage = "assets/images/add user.png";
+  static const String examBgImage = "assets/svg/images/exam card.svg";
 }
 
 class ConstImages {

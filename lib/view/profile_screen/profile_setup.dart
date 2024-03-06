@@ -1,17 +1,21 @@
+import 'package:chahele_project/controller/image_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:chahele_project/utils/widgets/button_widget.dart';
+import 'package:chahele_project/utils/widgets/custom_loading.dart';
+import 'package:chahele_project/utils/widgets/custom_toast.dart';
 import 'package:chahele_project/utils/widgets/heading_app_bar.dart';
 import 'package:chahele_project/view/profile_screen/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class ProfileSetUp extends StatelessWidget {
   const ProfileSetUp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = Provider.of<ImagePickProvider>(context);
     return Scaffold(
         body: CustomScrollView(
       physics: const NeverScrollableScrollPhysics(),
@@ -29,61 +33,40 @@ class ProfileSetUp extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => Material(
-                                  type: MaterialType.transparency,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    children: [
-                                      Container(
-                                        height: 300,
-                                        width: 300,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(16)),
-                                      ),
-                                      Center(
-                                          child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 180,
-                                            height: 180,
-                                            decoration: const BoxDecoration(
-                                                color: ConstantColors
-                                                    .syllabusStackColor,
-                                                shape: BoxShape.circle),
-                                            child: const Center(
-                                              child: Icon(Icons.add_rounded,
-                                                  size: 50),
-                                            ),
-                                          ),
-                                          const Gap(16),
-                                          const ButtonWidget(
-                                              buttonHeight: 42,
-                                              buttonWidth: 170,
-                                              buttonColor:
-                                                  ConstantColors.mainBlueTheme,
-                                              buttonText: "Save")
-                                        ],
-                                      )),
-                                    ],
-                                  ),
-                                ));
+                      onTap: () async {
+                        customLoading(context, "Saving Image");
+
+                        await imageProvider.pickImage(onFailure: () {
+                          Navigator.pop(context);
+                        });
+
+                        await imageProvider.saveImage(
+                          imageProvider.imageFile!,
+                          () {
+                            successToast(context, "Image added successfully");
+                          },
+                        );
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                        // if (imageProvider.imageUrl ==
+                        //     null) {
+                        //   log("null");
+                        // } else {
+                        //   log(imageProvider.imageUrl!);
+                        // }
                       },
-                      child: CircleAvatar(
-                        radius: 60,
-                        child: SvgPicture.asset(
-                          ConstantImage.imageAvathar,
-                          height: 120,
-                          width: 120,
-                        ),
-                      ),
+                      child: imageProvider.imageUrl == null
+                          ? const CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              radius: 70,
+                              backgroundImage:
+                                  AssetImage(ConstantImage.addUSerImage),
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              radius: 70,
+                              backgroundImage:
+                                  NetworkImage(imageProvider.imageUrl!)),
                     )
                   ],
                 ),
@@ -110,13 +93,19 @@ class ProfileSetUp extends StatelessWidget {
                       color: ConstantColors.headingBlue),
                 ),
                 const Gap(16),
-                SizedBox(
-                  height: 50,
-                  child: PhysicalModel(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    shadowColor: Colors.black45,
-                    elevation: 10,
+                Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: Container(
+                    height: 50,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        boxShadow: [
+                          BoxShadow(
+                              blurRadius: 1,
+                              spreadRadius: 0,
+                              color: Colors.black26,
+                              blurStyle: BlurStyle.outer)
+                        ]),
                     child: TextFormField(
                       decoration: InputDecoration(
                         contentPadding:

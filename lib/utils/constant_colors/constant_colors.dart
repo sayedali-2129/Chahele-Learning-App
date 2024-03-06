@@ -11,4 +11,6 @@ class ConstantColors {
   static const Color syllabusStackOp80 = Color(0xccE7F3FF);
   static const Color viewAll = Color(0xff1283FB);
   static const Color iconBlue = Color(0xff0601B4);
+  static const Color buttonScndColor = Color(0xffB6D9FE);
+  static const Color greyColor = Color(0xffC4C4C4);
 }

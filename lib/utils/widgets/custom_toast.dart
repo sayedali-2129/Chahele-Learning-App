@@ -18,10 +18,8 @@ successToast(BuildContext context, String message) {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          Icons.check,
-          color: ConstantColors.mainBlueTheme,
-        ),
+        Lottie.asset(ConstantIcons.checkLottie, height: 30, width: 30),
+
         const Gap(10),
         //message
 

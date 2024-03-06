@@ -8,13 +8,19 @@ class TextfieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: PhysicalModel(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        shadowColor: Colors.black45,
-        elevation: 10,
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Container(
+        height: 50,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 1,
+                  spreadRadius: 0,
+                  color: Colors.black26,
+                  blurStyle: BlurStyle.outer)
+            ]),
         child: TextFormField(
           cursorColor: ConstantColors.black,
           decoration: InputDecoration(
