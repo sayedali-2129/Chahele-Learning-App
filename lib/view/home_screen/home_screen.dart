@@ -2,11 +2,12 @@ import 'package:chahele_project/controller/standard_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
-import 'package:chahele_project/view/home_screen/medium_screen/medium_screen.dart';
-import 'package:chahele_project/view/home_screen/standards_screen/standard_screen.dart';
+import 'package:chahele_project/view/home_screen/screens/medium_screen.dart';
+import 'package:chahele_project/view/home_screen/screens/standard_screen.dart';
+import 'package:chahele_project/view/home_screen/screens/subjects_screen.dart';
 import 'package:chahele_project/view/home_screen/widgets/ad_slider.dart';
-import 'package:chahele_project/view/home_screen/widgets/class_container.dart';
-import 'package:chahele_project/view/home_screen/widgets/standards_container.dart';
+import 'package:chahele_project/view/home_screen/widgets/rec_stack_container.dart';
+import 'package:chahele_project/view/home_screen/widgets/square_stack_container.dart';
 import 'package:chahele_project/view/notification_screen/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -81,9 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(
             child: AdSlider(screenWidth: screenWidth),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverToBoxAdapter(
               child: Column(
                 children: [
                   //Syllubus Grid
@@ -141,8 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     builder: (context) => const MediumScreen(),
                                   ));
                             },
-                            child: StandardContainer(
-                              standard: standardProvider
+                            child: SquareStackContainer(
+                              content: standardProvider
                                   .standardsList[index].standard,
                               image:
                                   standardProvider.standardsList[index].image,
@@ -182,10 +183,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: standardProvider.mediumList.length,
-                    itemBuilder: (context, index) => ClassContainer(
+                    itemBuilder: (context, index) => RecStackContainer(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SubjectScreen(),
+                            ));
+                      },
                       screenWidth: screenWidth,
                       image: standardProvider.mediumList[index].image,
-                      medium: standardProvider.mediumList[index].medium,
+                      content: standardProvider.mediumList[index].medium,
                     ),
                   ),
                 ],

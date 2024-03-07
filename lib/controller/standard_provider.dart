@@ -1,5 +1,6 @@
 import 'package:chahele_project/model/medium_model.dart';
 import 'package:chahele_project/model/standard_model.dart';
+import 'package:chahele_project/model/subject_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class StandardProvider with ChangeNotifier {
   final firebase = FirebaseFirestore.instance;
   List<StandardModel> standardsList = [];
   List<MediumModel> mediumList = [];
+  List<SubjectModel> subjectList = [];
   bool isLoading = false;
 
 //Standard Fetch
@@ -31,6 +33,21 @@ class StandardProvider with ChangeNotifier {
     mediumList = responce.docs
         .map((e) => MediumModel.fromMap(e.data()).copyWith(id: e.id))
         .toList();
+    isLoading = false;
+    notifyListeners();
+  }
+
+  //Fetch Subjects
+  Future<void> fetchSubjects() async {
+    isLoading = true;
+    notifyListeners();
+
+    final responce = await firebase.collection('subjects').get();
+
+    subjectList = responce.docs
+        .map((e) => SubjectModel.fromMap(e.data()).copyWith(id: e.id))
+        .toList();
+
     isLoading = false;
     notifyListeners();
   }

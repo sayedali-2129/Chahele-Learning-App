@@ -14,6 +14,9 @@ class AuthenticationProvider with ChangeNotifier {
 //country code with number
   String? selectedCode;
 
+  //Current User
+  User? currentUser;
+
 //onChanged function country code
   void countryCode(PhoneNumber code) {
     selectedCode = code.countryCode;
@@ -84,5 +87,20 @@ class AuthenticationProvider with ChangeNotifier {
   Future<void> logOutUser() async {
     await firebaseAuth.signOut();
     notifyListeners();
+  }
+
+  Future<void> deleteUser() async {
+    try {
+      currentUser = firebaseAuth.currentUser;
+
+      if (currentUser != null) {
+        await currentUser!.delete();
+        print("User Deleted");
+      } else {
+        print("no user signed");
+      }
+    } on FirebaseAuthException catch (e) {
+      log(e.code.toString());
+    }
   }
 }

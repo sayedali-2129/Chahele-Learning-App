@@ -1,13 +1,13 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:flutter/material.dart';
 
-class StandardContainer extends StatelessWidget {
-  const StandardContainer({
+class SquareStackContainer extends StatelessWidget {
+  const SquareStackContainer({
     super.key,
-    required this.standard,
+    required this.content,
     required this.image,
   });
-  final String standard;
+  final String content;
   final String image;
 
   @override
@@ -56,7 +56,7 @@ class StandardContainer extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 child: Center(
                   child: Text(
-                    standard,
+                    content,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: const TextStyle(

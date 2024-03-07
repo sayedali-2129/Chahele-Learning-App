@@ -1,6 +1,7 @@
 import 'package:chahele_project/controller/standard_provider.dart';
 import 'package:chahele_project/utils/widgets/heading_app_bar.dart';
-import 'package:chahele_project/view/home_screen/widgets/class_container.dart';
+import 'package:chahele_project/view/home_screen/screens/subjects_screen.dart';
+import 'package:chahele_project/view/home_screen/widgets/rec_stack_container.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -22,10 +23,17 @@ class MediumScreen extends StatelessWidget {
             sliver: SliverList.separated(
               separatorBuilder: (context, index) => const Gap(16),
               itemCount: standardProvider.mediumList.length,
-              itemBuilder: (context, index) => ClassContainer(
+              itemBuilder: (context, index) => RecStackContainer(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SubjectScreen(),
+                        ));
+                  },
                   screenWidth: screenWidth,
                   image: standardProvider.mediumList[index].image,
-                  medium: standardProvider.mediumList[index].medium),
+                  content: standardProvider.mediumList[index].medium),
             ),
           )
         ],
