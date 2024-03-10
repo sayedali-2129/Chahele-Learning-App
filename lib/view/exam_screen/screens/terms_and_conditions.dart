@@ -1,7 +1,7 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
-import 'package:chahele_project/utils/widgets/button_widget.dart';
 import 'package:chahele_project/view/exam_screen/widgets/appbar_terms.dart';
+import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';

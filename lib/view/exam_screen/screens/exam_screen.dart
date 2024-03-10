@@ -1,8 +1,8 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
-import 'package:chahele_project/utils/widgets/button_widget.dart';
-import 'package:chahele_project/utils/widgets/heading_app_bar.dart';
 import 'package:chahele_project/view/exam_screen/screens/terms_and_conditions.dart';
+import 'package:chahele_project/view/widgets/button_widget.dart';
+import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -18,7 +18,7 @@ class ExamScreen extends StatelessWidget {
         body: Scaffold(
             body: CustomScrollView(
       slivers: [
-        const HeadingAppBar(heading: "Exams"),
+        const HeadingAppBar(heading: "Exams", isBackButtomn: false),
         SliverPadding(
           padding: const EdgeInsets.all(16),
           sliver: SliverList.separated(

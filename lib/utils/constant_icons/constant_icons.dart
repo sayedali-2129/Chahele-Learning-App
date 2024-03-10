@@ -4,6 +4,7 @@ class ConstantIcons {
   static const String checkLottie = "assets/lottie/check_icon.json";
   static const String notificationSvg =
       "assets/svg/icons/notification bell.svg";
+  static const String playIconSvg = "assets/svg/icons/play rounded icon.svg";
 
   //Bottom navigation Icons
 

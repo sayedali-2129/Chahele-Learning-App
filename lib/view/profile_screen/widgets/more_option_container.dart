@@ -1,8 +1,10 @@
+import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class MoreOptionContainer extends StatelessWidget {
   const MoreOptionContainer({
@@ -27,6 +29,8 @@ class MoreOptionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthenticationProvider>(context);
+
     return Container(
       width: screenWidth,
       decoration: BoxDecoration(
@@ -179,29 +183,37 @@ class MoreOptionContainer extends StatelessWidget {
           const Gap(16),
 
           //Delete Account
-          ListTile(
-            onTap: onDeleteAccount,
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: ConstantColors.iconBlue.withOpacity(0.05),
-              child: SvgPicture.asset(
-                ConstantIcons.deleteIcon,
-                height: 25,
-                // width: 1,
-              ),
-            ),
-            title: const Text(
-              "Delete Account",
-              style: TextStyle(
-                  color: Colors.red, fontSize: 12, fontWeight: FontWeight.w600),
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 20,
-              color: ConstantColors.black.withOpacity(0.5),
-            ),
-          ),
-          const Gap(16)
+          authProvider.firebaseAuth.currentUser != null
+
+              //if Logged in
+              ? ListTile(
+                  onTap: onDeleteAccount,
+                  leading: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: ConstantColors.iconBlue.withOpacity(0.05),
+                    child: SvgPicture.asset(
+                      ConstantIcons.deleteIcon,
+                      height: 25,
+                      // width: 1,
+                    ),
+                  ),
+                  title: const Text(
+                    "Delete Account",
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 20,
+                    color: ConstantColors.black.withOpacity(0.5),
+                  ),
+                )
+              //If Skip Login
+
+              : const Gap(4),
+          const Gap(8)
         ],
       ),
     );

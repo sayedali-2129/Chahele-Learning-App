@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:chahele_project/controller/authentication_provider.dart';
+import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
-import 'package:chahele_project/utils/widgets/custom_toast.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/login_buttons.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/pinput.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
+import 'package:chahele_project/view/profile_screen/profile_setup.dart';
+import 'package:chahele_project/view/widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -108,7 +112,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               child: LoginButtons(
                                 screenWidth: screenWidth,
                                 text: "Verify",
-                                onPressed: () {
+                                onPressed: () async {
                                   if (pinController.text.isEmpty) {
                                     failedToast(context, "Enter OTP");
                                   } else {
@@ -158,16 +162,55 @@ class _OtpScreenState extends State<OtpScreen> {
   void verifyOtp() {
     final authProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    // final user = userProvider.userList.firstWhere(
+    //   (user) => user.id == authProvider.firebaseAuth.currentUser!.uid,
+    // );
 
     String otp = pinController.text;
     authProvider.verifyOtp(
-        onSuccess: (verificationId) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BottomNavigationWidget(),
-              ),
-              (route) => false);
+        onSuccess: (verificationId) async {
+          await authProvider.checkUserexist(
+            onExist: () {
+              (Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BottomNavigationWidget(),
+                ),
+              ));
+            },
+            onNewUser: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProfileSetUp(phoneNumber: widget.phoneNumber)));
+            },
+          );
+          await userProvider.getUserDetails();
+          // await Provider.of<UserProvider>(context, listen: false)
+          //     .fetchUser()
+          //     .then((value) {
+          //   if (userProvider.userList.isNotEmpty) {
+          //     (Navigator.pushReplacement(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const BottomNavigationWidget(),
+          //       ),
+          //     ));
+          //   } else {
+          //     Navigator.pushAndRemoveUntil(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) =>
+          //               ProfileSetUp(phoneNumber: widget.phoneNumber),
+          //         ),
+          //         (route) => false);
+          //   }
+          // });
+
+          log(authProvider.firebaseAuth.currentUser!.uid);
         },
         onFailure: () {
           failedToast(context, "Invalid OTP");

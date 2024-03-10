@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl_phone_field/phone_number.dart';
@@ -8,6 +10,7 @@ import 'package:intl_phone_field/phone_number.dart';
 class AuthenticationProvider with ChangeNotifier {
   //Firebase Auth Instance
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
 //Loading
   bool isLoading = false;
@@ -15,11 +18,12 @@ class AuthenticationProvider with ChangeNotifier {
   String? selectedCode;
 
   //Current User
-  User? currentUser;
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
 //onChanged function country code
   void countryCode(PhoneNumber code) {
     selectedCode = code.countryCode;
+
     notifyListeners();
   }
 
@@ -86,21 +90,37 @@ class AuthenticationProvider with ChangeNotifier {
 
   Future<void> logOutUser() async {
     await firebaseAuth.signOut();
-    notifyListeners();
   }
 
-  Future<void> deleteUser() async {
-    try {
-      currentUser = firebaseAuth.currentUser;
+  // Future<void> deleteUser() async {
+  //   User? user = firebaseAuth.currentUser;
 
-      if (currentUser != null) {
-        await currentUser!.delete();
-        print("User Deleted");
+  //   try {
+  //     if (user != null) {
+  //       await user.delete();
+  //       user = currentUser;
+  //       log("User Deleted");
+  //     } else {
+  //       log("no user signed");
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     log(e.code.toString());
+  //   }
+  // }
+
+  Future<void> checkUserexist(
+      {required VoidCallback onExist, VoidCallback? onNewUser}) async {
+    User? user = firebaseAuth.currentUser;
+
+    if (user != null) {
+      DocumentSnapshot userSnapshot =
+          await firebaseFirestore.collection('users').doc(user.uid).get();
+
+      if (userSnapshot.exists) {
+        onExist();
       } else {
-        print("no user signed");
+        onNewUser!();
       }
-    } on FirebaseAuthException catch (e) {
-      log(e.code.toString());
     }
   }
 }

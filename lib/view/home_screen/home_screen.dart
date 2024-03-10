@@ -1,4 +1,4 @@
-import 'package:chahele_project/controller/standard_provider.dart';
+import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
@@ -26,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<StandardProvider>(context, listen: false).fetchStandards();
-      Provider.of<StandardProvider>(context, listen: false).fetchMediumData();
+      Provider.of<CourseProvider>(context, listen: false).fetchStandards();
+      Provider.of<CourseProvider>(context, listen: false).fetchMediumData();
     });
 
     super.initState();
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final standardProvider = Provider.of<StandardProvider>(context);
+    final standardProvider = Provider.of<CourseProvider>(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [

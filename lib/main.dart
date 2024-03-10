@@ -1,9 +1,9 @@
 import 'package:chahele_project/controller/authentication_provider.dart';
+import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/controller/image_provider.dart';
-import 'package:chahele_project/controller/standard_provider.dart';
 import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/firebase_options.dart';
-import 'package:chahele_project/view/authentication_screens/login_screen.dart';
+import 'package:chahele_project/view/splash_screen/spalsh_screen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
-        ChangeNotifierProvider(create: (context) => StandardProvider()),
+        ChangeNotifierProvider(create: (context) => CourseProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => ImagePickProvider()),
       ],
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
         ),
         debugShowCheckedModeBanner: false,
-        home: const LoginScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

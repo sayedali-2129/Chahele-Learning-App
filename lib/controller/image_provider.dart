@@ -70,4 +70,8 @@ class ImagePickProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void clearImage() {
+    imageUrl = null;
+  }
 }

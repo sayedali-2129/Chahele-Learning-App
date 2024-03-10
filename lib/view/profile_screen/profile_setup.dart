@@ -1,27 +1,41 @@
+import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/controller/image_provider.dart';
+import 'package:chahele_project/controller/user_provider.dart';
+import 'package:chahele_project/model/user_model.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
-import 'package:chahele_project/utils/widgets/button_widget.dart';
-import 'package:chahele_project/utils/widgets/custom_loading.dart';
-import 'package:chahele_project/utils/widgets/custom_toast.dart';
-import 'package:chahele_project/utils/widgets/heading_app_bar.dart';
+import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
 import 'package:chahele_project/view/profile_screen/widgets/textfield_widget.dart';
+import 'package:chahele_project/view/widgets/button_widget.dart';
+import 'package:chahele_project/view/widgets/custom_loading.dart';
+import 'package:chahele_project/view/widgets/custom_toast.dart';
+import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ProfileSetUp extends StatelessWidget {
-  const ProfileSetUp({super.key});
+class ProfileSetUp extends StatefulWidget {
+  const ProfileSetUp({super.key, required this.phoneNumber});
+  final String phoneNumber;
 
+  @override
+  State<ProfileSetUp> createState() => _ProfileSetUpState();
+}
+
+class _ProfileSetUpState extends State<ProfileSetUp> {
   @override
   Widget build(BuildContext context) {
     final imageProvider = Provider.of<ImagePickProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+    final authProvider = Provider.of<AuthenticationProvider>(context);
+    userProvider.phoneNumberController.text = widget.phoneNumber;
     return Scaffold(
         body: CustomScrollView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       slivers: [
-        const HeadingAppBar(heading: "Set Up Profile"),
+        const HeadingAppBar(heading: "Set Up Profile", isBackButtomn: false),
         SliverFillRemaining(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -81,7 +95,7 @@ class ProfileSetUp extends StatelessWidget {
                       color: ConstantColors.headingBlue),
                 ),
                 const Gap(16),
-                TextfieldWidget(),
+                TextfieldWidget(controller: userProvider.nameController),
                 const Gap(16),
 
                 //DOB
@@ -107,16 +121,35 @@ class ProfileSetUp extends StatelessWidget {
                               blurStyle: BlurStyle.outer)
                         ]),
                     child: TextFormField(
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: ConstantColors.black.withOpacity(0.7)),
+                      onTap: () async {
+                        final DateTime? date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            lastDate: DateTime.now(),
+                            firstDate: DateTime(1950));
+
+                        final formattedDate =
+                            DateFormat("dd-MM-yyyy").format(date!);
+                        setState(() {});
+                        userProvider.dobController.text =
+                            formattedDate.toString();
+                      },
+                      readOnly: true,
+                      controller: userProvider.dobController,
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 24),
-                        filled: true,
-                        fillColor: ConstantColors.white,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
+                          contentPadding: const EdgeInsets.all(15),
+                          filled: true,
+                          fillColor: ConstantColors.white,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          suffixIcon:
+                              const Icon(Icons.calendar_month_outlined)),
                     ),
                   ),
                 ),
@@ -131,7 +164,9 @@ class ProfileSetUp extends StatelessWidget {
                 ),
                 const Gap(16),
 
-                TextfieldWidget(),
+                TextfieldWidget(
+                    controller: userProvider.phoneNumberController,
+                    readOnly: true),
                 const Gap(16),
                 //Email
 
@@ -144,7 +179,9 @@ class ProfileSetUp extends StatelessWidget {
                 ),
                 const Gap(16),
 
-                TextfieldWidget(),
+                TextfieldWidget(
+                    controller: userProvider.emailController,
+                    keyboardType: TextInputType.emailAddress),
                 const Gap(16),
                 //Age
 
@@ -157,7 +194,9 @@ class ProfileSetUp extends StatelessWidget {
                 ),
                 const Gap(16),
 
-                TextfieldWidget(),
+                TextfieldWidget(
+                    controller: userProvider.ageController,
+                    keyboardType: TextInputType.number),
                 const Gap(16),
 
                 Row(
@@ -168,7 +207,30 @@ class ProfileSetUp extends StatelessWidget {
                       buttonHeight: 42,
                       buttonWidth: 163,
                       buttonText: "Save",
-                      onPressed: () {},
+                      onPressed: () async {
+                        userProvider.addUserDetails(
+                            onSuccess: () {},
+                            onFailure: () {},
+                            userModel: UserModel(
+                                id: authProvider.firebaseAuth.currentUser!.uid,
+                                name: userProvider.nameController.text,
+                                phoneNumber:
+                                    userProvider.phoneNumberController.text,
+                                dob: userProvider.dobController.text,
+                                email: userProvider.emailController.text,
+                                age: userProvider.ageController.text,
+                                image: imageProvider.imageUrl!));
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const BottomNavigationWidget(),
+                          ),
+                        );
+                        userProvider.clearFields();
+                        imageProvider.clearImage();
+                      },
                     )
                   ],
                 )

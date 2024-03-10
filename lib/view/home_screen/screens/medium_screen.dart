@@ -1,7 +1,7 @@
-import 'package:chahele_project/controller/standard_provider.dart';
-import 'package:chahele_project/utils/widgets/heading_app_bar.dart';
+import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/view/home_screen/screens/subjects_screen.dart';
 import 'package:chahele_project/view/home_screen/widgets/rec_stack_container.dart';
+import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -12,12 +12,12 @@ class MediumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final standardProvider = Provider.of<StandardProvider>(context);
+    final standardProvider = Provider.of<CourseProvider>(context);
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const HeadingAppBar(heading: "Medium"),
+          const HeadingAppBar(heading: "Medium", isBackButtomn: true),
           SliverPadding(
             padding: const EdgeInsets.all(16),
             sliver: SliverList.separated(

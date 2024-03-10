@@ -13,4 +13,6 @@ class ConstantColors {
   static const Color iconBlue = Color(0xff0601B4);
   static const Color buttonScndColor = Color(0xffB6D9FE);
   static const Color greyColor = Color(0xffC4C4C4);
+  static const Color onlineDotGreen = Color(0xff05B917);
+  static const Color unselectedPlan = Color(0xffE7F3FF);
 }

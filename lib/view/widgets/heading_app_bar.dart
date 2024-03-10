@@ -5,21 +5,25 @@ class HeadingAppBar extends StatelessWidget {
   const HeadingAppBar({
     super.key,
     required this.heading,
+    required this.isBackButtomn,
   });
   final String heading;
+  final bool isBackButtomn;
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+        automaticallyImplyLeading: false,
         surfaceTintColor: ConstantColors.white,
-        titleSpacing: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(16),
-          child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.arrow_back_ios)),
-        ),
+        leading: isBackButtomn
+            ? Padding(
+                padding: const EdgeInsets.all(16),
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(Icons.arrow_back_ios)),
+              )
+            : null,
         expandedHeight: 60,
         pinned: true,
         forceElevated: true,

@@ -1,11 +1,13 @@
+import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/view/choose_screen/choose_screen.dart';
-import 'package:chahele_project/view/exam_screen/exam_screen.dart';
+import 'package:chahele_project/view/exam_screen/screens/exam_screen.dart';
 import 'package:chahele_project/view/home_screen/home_screen.dart';
 import 'package:chahele_project/view/profile_screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   const BottomNavigationWidget({super.key});
@@ -19,6 +21,8 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthenticationProvider>(context);
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -28,6 +32,8 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
               HomeScreen(),
               ChooseScreen(),
               ExamScreen(),
+              // authProvider.firebaseAuth.currentUser == null
+              //     ? const SkipProfileScreen()
               ProfileScreen()
             ]),
         bottomNavigationBar: TabBar(

@@ -1,14 +1,18 @@
+import 'package:chahele_project/model/chapter_model.dart';
 import 'package:chahele_project/model/medium_model.dart';
+import 'package:chahele_project/model/section_model.dart';
 import 'package:chahele_project/model/standard_model.dart';
 import 'package:chahele_project/model/subject_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class StandardProvider with ChangeNotifier {
+class CourseProvider with ChangeNotifier {
   final firebase = FirebaseFirestore.instance;
   List<StandardModel> standardsList = [];
   List<MediumModel> mediumList = [];
   List<SubjectModel> subjectList = [];
+  List<ChapterModel> chapterList = [];
+  List<SectionModel> sectionList = [];
   bool isLoading = false;
 
 //Standard Fetch
@@ -46,6 +50,37 @@ class StandardProvider with ChangeNotifier {
 
     subjectList = responce.docs
         .map((e) => SubjectModel.fromMap(e.data()).copyWith(id: e.id))
+        .toList();
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+//fetch chapter
+  Future<void> fetchChapter() async {
+    isLoading = true;
+    notifyListeners();
+
+    final responce = await firebase.collection('chapter').get();
+
+    chapterList = responce.docs
+        .map((e) => ChapterModel.fromMap(e.data()).copyWith(id: e.id))
+        .toList();
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  //fetch Sections
+
+  Future<void> fetchSections() async {
+    isLoading = true;
+    notifyListeners();
+
+    final responce = await firebase.collection('sections').get();
+
+    sectionList = responce.docs
+        .map((e) => SectionModel.fromMap(e.data()).copyWith(id: e.id))
         .toList();
 
     isLoading = false;
