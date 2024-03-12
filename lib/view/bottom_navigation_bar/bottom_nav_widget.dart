@@ -1,10 +1,10 @@
 import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
-import 'package:chahele_project/view/choose_screen/choose_screen.dart';
-import 'package:chahele_project/view/exam_screen/screens/exam_screen.dart';
-import 'package:chahele_project/view/home_screen/home_screen.dart';
-import 'package:chahele_project/view/profile_screen/profile_screen.dart';
+import 'package:chahele_project/view/choose_tab/choose_screen.dart';
+import 'package:chahele_project/view/exam_tab/screens/exam_tab.dart';
+import 'package:chahele_project/view/home_tab/home_screen.dart';
+import 'package:chahele_project/view/profile_tab/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
             children: [
               HomeScreen(),
               ChooseScreen(),
-              ExamScreen(),
+              ExamTabScreen(),
               // authProvider.firebaseAuth.currentUser == null
               //     ? const SkipProfileScreen()
               ProfileScreen()

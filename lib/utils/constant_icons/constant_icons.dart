@@ -27,6 +27,7 @@ class ConstantIcons {
   static const String warningIconSvg = "assets/svg/icons/warning icon.svg";
   static const String chahelLogoSmallSvg =
       "assets/svg/icons/chahel logo small.svg";
+  static const String timerSample = "assets/svg/icons/timer sample.svg";
 
 //Profile Icons
   static const String editIcon = "assets/svg/icons/edit icon.svg";

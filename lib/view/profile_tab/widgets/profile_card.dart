@@ -104,29 +104,31 @@ class ProfileCard extends StatelessWidget {
 class ContinueToLoginCont extends StatelessWidget {
   const ContinueToLoginCont({
     super.key,
+    required this.content,
   });
+  final String content;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       height: 80,
       child: Card(
         elevation: 5,
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         color: ConstantColors.mainBlueTheme,
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Login to Continue",
-                style: TextStyle(
+                content,
+                style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: ConstantColors.white),
               ),
-              Icon(
+              const Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 20,
                 color: ConstantColors.white,

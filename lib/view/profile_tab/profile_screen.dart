@@ -5,10 +5,10 @@ import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/model/user_model.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
-import 'package:chahele_project/view/profile_screen/widgets/account_logout.dart';
-import 'package:chahele_project/view/profile_screen/widgets/logoutDialogue.dart';
-import 'package:chahele_project/view/profile_screen/widgets/more_option_container.dart';
-import 'package:chahele_project/view/profile_screen/widgets/profile_card.dart';
+import 'package:chahele_project/view/profile_tab/widgets/account_logout.dart';
+import 'package:chahele_project/view/profile_tab/widgets/more_option_container.dart';
+import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
+import 'package:chahele_project/view/widgets/customAlertDialogue.dart';
 import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -85,7 +85,8 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          child: const ContinueToLoginCont(),
+                          child: const ContinueToLoginCont(
+                              content: "Login to Continue"),
                         ),
 
                   const Gap(16),
@@ -96,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
                           screenWidth: screenWidth,
                           onMyAccount: () {},
                           onLogout: () {
-                            logOutDailogue(
+                            customAlertDailogue(
                                 context: context,
                                 provider: authProvider,
                                 message: "Are You Sure Want To Logout ?",

@@ -1,14 +1,21 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
-import 'package:chahele_project/view/exam_screen/screens/terms_and_conditions.dart';
+import 'package:chahele_project/view/exam_tab/screens/terms_and_conditions.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
-class ExamScreen extends StatelessWidget {
-  const ExamScreen({super.key});
+class ExamTabScreen extends StatefulWidget {
+  const ExamTabScreen({super.key});
+
+  @override
+  State<ExamTabScreen> createState() => _ExamTabScreenState();
+}
+
+class _ExamTabScreenState extends State<ExamTabScreen> {
+  int selectedTest = 0;
 
   @override
   Widget build(BuildContext context) {

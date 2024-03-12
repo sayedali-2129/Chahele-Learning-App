@@ -1,7 +1,7 @@
 import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
-import 'package:chahele_project/view/home_screen/screens/video_player_screen.dart';
+import 'package:chahele_project/view/home_tab/screens/video_player_screen.dart';
 import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

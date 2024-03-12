@@ -21,7 +21,9 @@ class SelectedPlanContainer extends StatelessWidget {
       padding: isSelected == true
           ? const EdgeInsets.all(0)
           : const EdgeInsets.symmetric(horizontal: 16),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.decelerate,
         height: 90,
         width: screenWidth,
         decoration: BoxDecoration(

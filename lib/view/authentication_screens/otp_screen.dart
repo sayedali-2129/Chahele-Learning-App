@@ -7,7 +7,7 @@ import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/login_buttons.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/pinput.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
-import 'package:chahele_project/view/profile_screen/profile_setup.dart';
+import 'package:chahele_project/view/profile_tab/profile_setup.dart';
 import 'package:chahele_project/view/widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

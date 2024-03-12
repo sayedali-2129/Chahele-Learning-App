@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 class TextfieldWidget extends StatelessWidget {
   const TextfieldWidget({
     super.key,
-    required this.controller,
+    this.controller,
     this.readOnly = false,
     this.keyboardType = TextInputType.name,
   });
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool? readOnly;
   final TextInputType? keyboardType;
   @override

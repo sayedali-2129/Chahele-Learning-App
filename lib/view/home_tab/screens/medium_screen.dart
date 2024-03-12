@@ -1,6 +1,6 @@
 import 'package:chahele_project/controller/course_provider.dart';
-import 'package:chahele_project/view/home_screen/screens/subjects_screen.dart';
-import 'package:chahele_project/view/home_screen/widgets/rec_stack_container.dart';
+import 'package:chahele_project/view/home_tab/screens/subjects_screen.dart';
+import 'package:chahele_project/view/home_tab/widgets/rec_stack_container.dart';
 import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

@@ -5,7 +5,7 @@ import 'package:chahele_project/model/user_model.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
-import 'package:chahele_project/view/profile_screen/widgets/textfield_widget.dart';
+import 'package:chahele_project/view/profile_tab/widgets/textfield_widget.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:chahele_project/view/widgets/custom_loading.dart';
 import 'package:chahele_project/view/widgets/custom_toast.dart';

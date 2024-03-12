@@ -1,6 +1,7 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
-import 'package:chahele_project/view/exam_screen/widgets/appbar_terms.dart';
+import 'package:chahele_project/view/exam_tab/screens/exam_screen.dart';
+import 'package:chahele_project/view/exam_tab/widgets/appbar_terms.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -160,7 +161,14 @@ class ExamTandCScreen extends StatelessWidget {
                     buttonWidth: screenWidth,
                     buttonColor: ConstantColors.mainBlueTheme,
                     buttonText: "Agree & Continue",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ExamScreen(),
+                        ),
+                      );
+                    },
                   ),
                   const Gap(8),
                   OutlineButtonWidget(

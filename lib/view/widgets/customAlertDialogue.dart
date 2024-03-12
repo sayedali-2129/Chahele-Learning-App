@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-Future<dynamic> logOutDailogue(
+Future<dynamic> customAlertDailogue(
     {required BuildContext context,
-    required AuthenticationProvider provider,
+    AuthenticationProvider? provider,
     required String message,
     required final void Function()? onYes}) {
   return showDialog(
