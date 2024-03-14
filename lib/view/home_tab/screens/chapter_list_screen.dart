@@ -5,6 +5,7 @@ import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ChapterListScreen extends StatefulWidget {
   const ChapterListScreen({super.key, required this.index});
@@ -35,23 +36,27 @@ class _ChapterListScreenState extends State<ChapterListScreen> {
               isBackButtomn: true),
           SliverPadding(
               padding: const EdgeInsets.all(16),
-              sliver: SliverList.separated(
-                separatorBuilder: (context, index) => const Gap(8),
-                itemCount: subjectProvider.chapterList.length,
-                itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SectionsScreen(index: index),
-                          ));
-                    },
-                    child: ChapterListTile(
-                        chapterName:
-                            subjectProvider.chapterList[index].chapterName,
-                        description:
-                            subjectProvider.chapterList[index].description,
-                        index: index)),
+              sliver: SliverSkeletonizer(
+                enabled: subjectProvider.isLoading == true,
+                child: SliverList.separated(
+                  separatorBuilder: (context, index) => const Gap(8),
+                  itemCount: subjectProvider.chapterList.length,
+                  itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SectionsScreen(index: index),
+                            ));
+                      },
+                      child: ChapterListTile(
+                          chapterName:
+                              subjectProvider.chapterList[index].chapterName,
+                          description:
+                              subjectProvider.chapterList[index].description,
+                          index: index)),
+                ),
               ))
         ],
       ),

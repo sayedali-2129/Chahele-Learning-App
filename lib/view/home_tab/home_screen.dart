@@ -1,3 +1,4 @@
+import 'package:chahele_project/controller/banner_controller.dart';
 import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<CourseProvider>(context, listen: false).fetchStandards();
       Provider.of<CourseProvider>(context, listen: false).fetchMediumData();
+      Provider.of<BannerController>(context, listen: false).fetchBanner();
     });
 
     super.initState();
@@ -37,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final standardProvider = Provider.of<CourseProvider>(context);
+    final adBannerProvider = Provider.of<BannerController>(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -119,37 +123,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  standardProvider.isLoading == true
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                              color: ConstantColors.mainBlueTheme),
-                        )
-                      : GridView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisSpacing: 15.81,
-                                  crossAxisSpacing: 15.81,
-                                  crossAxisCount: 3),
-                          itemCount: standardProvider.standardsList.length,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MediumScreen(),
-                                  ));
-                            },
-                            child: SquareStackContainer(
-                              content: standardProvider
-                                  .standardsList[index].standard,
-                              image:
-                                  standardProvider.standardsList[index].image,
-                            ),
-                          ),
+                  Skeletonizer(
+                    enabled: standardProvider.isLoading == true,
+                    child: GridView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisSpacing: 15.81,
+                              crossAxisSpacing: 15.81,
+                              crossAxisCount: 3),
+                      itemCount: standardProvider.standardsList.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MediumScreen(),
+                              ));
+                        },
+                        child: SquareStackContainer(
+                          content:
+                              standardProvider.standardsList[index].standard,
+                          image: standardProvider.standardsList[index].image,
                         ),
+                      ),
+                    ),
+                  ),
 
                   //List of Classes
                   Row(
@@ -177,23 +178,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  ListView.separated(
-                    separatorBuilder: (context, index) => const Gap(16),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: standardProvider.mediumList.length,
-                    itemBuilder: (context, index) => RecStackContainer(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SubjectScreen(),
-                            ));
-                      },
-                      screenWidth: screenWidth,
-                      image: standardProvider.mediumList[index].image,
-                      content: standardProvider.mediumList[index].medium,
+                  Skeletonizer(
+                    enabled: standardProvider.isLoading == true,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const Gap(16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: standardProvider.mediumList.length,
+                      itemBuilder: (context, index) => RecStackContainer(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SubjectScreen(),
+                              ));
+                        },
+                        screenWidth: screenWidth,
+                        image: standardProvider.mediumList[index].image,
+                        content: standardProvider.mediumList[index].medium,
+                      ),
                     ),
                   ),
                 ],

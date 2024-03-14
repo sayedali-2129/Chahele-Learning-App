@@ -6,12 +6,30 @@ class SectionModel {
   String sectionName;
   String description;
   String videoUrl;
+  String pdfUrl;
   SectionModel({
     this.id,
     required this.sectionName,
     required this.description,
     required this.videoUrl,
+    required this.pdfUrl,
   });
+
+  SectionModel copyWith({
+    String? id,
+    String? sectionName,
+    String? description,
+    String? videoUrl,
+    String? pdfUrl,
+  }) {
+    return SectionModel(
+      id: id ?? this.id,
+      sectionName: sectionName ?? this.sectionName,
+      description: description ?? this.description,
+      videoUrl: videoUrl ?? this.videoUrl,
+      pdfUrl: pdfUrl ?? this.pdfUrl,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -19,6 +37,7 @@ class SectionModel {
       'sectionName': sectionName,
       'description': description,
       'videoUrl': videoUrl,
+      'pdfUrl': pdfUrl,
     };
   }
 
@@ -28,6 +47,7 @@ class SectionModel {
       sectionName: map['sectionName'] as String,
       description: map['description'] as String,
       videoUrl: map['videoUrl'] as String,
+      pdfUrl: map['pdfUrl'] as String,
     );
   }
 
@@ -35,18 +55,4 @@ class SectionModel {
 
   factory SectionModel.fromJson(String source) =>
       SectionModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  SectionModel copyWith({
-    String? id,
-    String? sectionName,
-    String? description,
-    String? videoUrl,
-  }) {
-    return SectionModel(
-      id: id ?? this.id,
-      sectionName: sectionName ?? this.sectionName,
-      description: description ?? this.description,
-      videoUrl: videoUrl ?? this.videoUrl,
-    );
-  }
 }

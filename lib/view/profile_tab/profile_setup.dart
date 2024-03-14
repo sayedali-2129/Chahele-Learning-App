@@ -10,6 +10,7 @@ import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:chahele_project/view/widgets/custom_loading.dart';
 import 'package:chahele_project/view/widgets/custom_toast.dart';
 import 'package:chahele_project/view/widgets/heading_app_bar.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +25,8 @@ class ProfileSetUp extends StatefulWidget {
 }
 
 class _ProfileSetUpState extends State<ProfileSetUp> {
+  final validateKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final imageProvider = Provider.of<ImagePickProvider>(context);
@@ -39,202 +42,249 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
         SliverFillRemaining(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: ListView(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Profile Image
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        customLoading(context, "Saving Image");
+            child: Form(
+              key: validateKey,
+              child: ListView(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Profile Image
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          customLoading(context, "Saving Image");
 
-                        await imageProvider.pickImage(onFailure: () {
+                          await imageProvider.pickImage(onFailure: () {
+                            Navigator.pop(context);
+                          });
+
+                          await imageProvider.saveImage(
+                            imageProvider.imageFile!,
+                            () {
+                              successToast(context, "Image added successfully");
+                            },
+                          );
+                          // ignore: use_build_context_synchronously
                           Navigator.pop(context);
-                        });
+                          // if (imageProvider.imageUrl ==
+                          //     null) {
+                          //   log("null");
+                          // } else {
+                          //   log(imageProvider.imageUrl!);
+                          // }
+                        },
+                        child: imageProvider.imageUrl == null
+                            ? const CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 70,
+                                backgroundImage:
+                                    AssetImage(ConstantImage.addUSerImage),
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 70,
+                                backgroundImage:
+                                    NetworkImage(imageProvider.imageUrl!)),
+                      )
+                    ],
+                  ),
+                  const Gap(16),
 
-                        await imageProvider.saveImage(
-                          imageProvider.imageFile!,
-                          () {
-                            successToast(context, "Image added successfully");
-                          },
-                        );
-                        // ignore: use_build_context_synchronously
-                        Navigator.pop(context);
-                        // if (imageProvider.imageUrl ==
-                        //     null) {
-                        //   log("null");
-                        // } else {
-                        //   log(imageProvider.imageUrl!);
-                        // }
-                      },
-                      child: imageProvider.imageUrl == null
-                          ? const CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              radius: 70,
-                              backgroundImage:
-                                  AssetImage(ConstantImage.addUSerImage),
-                            )
-                          : CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              radius: 70,
-                              backgroundImage:
-                                  NetworkImage(imageProvider.imageUrl!)),
-                    )
-                  ],
-                ),
-                const Gap(16),
+                  //Name
+                  const Text(
+                    "Name",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ConstantColors.headingBlue),
+                  ),
+                  const Gap(16),
+                  TextfieldWidget(
+                    controller: userProvider.nameController,
+                    validator: (value) {
+                      if (userProvider.nameController.text.isEmpty) {
+                        return "Enter your name";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  const Gap(16),
 
-                //Name
-                const Text(
-                  "Name",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ConstantColors.headingBlue),
-                ),
-                const Gap(16),
-                TextfieldWidget(controller: userProvider.nameController),
-                const Gap(16),
+                  //DOB
+                  const Text(
+                    "DOB",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ConstantColors.headingBlue),
+                  ),
+                  const Gap(16),
+                  Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Container(
+                      height: 50,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 1,
+                                spreadRadius: 0,
+                                color: Colors.black26,
+                                blurStyle: BlurStyle.outer)
+                          ]),
+                      child: TextFormField(
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: ConstantColors.black.withOpacity(0.7)),
+                        onTap: () async {
+                          final DateTime? date = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              lastDate: DateTime.now(),
+                              firstDate: DateTime(1950));
 
-                //DOB
-                const Text(
-                  "DOB",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ConstantColors.headingBlue),
-                ),
-                const Gap(16),
-                Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Container(
-                    height: 50,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 1,
-                              spreadRadius: 0,
-                              color: Colors.black26,
-                              blurStyle: BlurStyle.outer)
-                        ]),
-                    child: TextFormField(
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: ConstantColors.black.withOpacity(0.7)),
-                      onTap: () async {
-                        final DateTime? date = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            lastDate: DateTime.now(),
-                            firstDate: DateTime(1950));
-
-                        final formattedDate =
-                            DateFormat("dd-MM-yyyy").format(date!);
-                        setState(() {});
-                        userProvider.dobController.text =
-                            formattedDate.toString();
-                      },
-                      readOnly: true,
-                      controller: userProvider.dobController,
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(15),
-                          filled: true,
-                          fillColor: ConstantColors.white,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          suffixIcon:
-                              const Icon(Icons.calendar_month_outlined)),
+                          final formattedDate =
+                              DateFormat("dd-MM-yyyy").format(date!);
+                          setState(() {});
+                          userProvider.dobController.text =
+                              formattedDate.toString();
+                        },
+                        readOnly: true,
+                        controller: userProvider.dobController,
+                        validator: (value) {
+                          if (userProvider.dobController.text.isEmpty) {
+                            return "Select DOB";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(15),
+                            filled: true,
+                            fillColor: ConstantColors.white,
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: ConstantColors.headingBlue, width: 1),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            suffixIcon:
+                                const Icon(Icons.calendar_month_outlined)),
+                      ),
                     ),
                   ),
-                ),
-                const Gap(16),
-                //Phone number
-                const Text(
-                  "Phone Number",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ConstantColors.headingBlue),
-                ),
-                const Gap(16),
+                  const Gap(16),
+                  //Phone number
+                  const Text(
+                    "Phone Number",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ConstantColors.headingBlue),
+                  ),
+                  const Gap(16),
 
-                TextfieldWidget(
-                    controller: userProvider.phoneNumberController,
-                    readOnly: true),
-                const Gap(16),
-                //Email
+                  TextfieldWidget(
+                      controller: userProvider.phoneNumberController,
+                      readOnly: true),
+                  const Gap(16),
+                  //Email
 
-                const Text(
-                  "Email",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ConstantColors.headingBlue),
-                ),
-                const Gap(16),
+                  const Text(
+                    "Email",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ConstantColors.headingBlue),
+                  ),
+                  const Gap(16),
 
-                TextfieldWidget(
+                  TextfieldWidget(
                     controller: userProvider.emailController,
-                    keyboardType: TextInputType.emailAddress),
-                const Gap(16),
-                //Age
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) => EmailValidator.validate(
+                            userProvider.emailController.text)
+                        ? null
+                        : "Please enter valid email",
+                  ),
+                  const Gap(16),
+                  //Age
 
-                const Text(
-                  "Age",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: ConstantColors.headingBlue),
-                ),
-                const Gap(16),
+                  const Text(
+                    "Age",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ConstantColors.headingBlue),
+                  ),
+                  const Gap(16),
 
-                TextfieldWidget(
+                  TextfieldWidget(
                     controller: userProvider.ageController,
-                    keyboardType: TextInputType.number),
-                const Gap(16),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (userProvider.ageController.text.isEmpty) {
+                        return "Enter your Age";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  const Gap(16),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ButtonWidget(
-                      buttonColor: ConstantColors.mainBlueTheme,
-                      buttonHeight: 42,
-                      buttonWidth: 163,
-                      buttonText: "Save",
-                      onPressed: () async {
-                        userProvider.addUserDetails(
-                            onSuccess: () {},
-                            onFailure: () {},
-                            userModel: UserModel(
-                                id: authProvider.firebaseAuth.currentUser!.uid,
-                                name: userProvider.nameController.text,
-                                phoneNumber:
-                                    userProvider.phoneNumberController.text,
-                                dob: userProvider.dobController.text,
-                                email: userProvider.emailController.text,
-                                age: userProvider.ageController.text,
-                                image: imageProvider.imageUrl!));
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ButtonWidget(
+                        buttonColor: ConstantColors.mainBlueTheme,
+                        buttonHeight: 42,
+                        buttonWidth: 163,
+                        buttonText: "Save",
+                        onPressed: () async {
+                          if (imageProvider.imageUrl == null) {
+                            failedToast(context, "No profile image uploaded");
+                            return;
+                          }
+                          if (!validateKey.currentState!.validate()) {
+                            validateKey.currentState!.validate();
+                          } else {
+                            userProvider.addUserDetails(
+                                onSuccess: () {
+                                  successToast(
+                                      context, "User saved Successfully");
+                                },
+                                onFailure: () {
+                                  failedToast(context, "Something went wrong");
+                                },
+                                userModel: UserModel(
+                                    id: authProvider
+                                        .firebaseAuth.currentUser!.uid,
+                                    name: userProvider.nameController.text,
+                                    phoneNumber:
+                                        userProvider.phoneNumberController.text,
+                                    dob: userProvider.dobController.text,
+                                    email: userProvider.emailController.text,
+                                    age: userProvider.ageController.text,
+                                    image: imageProvider.imageUrl!));
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const BottomNavigationWidget(),
-                          ),
-                        );
-                        userProvider.clearFields();
-                        imageProvider.clearImage();
-                      },
-                    )
-                  ],
-                )
-              ],
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const BottomNavigationWidget(),
+                              ),
+                            );
+                            userProvider.clearFields();
+                            imageProvider.clearImage();
+                          }
+                        },
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

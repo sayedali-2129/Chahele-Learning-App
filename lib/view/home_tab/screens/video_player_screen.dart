@@ -40,6 +40,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           backgroundColor: ConstantColors.black,
         ),
         body: PodVideoPlayer(
+            podProgressBarConfig: PodProgressBarConfig(
+                playingBarColor: ConstantColors.mainBlueTheme,
+                circleHandlerColor: ConstantColors.mainBlueTheme),
             frameAspectRatio: 16 / 9,
             videoTitle: Padding(
               padding: const EdgeInsets.all(16),

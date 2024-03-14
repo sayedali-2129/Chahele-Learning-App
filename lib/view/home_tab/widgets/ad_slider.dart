@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:chahele_project/utils/constant_images/constant_images.dart';
+import 'package:chahele_project/controller/banner_controller.dart';
+import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
-class AdSlider extends StatelessWidget {
+class AdSlider extends StatefulWidget {
   const AdSlider({
     super.key,
     required this.screenWidth,
@@ -12,29 +13,70 @@ class AdSlider extends StatelessWidget {
   final double screenWidth;
 
   @override
+  State<AdSlider> createState() => _AdSliderState();
+}
+
+class _AdSliderState extends State<AdSlider> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<BannerController>(context, listen: false).fetchBanner();
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<BannerController>(context);
+
     // int _currentIndex = 0;
 
     // final _controller = CarouselController();
 
-    return CarouselSlider.builder(
-      itemCount: 3,
-      itemBuilder: (context, index, realIndex) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Container(
-          width: screenWidth,
-          height: 202,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-          child: SvgPicture.asset(
-            ConstantImage.adBannerSampleSvg,
-            fit: BoxFit.cover,
+    int currentIndex = 0;
+
+    return Column(
+      children: [
+        CarouselSlider.builder(
+          itemCount: provider.banners.length,
+          itemBuilder: (context, index, realIndex) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: provider.banners.isEmpty
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: ConstantColors.mainBlueTheme,
+                    ),
+                  )
+                : Container(
+                    width: widget.screenWidth,
+                    height: 202,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                              provider.banners[index].image,
+                            ),
+                            fit: BoxFit.cover)),
+                  ),
+          ),
+          options: CarouselOptions(
+            viewportFraction: 1,
+            initialPage: 0,
+            autoPlay: true,
+            autoPlayCurve: Curves.decelerate,
+            onPageChanged: (index, reason) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
           ),
         ),
-      ),
-      options: CarouselOptions(
-        viewportFraction: 1,
-        initialPage: 0,
-      ),
+        // DotsIndicator(
+        //   dotsCount: provider.banners.length,
+        //   position: currentIndex,
+        // )
+      ],
     );
   }
 }

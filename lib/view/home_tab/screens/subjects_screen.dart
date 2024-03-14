@@ -5,6 +5,7 @@ import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SubjectScreen extends StatefulWidget {
   const SubjectScreen({super.key});
@@ -33,20 +34,24 @@ class _SubjectScreenState extends State<SubjectScreen> {
           const HeadingAppBar(heading: "Subjects", isBackButtomn: true),
           SliverPadding(
               padding: const EdgeInsets.all(16),
-              sliver: SliverList.separated(
-                separatorBuilder: (context, index) => const Gap(16),
-                itemCount: provider.subjectList.length,
-                itemBuilder: (context, index) => RecStackContainer(
-                  screenWidth: screenWidth,
-                  content: provider.subjectList[index].subject,
-                  image: provider.subjectList[index].image,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChapterListScreen(index: index),
-                        ));
-                  },
+              sliver: SliverSkeletonizer(
+                enabled: provider.isLoading == true,
+                child: SliverList.separated(
+                  separatorBuilder: (context, index) => const Gap(16),
+                  itemCount: provider.subjectList.length,
+                  itemBuilder: (context, index) => RecStackContainer(
+                    screenWidth: screenWidth,
+                    content: provider.subjectList[index].subject,
+                    image: provider.subjectList[index].image,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ChapterListScreen(index: index),
+                          ));
+                    },
+                  ),
                 ),
               ))
         ],

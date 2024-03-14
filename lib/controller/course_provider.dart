@@ -4,6 +4,7 @@ import 'package:chahele_project/model/section_model.dart';
 import 'package:chahele_project/model/standard_model.dart';
 import 'package:chahele_project/model/subject_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CourseProvider with ChangeNotifier {
@@ -86,4 +87,36 @@ class CourseProvider with ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
+  // Future<void> pdfDownload(
+  //     {required String fileName,
+  //     required String fileUrl,
+  //     required VoidCallback onSuccess,
+  //     required VoidCallback onFailure}) async {
+  //   isLoading = true;
+  //   notifyListeners();
+
+  //   var status = await Permission.storage.request();
+
+  //   if (status.isGranted) {
+  //     const downloadPath = '/storage/emulated/0/Download/';
+  //     Directory directory = Directory(downloadPath);
+  //     final file = File("${directory.path}/$fileName");
+
+  //     try {
+  //       await Dio().download(fileUrl, file);
+  //       onSuccess();
+  //     } on DioException catch (e) {
+  //       onFailure();
+  //       log(e.message.toString());
+  //     } finally {
+  //       isLoading = false;
+  //       notifyListeners();
+  //     }
+  //   } else {
+  //     onFailure();
+  //     isLoading = false;
+  //     notifyListeners();
+  //   }
+  // }
 }
