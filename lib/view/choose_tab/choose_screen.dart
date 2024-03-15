@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
+import 'package:chahele_project/view/choose_tab/subscription_screen.dart';
+import 'package:chahele_project/view/choose_tab/widgets/plan_dialogue_fields.dart';
 import 'package:chahele_project/view/choose_tab/widgets/selected_plan.dart';
 import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
@@ -90,46 +94,46 @@ class _ChooseScreenState extends State<ChooseScreen> {
                           buttonColor: ConstantColors.mainBlueTheme,
                           buttonText: "Confirm",
                           onPressed: () {
-                            // planFields(
-                            //   screenWidth: screenWidth,
-                            //   context: context,
-                            //   classValue: classValue,
-                            //   syllabusValue: syllabsuValue,
-                            //   onChangedSyllubus: (String? value) {
-                            //     setState(() {
-                            //       syllabsuValue = value!;
-                            //     });
-                            //   },
-                            //   onChangedClass: (String? value) {
-                            //     setState(() {
-                            //       classValue = value!;
-                            //     });
-                            //     log(value!);
-                            //   },
-                            //   classItems: classes.map(
-                            //     (String classes) {
-                            //       return DropdownMenuItem(
-                            //           value: classes, child: Text(classes));
-                            //     },
-                            //   ).toList(),
-                            //   syllubusItems: syllubus.map(
-                            //     (String syllubus) {
-                            //       return DropdownMenuItem(
-                            //         value: syllubus,
-                            //         child: Text(syllubus),
-                            //       );
-                            //     },
-                            //   ).toList(),
-                            //   onPressed: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             const SubscriptionScreen(),
-                            //       ),
-                            //     );
-                            //   },
-                            // );
+                            planFields(
+                              screenWidth: screenWidth,
+                              context: context,
+                              classValue: classValue,
+                              syllabusValue: syllabsuValue,
+                              onChangedSyllubus: (String? value) {
+                                setState(() {
+                                  syllabsuValue = value!;
+                                });
+                              },
+                              onChangedClass: (String? value) {
+                                setState(() {
+                                  classValue = value!;
+                                });
+                                log(value!);
+                              },
+                              classItems: classes.map(
+                                (String classes) {
+                                  return DropdownMenuItem(
+                                      value: classes, child: Text(classes));
+                                },
+                              ).toList(),
+                              syllubusItems: syllubus.map(
+                                (String syllubus) {
+                                  return DropdownMenuItem(
+                                    value: syllubus,
+                                    child: Text(syllubus),
+                                  );
+                                },
+                              ).toList(),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SubscriptionScreen(),
+                                  ),
+                                );
+                              },
+                            );
                           },
                         ),
                 ],

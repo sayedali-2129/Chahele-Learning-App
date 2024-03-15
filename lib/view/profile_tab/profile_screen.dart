@@ -5,11 +5,13 @@ import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/model/user_model.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
+import 'package:chahele_project/view/profile_tab/profile_setup.dart';
 import 'package:chahele_project/view/profile_tab/widgets/account_logout.dart';
 import 'package:chahele_project/view/profile_tab/widgets/more_option_container.dart';
 import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
 import 'package:chahele_project/view/widgets/customAlertDialogue.dart';
 import 'package:chahele_project/view/widgets/heading_app_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -49,33 +51,46 @@ class ProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   authProvider.firebaseAuth.currentUser != null
-                      ? FutureBuilder<UserModel?>(
-                          future: userData,
+                      ? StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(authProvider.firebaseAuth.currentUser!.uid)
+                              .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const Center(
                                   child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
-                              return const Text("Error");
-                            }
-                            final UserModel userDatas =
-                                snapshot.data as UserModel;
+                              return Text("Error: ${snapshot.error}");
+                            } else if (snapshot.hasData) {
+                              final userData =
+                                  snapshot.data!.data() as Map<String, dynamic>;
+                              final users = UserModel.fromMap(userData);
 
-                            return ProfileCard(
-                                name: userDatas.name,
-                                emailID: userDatas.email,
-                                imageUrl: userDatas.image,
+                              // if (documentData != null) {
+                              //   final userDatas =
+                              //       UserModel.fromMap(documentData);
+                              return ProfileCard(
+                                name: users.name,
+                                emailID: users.email,
+                                imageUrl: users.image,
                                 onTapEdit: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => const ProfileSetUp(),
-                                  //   ),
-                                  // );
-                                });
-                          },
-                        )
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProfileSetUp(
+                                        phoneNumber: users.phoneNumber,
+                                        editProfile: users,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return Text('No user data available');
+                            }
+                          })
                       : GestureDetector(
                           onTap: () {
                             Navigator.pushReplacement(
@@ -155,48 +170,15 @@ class ProfileScreen extends StatelessWidget {
                     onHelpSupport: () {},
                     onTermsCondit: () {},
                     onDeleteAccount: () {
-                      // logOutDailogue(
-                      //     context: context,
-                      //     provider: authProvider,
-                      //     message:
-                      //         "Are You Sure Want To Delete This Account?",
-                      //     onYes: () async {
-                      //       if (authProvider.currentUser == null) {
-                      //         log("null");
-                      //       }
-                      //       //When Skip Login
-                      //       if (authProvider.currentUser != null) {
-                      //         //When user login
-                      //         customLoading(context, "Deleting Account...");
-                      //         // Navigator.pop(context);
-                      //         await authProvider.deleteUser();
-                      //         await Future.delayed(
-                      //             const Duration(seconds: 2));
-                      //         Navigator.pop(context);
-                      //         Navigator.pushReplacement(
-                      //             context,
-                      //             MaterialPageRoute(
-                      //               builder: (context) => const LoginScreen(),
-                      //             ));
-                      //       } else {
-                      //         Navigator.pop(context);
-                      //         // failedToast(context, "No User Signed");
-                      //         logOutDailogue(
-                      //           context: context,
-                      //           provider: authProvider,
-                      //           message:
-                      //               "No User Signed\nAre You Want To Log In ?",
-                      //           onYes: () {
-                      //             Navigator.pushReplacement(
-                      //                 context,
-                      //                 MaterialPageRoute(
-                      //                   builder: (context) =>
-                      //                       const LoginScreen(),
-                      //                 ));
-                      //           },
-                      //         );
-                      //       }
-                      //     });
+                      customAlertDailogue(
+                        context: context,
+                        message:
+                            "Are You Sure Want To Delete Your Account?\nAll Your Details Will be Removed",
+                        onYes: () {
+                          userProvider.deleteUser(
+                              userProvider.firebaseAuth.currentUser!.uid);
+                        },
+                      );
                     },
                   ),
                 ],

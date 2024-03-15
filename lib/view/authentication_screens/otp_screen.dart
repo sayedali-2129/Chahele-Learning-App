@@ -8,6 +8,7 @@ import 'package:chahele_project/view/authentication_screens/widgets/login_button
 import 'package:chahele_project/view/authentication_screens/widgets/pinput.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
 import 'package:chahele_project/view/profile_tab/profile_setup.dart';
+import 'package:chahele_project/view/widgets/custom_loading.dart';
 import 'package:chahele_project/view/widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,7 +31,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
+    final authProvider = Provider.of<AuthenticationProvider>(context);
     return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -118,6 +119,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                   } else {
                                     verifyOtp();
                                   }
+                                  if (authProvider.isLoading == true) {
+                                    customLoading(context, "Verifiying OTP...");
+                                  }
                                 },
                               ),
                             ),
@@ -171,6 +175,7 @@ class _OtpScreenState extends State<OtpScreen> {
     String otp = pinController.text;
     authProvider.verifyOtp(
         onSuccess: (verificationId) async {
+          Navigator.pop(context);
           await authProvider.checkUserexist(
             onExist: () {
               (Navigator.pushReplacement(

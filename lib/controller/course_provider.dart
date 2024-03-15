@@ -30,10 +30,11 @@ class CourseProvider with ChangeNotifier {
   }
 
 //Fetch Medium
-  Future<void> fetchMediumData() async {
+  Future<void> fetchMediumData(String id) async {
     isLoading = true;
     notifyListeners();
-    final responce = await firebase.collection('medium').get();
+    final responce =
+        await firebase.collection('medium').where('id', isEqualTo: id).get();
 
     mediumList = responce.docs
         .map((e) => MediumModel.fromMap(e.data()).copyWith(id: e.id))

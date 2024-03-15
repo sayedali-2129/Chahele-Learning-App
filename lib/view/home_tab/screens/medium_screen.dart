@@ -6,8 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-class MediumScreen extends StatelessWidget {
-  const MediumScreen({super.key});
+class MediumScreen extends StatefulWidget {
+  const MediumScreen({super.key, required this.id});
+  final String id;
+
+  @override
+  State<MediumScreen> createState() => _MediumScreenState();
+}
+
+class _MediumScreenState extends State<MediumScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CourseProvider>(context, listen: false)
+          .fetchMediumData(widget.id);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -17,8 +17,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProfileSetUp extends StatefulWidget {
-  const ProfileSetUp({super.key, required this.phoneNumber});
+  const ProfileSetUp({super.key, required this.phoneNumber, this.editProfile});
   final String phoneNumber;
+  final UserModel? editProfile;
 
   @override
   State<ProfileSetUp> createState() => _ProfileSetUpState();
@@ -26,6 +27,19 @@ class ProfileSetUp extends StatefulWidget {
 
 class _ProfileSetUpState extends State<ProfileSetUp> {
   final validateKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.editProfile != null) {
+        Provider.of<UserProvider>(context, listen: false)
+            .setEditUserData(widget.editProfile!);
+        Provider.of<ImagePickProvider>(context, listen: false)
+            .editUserImage(widget.editProfile!);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +52,10 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       slivers: [
-        const HeadingAppBar(heading: "Set Up Profile", isBackButtomn: false),
+        HeadingAppBar(
+            heading:
+                widget.editProfile == null ? "Set Up Profile" : "Edit Profile",
+            isBackButtomn: false),
         SliverFillRemaining(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -85,7 +102,8 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                                 backgroundColor: Colors.transparent,
                                 radius: 70,
                                 backgroundImage:
-                                    NetworkImage(imageProvider.imageUrl!)),
+                                    NetworkImage(imageProvider.imageUrl!),
+                              ),
                       )
                     ],
                   ),
@@ -101,6 +119,7 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                   ),
                   const Gap(16),
                   TextfieldWidget(
+                    keyboardType: TextInputType.name,
                     controller: userProvider.nameController,
                     validator: (value) {
                       if (userProvider.nameController.text.isEmpty) {
@@ -123,55 +142,43 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                   const Gap(16),
                   Padding(
                     padding: const EdgeInsets.all(2),
-                    child: Container(
-                      height: 50,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 1,
-                                spreadRadius: 0,
-                                color: Colors.black26,
-                                blurStyle: BlurStyle.outer)
-                          ]),
-                      child: TextFormField(
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: ConstantColors.black.withOpacity(0.7)),
-                        onTap: () async {
-                          final DateTime? date = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              lastDate: DateTime.now(),
-                              firstDate: DateTime(1950));
+                    child: TextFormField(
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: ConstantColors.black.withOpacity(0.7)),
+                      onTap: () async {
+                        final DateTime? date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            lastDate: DateTime.now(),
+                            firstDate: DateTime(1950));
 
-                          final formattedDate =
-                              DateFormat("dd-MM-yyyy").format(date!);
-                          setState(() {});
-                          userProvider.dobController.text =
-                              formattedDate.toString();
-                        },
-                        readOnly: true,
-                        controller: userProvider.dobController,
-                        validator: (value) {
-                          if (userProvider.dobController.text.isEmpty) {
-                            return "Select DOB";
-                          } else {
-                            return null;
-                          }
-                        },
-                        decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(15),
-                            filled: true,
-                            fillColor: ConstantColors.white,
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: ConstantColors.headingBlue, width: 1),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            suffixIcon:
-                                const Icon(Icons.calendar_month_outlined)),
+                        final formattedDate =
+                            DateFormat("dd-MM-yyyy").format(date!);
+                        setState(() {});
+                        userProvider.dobController.text =
+                            formattedDate.toString();
+                      },
+                      readOnly: true,
+                      controller: userProvider.dobController,
+                      validator: (value) {
+                        if (userProvider.dobController.text.isEmpty) {
+                          return "Select DOB";
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        filled: true,
+                        fillColor: ConstantColors.white,
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: ConstantColors.headingBlue, width: 1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        suffixIcon: const Icon(Icons.calendar_month_outlined),
                       ),
                     ),
                   ),
@@ -243,18 +250,22 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                         buttonWidth: 163,
                         buttonText: "Save",
                         onPressed: () async {
-                          if (imageProvider.imageUrl == null) {
-                            failedToast(context, "No profile image uploaded");
-                            return;
-                          }
                           if (!validateKey.currentState!.validate()) {
                             validateKey.currentState!.validate();
                           } else {
-                            userProvider.addUserDetails(
-                                onSuccess: () {
-                                  successToast(
-                                      context, "User saved Successfully");
-                                },
+                            if (imageProvider.imageUrl == null) {
+                              failedToast(context, "No profile image uploaded");
+                              return;
+                            }
+                            if (userProvider.isLoading == true) {
+                              customLoading(
+                                  context,
+                                  widget.editProfile == null
+                                      ? "Creating Profile..."
+                                      : "Updating Profile...");
+                            }
+                            if (widget.editProfile == null) {
+                              userProvider.addUserDetails(
                                 onFailure: () {
                                   failedToast(context, "Something went wrong");
                                 },
@@ -267,15 +278,46 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                                     dob: userProvider.dobController.text,
                                     email: userProvider.emailController.text,
                                     age: userProvider.ageController.text,
-                                    image: imageProvider.imageUrl!));
+                                    image: imageProvider.imageUrl!),
+                                onSuccess: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BottomNavigationWidget(),
+                                    ),
+                                  );
+                                  successToast(
+                                      context, "User saved Successfully");
+                                },
+                              );
+                            } else {
+                              userProvider.updateUserDetails(
+                                id: authProvider.firebaseAuth.currentUser!.uid,
+                                userModel: UserModel(
+                                    name: userProvider.nameController.text,
+                                    phoneNumber:
+                                        userProvider.phoneNumberController.text,
+                                    dob: userProvider.dobController.text,
+                                    email: userProvider.emailController.text,
+                                    age: userProvider.ageController.text,
+                                    image: imageProvider.imageUrl!),
+                                onSuccess: () {
+                                  successToast(
+                                      context, "Profile updated successfully");
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BottomNavigationWidget(),
+                                      ));
+                                },
+                                onFailure: () {
+                                  failedToast(context, "Something went wrong");
+                                },
+                              );
+                            }
 
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const BottomNavigationWidget(),
-                              ),
-                            );
                             userProvider.clearFields();
                             imageProvider.clearImage();
                           }

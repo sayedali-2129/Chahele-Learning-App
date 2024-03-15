@@ -3,7 +3,6 @@ import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:chahele_project/view/home_tab/screens/subjects_screen.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
 class SubscriptionScreen extends StatefulWidget {
@@ -71,9 +70,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 Container(
                   height: 155,
                   width: screenWidth,
-                  color: Colors.amber,
-                  child: SvgPicture.asset(
-                    ConstantImage.getPLanSvg,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(ConstantImage.getPLanPng),
+                    ),
                   ),
                 ),
                 const Gap(24),

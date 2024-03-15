@@ -29,7 +29,9 @@ class StandardScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MediumScreen(),
+                              builder: (context) => MediumScreen(
+                                  id: standardProvider
+                                      .standardsList[index].id!),
                             ));
                       },
                       child: SquareStackContainer(

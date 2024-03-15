@@ -52,6 +52,13 @@ class UserProvider with ChangeNotifier {
     ageController.clear();
   }
 
+  void setEditUserData(UserModel editUser) {
+    nameController.text = editUser.name;
+    dobController.text = editUser.dob;
+    emailController.text = editUser.email;
+    ageController.text = editUser.age;
+  }
+
   // Future<void> fetchUser() async {
   //   final responce = await fireBase.collection('users').get();
 
@@ -86,6 +93,35 @@ class UserProvider with ChangeNotifier {
     } catch (e) {
       print("Error fetching user details: $e");
       return null;
+    }
+  }
+
+  //Delete user
+  void deleteUser(String id) {
+    fireBase.collection("users").doc(id).delete();
+  }
+
+//Update UserDetails
+  Future<void> updateUserDetails(
+      {required String? id,
+      required UserModel userModel,
+      required VoidCallback onSuccess,
+      required VoidCallback onFailure}) async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      await fireBase.collection('users').doc(id).update(userModel.toMap());
+
+      onSuccess();
+
+      notifyListeners();
+
+      isLoading = false;
+      notifyListeners();
+    } on FirebaseException catch (e) {
+      onFailure();
+      log(e.message.toString());
     }
   }
 }

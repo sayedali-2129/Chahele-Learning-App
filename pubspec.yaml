@@ -31,6 +31,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   carousel_slider: ^4.2.1
   cloud_firestore: ^4.15.5
+  confetti: ^0.7.0
   country_code_picker: ^3.0.0
   cupertino_icons: ^1.0.6
   delayed_display: ^2.0.0

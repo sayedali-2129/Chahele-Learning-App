@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chahele_project/model/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -73,5 +74,9 @@ class ImagePickProvider with ChangeNotifier {
 
   void clearImage() {
     imageUrl = null;
+  }
+
+  void editUserImage(UserModel editImage) {
+    imageUrl = editImage.image;
   }
 }

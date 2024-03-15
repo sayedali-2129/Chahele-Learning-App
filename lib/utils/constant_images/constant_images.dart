@@ -8,7 +8,7 @@ class ConstantImage {
   static const String addUSerImage = "assets/images/add user.png";
   static const String examBgImage = "assets/svg/images/exam card.svg";
   static const String chapterSample = "assets/images/chapter sample.png";
-  static const String getPLanSvg = "assets/svg/images/plan png.svg";
+  static const String getPLanPng = "assets/svg/images/get plan png.png";
 }
 
 class ConstImages {

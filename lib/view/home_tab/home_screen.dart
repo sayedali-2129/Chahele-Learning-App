@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<CourseProvider>(context, listen: false).fetchStandards();
-      Provider.of<CourseProvider>(context, listen: false).fetchMediumData();
+      // Provider.of<CourseProvider>(context, listen: false).fetchMediumData();
       Provider.of<BannerController>(context, listen: false).fetchBanner();
     });
 
@@ -140,7 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const MediumScreen(),
+                                builder: (context) => MediumScreen(
+                                    id: standardProvider
+                                        .standardsList[index].id!),
                               ));
                         },
                         child: SquareStackContainer(
