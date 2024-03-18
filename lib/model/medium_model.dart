@@ -1,18 +1,37 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 class MediumModel {
   String medium;
   String image;
   String? id;
+  String stdId;
   MediumModel({
     required this.medium,
     required this.image,
     this.id,
+    required this.stdId,
   });
+
+  MediumModel copyWith({
+    String? medium,
+    String? image,
+    String? id,
+    String? stdId,
+  }) {
+    return MediumModel(
+      medium: medium ?? this.medium,
+      image: image ?? this.image,
+      id: id ?? this.id,
+      stdId: stdId ?? this.stdId,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'medium': medium,
       'image': image,
       'id': id,
+      'stdId': stdId,
     };
   }
 
@@ -21,18 +40,7 @@ class MediumModel {
       medium: map['medium'] as String,
       image: map['image'] as String,
       id: map['id'] != null ? map['id'] as String : null,
-    );
-  }
-
-  MediumModel copyWith({
-    String? medium,
-    String? image,
-    String? id,
-  }) {
-    return MediumModel(
-      medium: medium ?? this.medium,
-      image: image ?? this.image,
-      id: id ?? this.id,
+      stdId: map['stdId'] as String,
     );
   }
 }

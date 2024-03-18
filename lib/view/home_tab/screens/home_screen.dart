@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final standardProvider = Provider.of<CourseProvider>(context);
-    final adBannerProvider = Provider.of<BannerController>(context);
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -141,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MediumScreen(
+                                    index: index,
                                     id: standardProvider
                                         .standardsList[index].id!),
                               ));
@@ -193,7 +194,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SubjectScreen(),
+                                builder: (context) => SubjectScreen(
+                                    id: standardProvider.mediumList[index].id!),
                               ));
                         },
                         screenWidth: screenWidth,

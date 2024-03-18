@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:chahele_project/controller/authentication_provider.dart';
+import 'package:chahele_project/controller/plan_controller.dart';
+import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
 import 'package:chahele_project/view/choose_tab/subscription_screen.dart';
@@ -24,7 +24,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
   int selectedIndex = 0;
 
   String classValue = 'Class 1';
-  String syllabsuValue = 'English';
+  String syllabusValue = 'English';
   var classes = [
     'Class 1',
     'Class 2',
@@ -32,18 +32,20 @@ class _ChooseScreenState extends State<ChooseScreen> {
     'Class 4',
     'Class 5',
   ];
-  var syllubus = ['English', 'Malayalam', 'CBSE', 'ICSE'];
+  var syllabus = ['English', 'Malayalam', 'CBSE', 'ICSE'];
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final authProvider = Provider.of<AuthenticationProvider>(context);
+    final planProvider = Provider.of<PlanController>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           const HeadingAppBar(heading: "Choose Plan", isBackButtomn: false),
           SliverPadding(
-            padding: const EdgeInsets.only(top: 24, bottom: 8),
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
             sliver: authProvider.firebaseAuth.currentUser == null
                 ? SliverToBoxAdapter(
                     child: Padding(
@@ -95,32 +97,28 @@ class _ChooseScreenState extends State<ChooseScreen> {
                           buttonText: "Confirm",
                           onPressed: () {
                             planFields(
+                              name: userProvider.nameController,
+                              guardian: planProvider.guardianController,
+                              schoolName: planProvider.schoolNameController,
+                              index: selectedIndex,
                               screenWidth: screenWidth,
                               context: context,
                               classValue: classValue,
-                              syllabusValue: syllabsuValue,
-                              onChangedSyllubus: (String? value) {
-                                setState(() {
-                                  syllabsuValue = value!;
-                                });
-                              },
-                              onChangedClass: (String? value) {
-                                setState(() {
-                                  classValue = value!;
-                                });
-                                log(value!);
-                              },
-                              classItems: classes.map(
-                                (String classes) {
+                              syllabusValue: syllabusValue,
+                              classItems: classes.map<DropdownMenuItem<String>>(
+                                (String classItem) {
                                   return DropdownMenuItem(
-                                      value: classes, child: Text(classes));
+                                    value: classItem,
+                                    child: Text(classItem),
+                                  );
                                 },
                               ).toList(),
-                              syllubusItems: syllubus.map(
-                                (String syllubus) {
+                              syllabusItems:
+                                  syllabus.map<DropdownMenuItem<String>>(
+                                (String syllabusItem) {
                                   return DropdownMenuItem(
-                                    value: syllubus,
-                                    child: Text(syllubus),
+                                    value: syllabusItem,
+                                    child: Text(syllabusItem),
                                   );
                                 },
                               ).toList(),
@@ -128,8 +126,8 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SubscriptionScreen(),
+                                    builder: (context) => SubscriptionScreen(
+                                        index: selectedIndex),
                                   ),
                                 );
                               },

@@ -1,13 +1,11 @@
 import 'package:chahele_project/controller/sample_questions.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
-import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
-import 'package:chahele_project/view/exam_tab/screens/exaapmle.dart';
 import 'package:chahele_project/view/exam_tab/screens/result_screen.dart';
+import 'package:chahele_project/view/exam_tab/widgets/timer.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:chahele_project/view/widgets/customAlertDialogue.dart';
 import 'package:chahele_project/view/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
 class ExamScreen extends StatefulWidget {
@@ -32,50 +30,42 @@ class _ExamScreenState extends State<ExamScreen> {
         slivers: [
           const HeadingAppBar(heading: "Chapter Name", isBackButtomn: true),
           const SliverGap(8),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 80,
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            pinned: true,
+            primary: true,
+            flexibleSpace: Container(
+              height: 100,
               width: screenWidth,
               decoration: BoxDecoration(
-                  color: ConstantColors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                        color: ConstantColors.black.withOpacity(0.1))
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
+                color: ConstantColors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                      color: ConstantColors.black.withOpacity(0.1))
+                ],
+              ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       "Test 1",
                       style: TextStyle(
                           color: ConstantColors.headingBlue,
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ExampleScreen()));
-                      },
-                      child: SvgPicture.asset(
-                        ConstantIcons.timerSample,
-                        height: 70,
-                        width: 70,
-                      ),
-                    )
+                    TimerWidget(),
                   ],
                 ),
               ),
             ),
           ),
-          const SliverGap(16),
+          // const SliverGap(16),
           SliverList.separated(
             separatorBuilder: (context, index) => const Gap(8),
             itemCount: SampleQuestions.quizData.length,

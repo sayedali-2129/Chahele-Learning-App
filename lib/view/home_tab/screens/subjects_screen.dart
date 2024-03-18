@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SubjectScreen extends StatefulWidget {
-  const SubjectScreen({super.key});
+  const SubjectScreen({super.key, required this.id});
+  final String id;
 
   @override
   State<SubjectScreen> createState() => _SubjectScreenState();
@@ -18,7 +19,8 @@ class _SubjectScreenState extends State<SubjectScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<CourseProvider>(context, listen: false).fetchSubjects();
+      Provider.of<CourseProvider>(context, listen: false)
+          .fetchSubjects(widget.id);
     });
     super.initState();
   }
@@ -47,8 +49,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ChapterListScreen(index: index),
+                            builder: (context) => ChapterListScreen(
+                                id: provider.subjectList[index].id!,
+                                index: index),
                           ));
                     },
                   ),

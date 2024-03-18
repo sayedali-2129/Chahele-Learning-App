@@ -30,6 +30,7 @@ class StandardScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => MediumScreen(
+                                  index: index,
                                   id: standardProvider
                                       .standardsList[index].id!),
                             ));

@@ -68,9 +68,6 @@ class ProfileScreen extends StatelessWidget {
                                   snapshot.data!.data() as Map<String, dynamic>;
                               final users = UserModel.fromMap(userData);
 
-                              // if (documentData != null) {
-                              //   final userDatas =
-                              //       UserModel.fromMap(documentData);
                               return ProfileCard(
                                 name: users.name,
                                 emailID: users.email,
@@ -174,9 +171,17 @@ class ProfileScreen extends StatelessWidget {
                         context: context,
                         message:
                             "Are You Sure Want To Delete Your Account?\nAll Your Details Will be Removed",
-                        onYes: () {
-                          userProvider.deleteUser(
+                        onYes: () async {
+                          await userProvider.deleteUser(
                               userProvider.firebaseAuth.currentUser!.uid);
+                          await authProvider.logOutUser();
+
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                              (route) => false);
                         },
                       );
                     },

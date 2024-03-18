@@ -280,13 +280,12 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                                     age: userProvider.ageController.text,
                                     image: imageProvider.imageUrl!),
                                 onSuccess: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BottomNavigationWidget(),
-                                    ),
-                                  );
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BottomNavigationWidget()),
+                                      (route) => false);
                                   successToast(
                                       context, "User saved Successfully");
                                 },

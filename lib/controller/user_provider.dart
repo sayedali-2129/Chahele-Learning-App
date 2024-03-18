@@ -97,8 +97,8 @@ class UserProvider with ChangeNotifier {
   }
 
   //Delete user
-  void deleteUser(String id) {
-    fireBase.collection("users").doc(id).delete();
+  Future<void> deleteUser(String id) async {
+    await fireBase.collection("users").doc(id).delete();
   }
 
 //Update UserDetails

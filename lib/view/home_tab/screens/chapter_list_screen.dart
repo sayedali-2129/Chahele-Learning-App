@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ChapterListScreen extends StatefulWidget {
-  const ChapterListScreen({super.key, required this.index});
+  const ChapterListScreen({super.key, required this.index, required this.id});
   final int index;
+  final String id;
 
   @override
   State<ChapterListScreen> createState() => _ChapterListScreenState();
@@ -19,7 +20,8 @@ class _ChapterListScreenState extends State<ChapterListScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<CourseProvider>(context, listen: false).fetchChapter();
+      Provider.of<CourseProvider>(context, listen: false)
+          .fetchChapter(widget.id);
     });
     super.initState();
   }
@@ -52,9 +54,8 @@ class _ChapterListScreenState extends State<ChapterListScreen> {
                       },
                       child: ChapterListTile(
                           chapterName:
-                              subjectProvider.chapterList[index].chapterName,
-                          description:
-                              subjectProvider.chapterList[index].description,
+                              subjectProvider.chapterList[index].chapter,
+                          description: subjectProvider.chapterList[index].about,
                           index: index)),
                 ),
               ))

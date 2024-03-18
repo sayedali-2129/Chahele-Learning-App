@@ -2,6 +2,7 @@ import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/controller/banner_controller.dart';
 import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/controller/image_provider.dart';
+import 'package:chahele_project/controller/plan_controller.dart';
 import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/firebase_options.dart';
 import 'package:chahele_project/view/splash_screen/spalsh_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => ImagePickProvider()),
         ChangeNotifierProvider(create: (context) => BannerController()),
+        ChangeNotifierProvider(create: (context) => PlanController()),
       ],
       child: MaterialApp(
         supportedLocales: const [

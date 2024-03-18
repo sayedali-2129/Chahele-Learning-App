@@ -1,12 +1,14 @@
+import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
-import 'package:chahele_project/view/home_tab/screens/subjects_screen.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class SubscriptionScreen extends StatefulWidget {
-  const SubscriptionScreen({super.key});
+  const SubscriptionScreen({super.key, required this.index});
+  final int index;
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -17,6 +19,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final courseProvider = Provider.of<CourseProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -40,14 +43,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 Row(
                   children: [
                     GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: ConstantColors.white,
-                          size: 25,
-                        )),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: ConstantColors.white,
+                        size: 25,
+                      ),
+                    ),
                   ],
                 ),
                 const Text(
@@ -70,7 +74,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 Container(
                   height: 155,
                   width: screenWidth,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(ConstantImage.getPLanPng),
                     ),
@@ -182,23 +186,58 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   buttonText: "Purchase",
                   textColor: ConstantColors.headingBlue,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SubjectScreen(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => SubjectScreen(
+                    //         id: courseProvider.),
+                    //   ),
+                    // );
                   },
                 ),
                 const Gap(24),
-                const Text(
-                  textAlign: TextAlign.center,
-                  "By placing this order, you agree to the Terms of Service and Privacy Policy. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.",
-                  style: TextStyle(
-                      color: ConstantColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12),
-                )
+                RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(children: [
+                      TextSpan(
+                        text: "By placing this order, you agree to the ",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins'),
+                      ),
+                      TextSpan(
+                        text: "Terms of Service",
+                        style: TextStyle(
+                            color: Colors.amber,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Poppins'),
+                      ),
+                      TextSpan(
+                        text: " and ",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins'),
+                      ),
+                      TextSpan(
+                        text: "Privacy Policy",
+                        style: TextStyle(
+                            color: Colors.amber,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Poppins'),
+                      ),
+                      TextSpan(
+                        text:
+                            ". Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins'),
+                      ),
+                    ]))
               ],
             ),
           ),

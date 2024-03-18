@@ -34,7 +34,7 @@ class CourseProvider with ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final responce =
-        await firebase.collection('medium').where('id', isEqualTo: id).get();
+        await firebase.collection('medium').where('stdId', isEqualTo: id).get();
 
     mediumList = responce.docs
         .map((e) => MediumModel.fromMap(e.data()).copyWith(id: e.id))
@@ -44,11 +44,14 @@ class CourseProvider with ChangeNotifier {
   }
 
   //Fetch Subjects
-  Future<void> fetchSubjects() async {
+  Future<void> fetchSubjects(String id) async {
     isLoading = true;
     notifyListeners();
 
-    final responce = await firebase.collection('subjects').get();
+    final responce = await firebase
+        .collection('subjects')
+        .where('medId', isEqualTo: id)
+        .get();
 
     subjectList = responce.docs
         .map((e) => SubjectModel.fromMap(e.data()).copyWith(id: e.id))
@@ -59,11 +62,14 @@ class CourseProvider with ChangeNotifier {
   }
 
 //fetch chapter
-  Future<void> fetchChapter() async {
+  Future<void> fetchChapter(String subId) async {
     isLoading = true;
     notifyListeners();
 
-    final responce = await firebase.collection('chapter').get();
+    final responce = await firebase
+        .collection('chapter')
+        .where('subId', isEqualTo: subId)
+        .get();
 
     chapterList = responce.docs
         .map((e) => ChapterModel.fromMap(e.data()).copyWith(id: e.id))

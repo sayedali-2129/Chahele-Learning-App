@@ -48,9 +48,9 @@ class _ResultScreenState extends State<ResultScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DelayedDisplay(
-              delay: Duration(seconds: 1),
+              delay: const Duration(seconds: 1),
               fadeIn: true,
-              slidingBeginOffset: Offset(0, -0.1),
+              slidingBeginOffset: const Offset(0, -0.1),
               child: Text(
                 (widget.totalScore == widget.totalQuestion)
                     ? "Excellent "
@@ -60,8 +60,8 @@ class _ResultScreenState extends State<ResultScreen> {
                         : (widget.totalScore < 7 && widget.totalScore >= 4)
                             ? "Good!"
                             : "Need Improvement!",
-                style:
-                    TextStyle(color: ConstantColors.headingBlue, fontSize: 25),
+                style: const TextStyle(
+                    color: ConstantColors.headingBlue, fontSize: 25),
               ),
             ),
             const Gap(30),
