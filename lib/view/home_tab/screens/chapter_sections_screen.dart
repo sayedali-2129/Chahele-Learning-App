@@ -17,8 +17,9 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SectionsScreen extends StatefulWidget {
-  const SectionsScreen({super.key, required this.index});
+  const SectionsScreen({super.key, required this.index, required this.id});
   final int index;
+  final String id;
 
   @override
   State<SectionsScreen> createState() => _SectionsScreenState();
@@ -28,7 +29,8 @@ class _SectionsScreenState extends State<SectionsScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<CourseProvider>(context, listen: false).fetchSections();
+      Provider.of<CourseProvider>(context, listen: false)
+          .fetchSections(widget.id);
     });
     super.initState();
   }

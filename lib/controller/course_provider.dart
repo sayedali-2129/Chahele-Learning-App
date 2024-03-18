@@ -81,11 +81,14 @@ class CourseProvider with ChangeNotifier {
 
   //fetch Sections
 
-  Future<void> fetchSections() async {
+  Future<void> fetchSections(String id) async {
     isLoading = true;
     notifyListeners();
 
-    final responce = await firebase.collection('sections').get();
+    final responce = await firebase
+        .collection('sections')
+        .where('chapterId', isEqualTo: id)
+        .get();
 
     sectionList = responce.docs
         .map((e) => SectionModel.fromMap(e.data()).copyWith(id: e.id))

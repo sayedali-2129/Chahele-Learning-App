@@ -15,7 +15,15 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  bool isSelected = false;
+  List planDuration = ["Annually", "Monthly"];
+  List planPrizing = [
+    "First 30 days free - Then   999/Year",
+    "First 7 days free - Then   99/Month"
+  ];
+
+  int selectedPlan = 0;
+
+  // bool isSelected = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -81,104 +89,87 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                 ),
                 const Gap(24),
-                Container(
-                  height: 100,
-                  width: screenWidth,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: ConstantColors.headingBlue,
-                      border: Border.all(
-                          color: ConstantColors.lightBlueTheme, width: 4),
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 40,
-                            offset: const Offset(-1, 1),
-                            color: ConstantColors.white.withOpacity(0.25))
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                //plan container
+                ListView.separated(
+                  separatorBuilder: (context, index) => const Gap(16),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 2,
+                  itemBuilder: (context, index) => GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedPlan = index;
+                      });
+                    },
+                    child: Container(
+                      height: 100,
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: ConstantColors.headingBlue,
+                          border: selectedPlan == index
+                              ? Border.all(
+                                  color: ConstantColors.lightBlueTheme,
+                                  width: 4)
+                              : null,
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 40,
+                                offset: const Offset(-1, 1),
+                                color: ConstantColors.white.withOpacity(0.25))
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Annually",
-                              style: TextStyle(
-                                  color: ConstantColors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  planDuration[index],
+                                  style: const TextStyle(
+                                      color: ConstantColors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14),
+                                ),
+                                Text(
+                                  planPrizing[index],
+                                  style: const TextStyle(
+                                      color: ConstantColors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "First 30 days free - Then   9519/Year",
-                              style: TextStyle(
-                                  color: ConstantColors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12),
-                            ),
+                            // Container(
+                            //   height: 35,
+                            //   width: 75,
+                            //   decoration: BoxDecoration(
+                            //     color: ConstantColors.onlineDotGreen,
+                            //     borderRadius: BorderRadius.circular(18),
+                            //   ),
+                            //   child: const Center(
+                            //     child: Text(
+                            //       "Best Value",
+                            //       style: TextStyle(
+                            //           color: ConstantColors.white,
+                            //           fontSize: 10),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
-                        Container(
-                          height: 35,
-                          width: 75,
-                          decoration: BoxDecoration(
-                            color: ConstantColors.onlineDotGreen,
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "Best Value",
-                              style: TextStyle(
-                                  color: ConstantColors.white, fontSize: 10),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
                 const Gap(16),
-                Container(
-                  height: 100,
-                  width: screenWidth,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: ConstantColors.white,
-                    border: Border.all(
-                        color: ConstantColors.lightBlueTheme, width: 4),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Monthly",
-                              style: TextStyle(
-                                  color: ConstantColors.headingBlue,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14),
-                            ),
-                            Text(
-                              "First 7 days free - Then   99/month",
-                              style: TextStyle(
-                                  color: ConstantColors.headingBlue,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 const Gap(32),
+
+                //purchase button
                 ButtonWidget(
                   buttonHeight: 50,
                   buttonWidth: 240,
@@ -196,6 +187,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   },
                 ),
                 const Gap(24),
+
+                //terms and conditions
                 RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(children: [

@@ -48,8 +48,10 @@ class _ChapterListScreenState extends State<ChapterListScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  SectionsScreen(index: index),
+                              builder: (context) => SectionsScreen(
+                                index: index,
+                                id: subjectProvider.chapterList[index].id!,
+                              ),
                             ));
                       },
                       child: ChapterListTile(
