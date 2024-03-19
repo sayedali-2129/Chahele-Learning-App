@@ -1,4 +1,5 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
+import 'package:chahele_project/view/home_tab/widgets/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SquareStackContainer extends StatelessWidget {
@@ -18,6 +19,7 @@ class SquareStackContainer extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Container(
+          clipBehavior: Clip.antiAlias,
           height: 98,
           width: 98,
           decoration: BoxDecoration(
@@ -29,9 +31,11 @@ class SquareStackContainer extends StatelessWidget {
                   offset: Offset(10, 5))
             ],
             borderRadius: BorderRadius.circular(24),
-            image: DecorationImage(
-                image: NetworkImage(image), fit: BoxFit.cover, opacity: 0.7),
+            // image: DecorationImage(
+            //     image: NetworkImage(image), fit: BoxFit.cover, opacity: 0.7),
           ),
+          child: Opacity(
+              opacity: 0.7, child: CustomCachedNetworkImage(image: image)),
         ),
         Positioned(
           left: 45,

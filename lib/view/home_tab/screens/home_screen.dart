@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: [
-                  //Syllubus Grid
+                  //Standard Grid
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -123,34 +123,30 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  Skeletonizer(
-                    enabled: standardProvider.isLoading == true,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              mainAxisSpacing: 15.81,
-                              crossAxisSpacing: 15.81,
-                              crossAxisCount: 3),
-                      itemCount: standardProvider.standardsList.length,
-                      itemBuilder: (context, index) => GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MediumScreen(
-                                    index: index,
-                                    id: standardProvider
-                                        .standardsList[index].id!),
-                              ));
-                        },
-                        child: SquareStackContainer(
-                          content:
-                              standardProvider.standardsList[index].standard,
-                          image: standardProvider.standardsList[index].image,
-                        ),
+                  GridView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisSpacing: 15.81,
+                            crossAxisSpacing: 15.81,
+                            crossAxisCount: 3),
+                    itemCount: standardProvider.standardsList.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MediumScreen(
+                                  index: index,
+                                  id: standardProvider
+                                      .standardsList[index].id!),
+                            ));
+                      },
+                      child: SquareStackContainer(
+                        content: standardProvider.standardsList[index].standard,
+                        image: standardProvider.standardsList[index].image,
                       ),
                     ),
                   ),

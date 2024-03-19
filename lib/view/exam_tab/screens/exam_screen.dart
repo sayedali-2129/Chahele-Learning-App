@@ -1,6 +1,6 @@
 import 'package:chahele_project/controller/sample_questions.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
-import 'package:chahele_project/view/exam_tab/screens/result_screen.dart';
+import 'package:chahele_project/view/exam_tab/screens/exam_result_screen.dart';
 import 'package:chahele_project/view/exam_tab/widgets/timer.dart';
 import 'package:chahele_project/view/widgets/button_widget.dart';
 import 'package:chahele_project/view/widgets/customAlertDialogue.dart';
@@ -165,6 +165,7 @@ class _ExamScreenState extends State<ExamScreen> {
                 onPressed: () {
                   final totalScore = calculateTotal();
                   final totalQuestion = SampleQuestions.quizData.length;
+                  final questionsAnswered = totalAnsweredQuestions();
 
                   customAlertDailogue(
                     context: context,
@@ -174,9 +175,11 @@ class _ExamScreenState extends State<ExamScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ResultScreen(
-                              totalScore: totalScore,
-                              totalQuestion: totalQuestion),
+                          builder: (context) => ExamResultScreen(
+                              selectedOption: selectedOption,
+                              totalQuestion: totalQuestion,
+                              questionsAnswered: questionsAnswered,
+                              totalscore: totalScore),
                         ),
                       );
                     },
@@ -200,5 +203,15 @@ class _ExamScreenState extends State<ExamScreen> {
       }
     }
     return score;
+  }
+
+  int totalAnsweredQuestions() {
+    int count = 0;
+    for (int i = 0; i < selectedOption.length; i++) {
+      if (selectedOption[i] != null) {
+        count++;
+      }
+    }
+    return count;
   }
 }

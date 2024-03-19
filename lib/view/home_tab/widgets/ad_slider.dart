@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chahele_project/controller/banner_controller.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
+import 'package:chahele_project/view/home_tab/widgets/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,15 +50,14 @@ class _AdSliderState extends State<AdSlider> {
                     ),
                   )
                 : Container(
+                    clipBehavior: Clip.antiAlias,
                     width: widget.screenWidth,
                     height: 202,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                              provider.banners[index].image,
-                            ),
-                            fit: BoxFit.cover)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: CustomCachedNetworkImage(
+                        image: provider.banners[index].image),
                   ),
           ),
           options: CarouselOptions(

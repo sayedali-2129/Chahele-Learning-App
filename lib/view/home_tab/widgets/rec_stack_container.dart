@@ -1,4 +1,5 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
+import 'package:chahele_project/view/home_tab/widgets/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class RecStackContainer extends StatelessWidget {
@@ -23,13 +24,14 @@ class RecStackContainer extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           Container(
+            clipBehavior: Clip.antiAlias,
             width: screenWidth,
             height: 200,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(24)),
-              image: DecorationImage(
-                  image: NetworkImage(image), fit: BoxFit.cover),
             ),
+            child: Opacity(
+                opacity: 0.8, child: CustomCachedNetworkImage(image: image)),
           ),
           Positioned(
             right: 0,

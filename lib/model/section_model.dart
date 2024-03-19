@@ -8,6 +8,7 @@ class SectionModel {
   String medId;
   String subId;
   String chapterId;
+  String image;
   SectionModel({
     this.id,
     required this.sectionName,
@@ -18,7 +19,34 @@ class SectionModel {
     required this.medId,
     required this.subId,
     required this.chapterId,
+    required this.image,
   });
+
+  SectionModel copyWith({
+    String? id,
+    String? sectionName,
+    String? description,
+    String? videoUrl,
+    String? pdfUrl,
+    String? stdId,
+    String? medId,
+    String? subId,
+    String? chapterId,
+    String? image,
+  }) {
+    return SectionModel(
+      id: id ?? this.id,
+      sectionName: sectionName ?? this.sectionName,
+      description: description ?? this.description,
+      videoUrl: videoUrl ?? this.videoUrl,
+      pdfUrl: pdfUrl ?? this.pdfUrl,
+      stdId: stdId ?? this.stdId,
+      medId: medId ?? this.medId,
+      subId: subId ?? this.subId,
+      chapterId: chapterId ?? this.chapterId,
+      image: image ?? this.image,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -31,6 +59,7 @@ class SectionModel {
       'medId': medId,
       'subId': subId,
       'chapterId': chapterId,
+      'image': image,
     };
   }
 
@@ -45,30 +74,7 @@ class SectionModel {
       medId: map['medId'] as String,
       subId: map['subId'] as String,
       chapterId: map['chapterId'] as String,
-    );
-  }
-
-  SectionModel copyWith({
-    String? id,
-    String? sectionName,
-    String? description,
-    String? videoUrl,
-    String? pdfUrl,
-    String? stdId,
-    String? medId,
-    String? subId,
-    String? chapterId,
-  }) {
-    return SectionModel(
-      id: id ?? this.id,
-      sectionName: sectionName ?? this.sectionName,
-      description: description ?? this.description,
-      videoUrl: videoUrl ?? this.videoUrl,
-      pdfUrl: pdfUrl ?? this.pdfUrl,
-      stdId: stdId ?? this.stdId,
-      medId: medId ?? this.medId,
-      subId: subId ?? this.subId,
-      chapterId: chapterId ?? this.chapterId,
+      image: map['image'] as String,
     );
   }
 }

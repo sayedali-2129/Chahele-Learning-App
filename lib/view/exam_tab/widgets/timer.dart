@@ -44,8 +44,8 @@ class _TimerWidgetState extends State<TimerWidget> {
       alignment: Alignment.center,
       children: [
         SizedBox(
-          height: 60,
-          width: 60,
+          height: 50,
+          width: 50,
           child: CircularProgressIndicator(
             strokeWidth: 6,
             value: seconds / maxSeconds,

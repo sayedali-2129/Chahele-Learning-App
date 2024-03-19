@@ -97,36 +97,4 @@ class CourseProvider with ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-
-  // Future<void> pdfDownload(
-  //     {required String fileName,
-  //     required String fileUrl,
-  //     required VoidCallback onSuccess,
-  //     required VoidCallback onFailure}) async {
-  //   isLoading = true;
-  //   notifyListeners();
-
-  //   var status = await Permission.storage.request();
-
-  //   if (status.isGranted) {
-  //     const downloadPath = '/storage/emulated/0/Download/';
-  //     Directory directory = Directory(downloadPath);
-  //     final file = File("${directory.path}/$fileName");
-
-  //     try {
-  //       await Dio().download(fileUrl, file);
-  //       onSuccess();
-  //     } on DioException catch (e) {
-  //       onFailure();
-  //       log(e.message.toString());
-  //     } finally {
-  //       isLoading = false;
-  //       notifyListeners();
-  //     }
-  //   } else {
-  //     onFailure();
-  //     isLoading = false;
-  //     notifyListeners();
-  //   }
-  // }
 }
