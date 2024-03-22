@@ -5,12 +5,13 @@ import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/view/exam_tab/screens/terms_and_conditions.dart';
 import 'package:chahele_project/view/home_tab/screens/video_player_screen.dart';
-import 'package:chahele_project/view/widgets/button_widget.dart';
-import 'package:chahele_project/view/widgets/custom_toast.dart';
-import 'package:chahele_project/view/widgets/heading_app_bar.dart';
+import 'package:chahele_project/view/home_tab/widgets/cached_network_image.dart';
+import 'package:chahele_project/widgets/button_widget.dart';
+import 'package:chahele_project/widgets/custom_toast.dart';
+import 'package:chahele_project/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,9 @@ class _SectionsScreenState extends State<SectionsScreen> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const HeadingAppBar(heading: "Sections", isBackButtomn: true),
+          HeadingAppBar(
+              heading: sectionProvider.chapterList[widget.index].chapter,
+              isBackButtomn: true),
           SliverSkeletonizer(
             enabled: sectionProvider.isLoading == true,
             child: SliverList.builder(
@@ -79,23 +82,38 @@ class _SectionsScreenState extends State<SectionsScreen> {
                                 );
                               },
                               child: Container(
+                                clipBehavior: Clip.antiAlias,
                                 height: 200,
+                                width: screenWidth,
                                 decoration: BoxDecoration(
-                                    color: ConstantColors.buttonScndColor,
-                                    borderRadius: BorderRadius.circular(16)),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    ConstantIcons.playIconSvg,
-                                    height: 50,
-                                    width: 50,
-                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Opacity(
+                                      opacity: 0.7,
+                                      child: CustomCachedNetworkImage(
+                                        image: sectionProvider
+                                            .sectionList[index].image,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: SvgPicture.asset(
+                                        ConstantIcons.playIconSvg,
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             const Gap(16),
                             //Description
                             Text(
-                              "Please add your content here. Keep it short and simple. And smile Please add your cont short and simple. And smile Pyour content here. Kort and simple. And smile ",
+                              sectionProvider.sectionList[index].description,
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
@@ -112,8 +130,11 @@ class _SectionsScreenState extends State<SectionsScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ExamTandCScreen(),
+                                    builder: (context) => ExamTandCScreen(
+                                      sectionId:
+                                          sectionProvider.sectionList[index].id,
+                                      index: index,
+                                    ),
                                   ),
                                 );
                               },
@@ -147,15 +168,15 @@ class _SectionsScreenState extends State<SectionsScreen> {
 
     if (status.isGranted) {
       FileDownloader.downloadFile(
-        url: pdfUrl,
-        name: fileName,
-        onDownloadCompleted: (path) {
-          successToast(context, "Download Completed");
-        },
-        onDownloadError: (errorMessage) {
-          successToast(context, "Something went wrong");
-        },
-      );
+          url: pdfUrl,
+          name: fileName,
+          onDownloadCompleted: (path) {
+            successToast(context, "Download Completed");
+          },
+          onDownloadError: (errorMessage) {
+            successToast(context, "Something went wrong");
+          },
+          notificationType: NotificationType.all);
     } else {
       log("permission not granted");
     }

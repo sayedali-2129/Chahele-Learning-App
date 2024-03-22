@@ -4,21 +4,30 @@ import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:flutter/material.dart';
 
 class TimerWidget extends StatefulWidget {
-  const TimerWidget({super.key});
+  const TimerWidget(
+      {super.key, required this.maxTimeAllowed, required this.onTimerFinish});
+  final int maxTimeAllowed;
+  final VoidCallback? onTimerFinish;
 
   @override
   State<TimerWidget> createState() => _TimerWidgetState();
 }
 
 class _TimerWidgetState extends State<TimerWidget> {
-  static const maxSeconds = 60;
-  int seconds = maxSeconds;
+  late int seconds;
   Timer? timer;
 
   @override
   void initState() {
+    seconds = widget.maxTimeAllowed;
     startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
   }
 
   void startTimer() {
@@ -29,6 +38,9 @@ class _TimerWidgetState extends State<TimerWidget> {
         });
       } else {
         stopTimer();
+        if (widget.onTimerFinish != null) {
+          widget.onTimerFinish!();
+        }
       }
     });
   }
@@ -48,7 +60,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           width: 50,
           child: CircularProgressIndicator(
             strokeWidth: 6,
-            value: seconds / maxSeconds,
+            value: seconds / widget.maxTimeAllowed,
             backgroundColor:
                 seconds <= 10 ? Colors.red : ConstantColors.headingBlue,
             valueColor:

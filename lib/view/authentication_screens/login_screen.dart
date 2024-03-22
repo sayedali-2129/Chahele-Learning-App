@@ -5,8 +5,9 @@ import 'package:chahele_project/view/authentication_screens/otp_screen.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/login_buttons.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/phone_field.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
-import 'package:chahele_project/view/widgets/custom_loading.dart';
-import 'package:chahele_project/view/widgets/custom_toast.dart';
+import 'package:chahele_project/view/profile_tab/profile_setup.dart';
+import 'package:chahele_project/widgets/custom_loading.dart';
+import 'package:chahele_project/widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -100,14 +101,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   //Skip button
                   Center(
                     child: OutlinedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          bool isAuthenticated =
+                              await authProvider.isUserAuthenticated();
+
+                          if (isAuthenticated) {
+                            bool userDetailsComplete =
+                                await authProvider.isUserDetailsComplete();
+
+                            if (!userDetailsComplete) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfileSetUp(phoneNumber: phoneNumber),
+                                ),
+                              );
+                              return; // Stop further execution
+                            }
+                          }
+
                           Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const BottomNavigationWidget(),
-                              ),
-                              (route) => false);
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const BottomNavigationWidget(),
+                            ),
+                            (route) => false,
+                          );
                         },
                         style: ButtonStyle(
                           side: const MaterialStatePropertyAll(

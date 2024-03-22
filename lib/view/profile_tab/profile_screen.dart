@@ -9,8 +9,8 @@ import 'package:chahele_project/view/profile_tab/profile_setup.dart';
 import 'package:chahele_project/view/profile_tab/widgets/account_logout.dart';
 import 'package:chahele_project/view/profile_tab/widgets/more_option_container.dart';
 import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
-import 'package:chahele_project/view/widgets/customAlertDialogue.dart';
-import 'package:chahele_project/view/widgets/heading_app_bar.dart';
+import 'package:chahele_project/widgets/customAlertDialogue.dart';
+import 'package:chahele_project/widgets/heading_app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -63,11 +63,11 @@ class ProfileScreen extends StatelessWidget {
                                   child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Text("Error: ${snapshot.error}");
-                            } else if (snapshot.hasData) {
+                            } else if (snapshot.hasData &&
+                                snapshot.data!.exists) {
                               final userData =
                                   snapshot.data!.data() as Map<String, dynamic>;
                               final users = UserModel.fromMap(userData);
-
                               return ProfileCard(
                                 name: users.name,
                                 emailID: users.email,
@@ -85,9 +85,22 @@ class ProfileScreen extends StatelessWidget {
                                 },
                               );
                             } else {
-                              return Text('No user data available');
+                              // Handle the case where no data exists
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const ContinueToLoginCont(
+                                    content: "Login to Continue"),
+                              );
                             }
-                          })
+                          },
+                        )
                       : GestureDetector(
                           onTap: () {
                             Navigator.pushReplacement(

@@ -44,4 +44,10 @@ class ConstantIcons {
   static const String markIcon = "assets/svg/icons/mark icon.svg";
   static const String timeIcon = "assets/svg/icons/time icon.svg";
   static const String questionIcon = "assets/svg/icons/question icon.svg";
+
+  //Animated Splash
+  static const String chahelAnimatedText =
+      "assets/svg/icons/chahel splash text.svg";
+  static const String chahelAnimatedIcon =
+      "assets/svg/icons/chahel splash logo.svg";
 }

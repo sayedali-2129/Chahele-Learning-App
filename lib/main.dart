@@ -5,7 +5,7 @@ import 'package:chahele_project/controller/image_provider.dart';
 import 'package:chahele_project/controller/plan_controller.dart';
 import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/firebase_options.dart';
-import 'package:chahele_project/view/splash_screen/spalsh_screen.dart';
+import 'package:chahele_project/view/splash_screen/animated_splash_screen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
         ),
         debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
+        home: const AnimatedSplashScreen(),
       ),
     );
   }

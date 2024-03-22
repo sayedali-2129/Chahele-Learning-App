@@ -1,18 +1,37 @@
+import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/view/exam_tab/screens/exam_screen.dart';
 import 'package:chahele_project/view/exam_tab/widgets/appbar_terms.dart';
-import 'package:chahele_project/view/widgets/button_widget.dart';
+import 'package:chahele_project/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
-class ExamTandCScreen extends StatelessWidget {
-  const ExamTandCScreen({super.key});
+class ExamTandCScreen extends StatefulWidget {
+  const ExamTandCScreen({super.key, this.sectionId, this.index});
+  final String? sectionId;
+  final int? index;
+
+  @override
+  State<ExamTandCScreen> createState() => _ExamTandCScreenState();
+}
+
+class _ExamTandCScreenState extends State<ExamTandCScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CourseProvider>(context, listen: false)
+          .fetchExamData(widget.sectionId!);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final examProvider = Provider.of<CourseProvider>(context);
 
     return Scaffold(
       body: CustomScrollView(
@@ -165,7 +184,11 @@ class ExamTandCScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ExamScreen(),
+                          builder: (context) => ExamScreen(
+                            index: widget.index!,
+                            sectionId: widget.sectionId!,
+                            examProvider: examProvider,
+                          ),
                         ),
                       );
                     },

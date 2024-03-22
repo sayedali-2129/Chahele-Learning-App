@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,6 +12,7 @@ class AuthenticationProvider with ChangeNotifier {
   //Firebase Auth Instance
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
 //Loading
   bool isLoading = false;
@@ -25,6 +27,31 @@ class AuthenticationProvider with ChangeNotifier {
     selectedCode = code.countryCode;
 
     notifyListeners();
+  }
+
+  Future<User?> getCurrentUser() async {
+    return firebaseAuth.currentUser;
+  }
+
+  //on skip login check user is logged in
+  Future<bool> isUserAuthenticated() async {
+    User? user = firebaseAuth.currentUser;
+    return user != null;
+  }
+
+//check user entered details on skip
+  Future<bool> isUserDetailsComplete() async {
+    User? user = firebaseAuth.currentUser;
+    if (user != null) {
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await firebaseFirestore.collection('users').doc(user.uid).get();
+      Map<String, dynamic>? userData = snapshot.data();
+
+      return userData != null &&
+          userData['name'] != null &&
+          userData['email'] != null;
+    }
+    return false;
   }
 
 //Login
@@ -78,6 +105,9 @@ class AuthenticationProvider with ChangeNotifier {
           verificationId: verificationId, smsCode: otpCode);
 
       await firebaseAuth.signInWithCredential(credential);
+
+      //Notification
+      await messaging.subscribeToTopic('all');
 
       onSuccess(verificationId);
       isLoading = false;

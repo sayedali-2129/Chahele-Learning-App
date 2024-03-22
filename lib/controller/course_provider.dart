@@ -1,4 +1,5 @@
 import 'package:chahele_project/model/chapter_model.dart';
+import 'package:chahele_project/model/exam_model.dart';
 import 'package:chahele_project/model/medium_model.dart';
 import 'package:chahele_project/model/section_model.dart';
 import 'package:chahele_project/model/standard_model.dart';
@@ -14,6 +15,7 @@ class CourseProvider with ChangeNotifier {
   List<SubjectModel> subjectList = [];
   List<ChapterModel> chapterList = [];
   List<SectionModel> sectionList = [];
+  ListExamModel? examDataList;
   bool isLoading = false;
 
 //Standard Fetch
@@ -86,13 +88,29 @@ class CourseProvider with ChangeNotifier {
     notifyListeners();
 
     final responce = await firebase
-        .collection('sections')
+        .collection('section')
         .where('chapterId', isEqualTo: id)
         .get();
 
     sectionList = responce.docs
         .map((e) => SectionModel.fromMap(e.data()).copyWith(id: e.id))
         .toList();
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  //Fetch exam questions
+  Future<void> fetchExamData(String id) async {
+    isLoading = true;
+    notifyListeners();
+
+    final responce = await firebase.collection('exams').doc(id).get();
+
+    examDataList =
+        ListExamModel.fromMap(responce.data()!).copyWith(id: responce.id);
+
+    notifyListeners();
 
     isLoading = false;
     notifyListeners();

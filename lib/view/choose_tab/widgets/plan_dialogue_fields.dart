@@ -1,5 +1,5 @@
 import 'package:chahele_project/view/profile_tab/widgets/textfield_widget.dart';
-import 'package:chahele_project/view/widgets/button_widget.dart';
+import 'package:chahele_project/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
