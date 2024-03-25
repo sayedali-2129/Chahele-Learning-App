@@ -5,7 +5,7 @@ import 'package:chahele_project/view/authentication_screens/otp_screen.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/login_buttons.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/phone_field.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
-import 'package:chahele_project/view/profile_tab/profile_setup.dart';
+import 'package:chahele_project/view/profile_tab/screens/profile_setup.dart';
 import 'package:chahele_project/widgets/custom_loading.dart';
 import 'package:chahele_project/widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,8 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.editNumber});
+  final String? editNumber;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -26,6 +27,14 @@ class _LoginScreenState extends State<LoginScreen> {
   String selectedCode = "";
 
   String phoneNumber = "";
+
+  @override
+  void initState() {
+    if (widget.editNumber != null) {
+      phoneNumber = widget.editNumber!;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             // successToast(context, "OTP Sent");
                           }
-                          phoneNumberController.clear();
+                          // phoneNumberController.clear();
                         }),
                   ),
                   const Gap(17),
@@ -110,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 await authProvider.isUserDetailsComplete();
 
                             if (!userDetailsComplete) {
+                              // ignore: use_build_context_synchronously
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -121,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           }
 
+                          // ignore: use_build_context_synchronously
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -165,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Provider.of<AuthenticationProvider>(context, listen: false);
 
     phoneNumber =
-        "${authProvider.selectedCode}${phoneNumberController.text.trim()}";
+        "${authProvider.selectedCode} ${phoneNumberController.text.trim()}";
 
     await authProvider.login(
       phoneNumber: phoneNumber,
@@ -175,6 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       onSuccess: (verificationId) {
         Navigator.pop(context);
+        successToast(context, "OTP Sent to $phoneNumber");
 
         Navigator.push(
             context,

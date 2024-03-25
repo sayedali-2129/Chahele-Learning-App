@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:chahele_project/controller/authentication_provider.dart';
@@ -7,7 +8,7 @@ import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/login_buttons.dart';
 import 'package:chahele_project/view/authentication_screens/widgets/pinput.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
-import 'package:chahele_project/view/profile_tab/profile_setup.dart';
+import 'package:chahele_project/view/profile_tab/screens/profile_setup.dart';
 import 'package:chahele_project/widgets/custom_loading.dart';
 import 'package:chahele_project/widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,40 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final pinController = TextEditingController();
+
+  late int seconds;
+  Timer? timer;
+  int resendTime = 30;
+  String buttonName = "Resend";
+
+  @override
+  void initState() {
+    seconds = resendTime;
+    startTimer();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (seconds > 0) {
+        setState(() {
+          seconds--;
+        });
+      } else {
+        stopTimer();
+      }
+    });
+  }
+
+  void stopTimer() {
+    timer?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,12 +119,36 @@ class _OtpScreenState extends State<OtpScreen> {
                                   color: ConstantColors.white),
                             ),
                             const Gap(8),
-                            Text(
-                              "Enter the verification code we just sent to your number ${widget.phoneNumber}",
-                              style: TextStyle(
-                                color: ConstantColors.white.withOpacity(0.7),
-                                fontWeight: FontWeight.w400,
-                              ),
+                            Stack(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Enter the verification code we just sent to your\n number ${widget.phoneNumber}",
+                                      style: TextStyle(
+                                        color: ConstantColors.white
+                                            .withOpacity(0.7),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Positioned(
+                                  top: 20,
+                                  right: 170,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(
+                                      Icons.border_color,
+                                      color:
+                                          ConstantColors.white.withOpacity(0.7),
+                                      size: 16,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ],
                         ),
@@ -125,7 +184,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 },
                               ),
                             ),
-
+                            const Gap(16),
                             //Recent field
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -137,17 +196,39 @@ class _OtpScreenState extends State<OtpScreen> {
                                       fontWeight: FontWeight.w500,
                                       color: ConstantColors.white),
                                 ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    "Resend",
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: ConstantColors.black,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12),
-                                  ),
-                                ),
+                                const Gap(5),
+                                seconds == 0
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          authProvider.resendOTP(
+                                            phoneNumber: widget.phoneNumber,
+                                            onSuccess: () {
+                                              successToast(context,
+                                                  "OTP Resend to ${widget.phoneNumber}");
+                                            },
+                                          );
+                                        },
+                                        child: const Text(
+                                          "Resend",
+                                          style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              color: ConstantColors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12),
+                                        ),
+                                      )
+                                    : Column(
+                                        children: [
+                                          Text(
+                                            "00:$seconds sec",
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: ConstantColors.black),
+                                          ),
+                                        ],
+                                      ),
                               ],
                             ),
                           ],
@@ -216,6 +297,9 @@ class _OtpScreenState extends State<OtpScreen> {
           // });
 
           log(authProvider.firebaseAuth.currentUser!.uid);
+
+          // ignore: use_build_context_synchronously
+          successToast(context, "Loggedin Successfully");
         },
         onFailure: () {
           failedToast(context, "Invalid OTP");

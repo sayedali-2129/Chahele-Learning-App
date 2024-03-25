@@ -45,7 +45,7 @@ class _ExamScreenState extends State<ExamScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final examProvider = Provider.of<CourseProvider>(context);
 
-    int maxTimeAllowed = 30;
+    int maxTimeAllowed = 300;
 
     int optionLength =
         widget.examProvider.examDataList!.examData[widget.index].options.length;
@@ -161,6 +161,7 @@ class _ExamScreenState extends State<ExamScreen> {
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
                     ),
+                    //option list
                     ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -173,7 +174,6 @@ class _ExamScreenState extends State<ExamScreen> {
                           });
                         },
                         child: Container(
-                          height: 40,
                           width: screenWidth,
                           decoration: BoxDecoration(
                             color: selectedOption[questionIndex] == optionIndex
@@ -182,15 +182,18 @@ class _ExamScreenState extends State<ExamScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
                             child: Row(
                               children: [
-                                Text(
-                                  "${optionLabels[optionIndex]}) ${examProvider.examDataList?.examData[questionIndex].options[optionIndex]}",
-                                  style: const TextStyle(
-                                      color: ConstantColors.headingBlue,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
+                                Expanded(
+                                  child: Text(
+                                    "${optionLabels[optionIndex]}) ${examProvider.examDataList?.examData[questionIndex].options[optionIndex]}",
+                                    style: const TextStyle(
+                                        color: ConstantColors.headingBlue,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  ),
                                 ),
                               ],
                             ),

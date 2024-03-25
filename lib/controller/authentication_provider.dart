@@ -138,6 +138,7 @@ class AuthenticationProvider with ChangeNotifier {
   //   }
   // }
 
+//Check the user is already exist
   Future<void> checkUserexist(
       {required VoidCallback onExist, VoidCallback? onNewUser}) async {
     User? user = firebaseAuth.currentUser;
@@ -152,5 +153,20 @@ class AuthenticationProvider with ChangeNotifier {
         onNewUser!();
       }
     }
+  }
+
+//OTP Resend
+  Future<void> resendOTP(
+      {required String phoneNumber, required VoidCallback onSuccess}) async {
+    await firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phoneNumber, // Replace with actual phone number
+      timeout: Duration(seconds: 30),
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) {
+        onSuccess();
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
   }
 }

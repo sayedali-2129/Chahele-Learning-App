@@ -6,7 +6,7 @@ import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/view/choose_tab/choose_screen.dart';
 import 'package:chahele_project/view/exam_tab/screens/exam_tab.dart';
 import 'package:chahele_project/view/home_tab/screens/home_screen.dart';
-import 'package:chahele_project/view/profile_tab/profile_screen.dart';
+import 'package:chahele_project/view/profile_tab/screens/profile_screen.dart';
 import 'package:chahele_project/widgets/customAlertDialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

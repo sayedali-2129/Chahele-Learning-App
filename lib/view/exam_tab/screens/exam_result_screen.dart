@@ -166,7 +166,6 @@ class ExamResultScreen extends StatelessWidget {
                         separatorBuilder: (context, index) => const Gap(8),
                         itemCount: optionLength,
                         itemBuilder: (context, optionIndex) => Container(
-                          height: 40,
                           width: screenWidth,
                           decoration: BoxDecoration(
                             color: examProvider.examDataList!
@@ -183,15 +182,18 @@ class ExamResultScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
                             child: Row(
                               children: [
-                                Text(
-                                  "${optionLabels[optionIndex]}) ${examProvider.examDataList!.examData[questionIndex].options[optionIndex]}",
-                                  style: const TextStyle(
-                                      color: ConstantColors.headingBlue,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
+                                Expanded(
+                                  child: Text(
+                                    "${optionLabels[optionIndex]}) ${examProvider.examDataList!.examData[questionIndex].options[optionIndex]}",
+                                    style: const TextStyle(
+                                        color: ConstantColors.headingBlue,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  ),
                                 ),
                               ],
                             ),

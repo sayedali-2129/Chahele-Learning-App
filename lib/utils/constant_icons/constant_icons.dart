@@ -50,4 +50,8 @@ class ConstantIcons {
       "assets/svg/icons/chahel splash text.svg";
   static const String chahelAnimatedIcon =
       "assets/svg/icons/chahel splash logo.svg";
+  static const String chahelAnimatedIconInverted =
+      "assets/svg/icons/chahel splash logo inverted.svg";
+  static const String chahelAnimatedTextWhite =
+      "assets/svg/icons/chahel splash text white.svg";
 }

@@ -5,11 +5,13 @@ import 'package:chahele_project/controller/image_provider.dart';
 import 'package:chahele_project/controller/plan_controller.dart';
 import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/firebase_options.dart';
-import 'package:chahele_project/view/splash_screen/animated_splash_screen.dart';
+import 'package:chahele_project/view/splash_screen/on_board_screen_animation.dart';
+import 'package:chahele_project/view/splash_screen/spalsh_screen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,8 +45,28 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
         ),
         debugShowCheckedModeBanner: false,
-        home: const AnimatedSplashScreen(),
+        home: FutureBuilder<bool>(
+          future: installedFirtTime(),
+          builder: (context, snapshot) {
+            if (snapshot.data == true) {
+              return OnBoardScreen();
+            } else {
+              return SplashScreen();
+            }
+          },
+        ),
       ),
     );
+  }
+
+  Future<bool> installedFirtTime() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    bool isFirstTime = preferences.getBool('firstTime') ?? true;
+
+    if (isFirstTime == true) {
+      await preferences.setBool('firstTime', false);
+    }
+    return isFirstTime;
   }
 }

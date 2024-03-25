@@ -140,50 +140,49 @@ class _ExamTabScreenState extends State<ExamTabScreen> {
                                 color: ConstantColors.greyColor,
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 40,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                            color: ConstantColors.headingBlue,
-                                            borderRadius:
-                                                BorderRadius.circular(84)),
-                                        child: const Center(
-                                            child: Text(
-                                          "Test 1",
-                                          style: TextStyle(
-                                              color: ConstantColors.white,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                      ),
-                                      const Gap(7),
-                                      Container(
-                                        height: 40,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                            // color: ConstantColors.headingBlue,
-                                            border: Border.all(
-                                                color:
-                                                    ConstantColors.headingBlue,
-                                                width: 1),
-                                            borderRadius:
-                                                BorderRadius.circular(84)),
-                                        child: const Center(
-                                            child: Text(
-                                          "Test 2",
-                                          style: TextStyle(
-                                              color: ConstantColors.headingBlue,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                      ),
-                                    ],
-                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     Container(
+                                  //       height: 40,
+                                  //       width: 80,
+                                  //       decoration: BoxDecoration(
+                                  //           color: ConstantColors.headingBlue,
+                                  //           borderRadius:
+                                  //               BorderRadius.circular(84)),
+                                  //       child: const Center(
+                                  //           child: Text(
+                                  //         "Test 1",
+                                  //         style: TextStyle(
+                                  //             color: ConstantColors.white,
+                                  //             fontSize: 13,
+                                  //             fontWeight: FontWeight.w500),
+                                  //       )),
+                                  //     ),
+                                  //     const Gap(7),
+                                  //     Container(
+                                  //       height: 40,
+                                  //       width: 80,
+                                  //       decoration: BoxDecoration(
+                                  //           // color: ConstantColors.headingBlue,
+                                  //           border: Border.all(
+                                  //               color:
+                                  //                   ConstantColors.headingBlue,
+                                  //               width: 1),
+                                  //           borderRadius:
+                                  //               BorderRadius.circular(84)),
+                                  //       child: const Center(
+                                  //           child: Text(
+                                  //         "Test 2",
+                                  //         style: TextStyle(
+                                  //             color: ConstantColors.headingBlue,
+                                  //             fontSize: 13,
+                                  //             fontWeight: FontWeight.w500),
+                                  //       )),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   ButtonWidget(
                                     buttonHeight: 40,
                                     buttonWidth: 113,

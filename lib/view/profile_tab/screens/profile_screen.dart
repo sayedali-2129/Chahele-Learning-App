@@ -5,7 +5,8 @@ import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/model/user_model.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
-import 'package:chahele_project/view/profile_tab/profile_setup.dart';
+import 'package:chahele_project/view/profile_tab/screens/my_account_screen.dart';
+import 'package:chahele_project/view/profile_tab/screens/profile_setup.dart';
 import 'package:chahele_project/view/profile_tab/widgets/account_logout.dart';
 import 'package:chahele_project/view/profile_tab/widgets/more_option_container.dart';
 import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
@@ -15,6 +16,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -120,7 +123,15 @@ class ProfileScreen extends StatelessWidget {
                       //If logged in
                       ? AccountContainer(
                           screenWidth: screenWidth,
-                          onMyAccount: () {},
+                          //My Account
+                          onMyAccount: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MyAccountScreen(),
+                                ));
+                          },
+                          //Log out
                           onLogout: () {
                             customAlertDailogue(
                                 context: context,
@@ -174,11 +185,21 @@ class ProfileScreen extends StatelessWidget {
                   //More
                   MoreOptionContainer(
                     screenWidth: screenWidth,
-                    onShareApp: () {},
-                    onRateUs: () {},
+                    //Share
+                    onShareApp: () {
+                      shareAppLink();
+                    },
+                    //Rate Us
+                    onRateUs: () {
+                      launchPlayStoreRating();
+                    },
+                    //About US
                     onAboutApp: () {},
+                    //Help and Support
                     onHelpSupport: () {},
+                    //Terms and Conditions
                     onTermsCondit: () {},
+                    //Delete Account
                     onDeleteAccount: () {
                       customAlertDailogue(
                         context: context,
@@ -206,5 +227,22 @@ class ProfileScreen extends StatelessWidget {
         )
       ],
     ));
+  }
+
+  void shareAppLink() {
+    const String appLink =
+        "https://play.google.com/store/apps/details?id=flystore.flystore";
+
+    Share.share("Check out this awesome app: $appLink");
+  }
+
+  Future<void> launchPlayStoreRating() async {
+    const String packageName = 'flystore';
+    const String url = 'market://details?id=$packageName';
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

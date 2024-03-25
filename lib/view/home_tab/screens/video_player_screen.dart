@@ -34,26 +34,34 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ConstantColors.black,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: ConstantColors.white),
         backgroundColor: ConstantColors.black,
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: ConstantColors.white),
-          backgroundColor: ConstantColors.black,
-        ),
-        body: PodVideoPlayer(
-            podProgressBarConfig: PodProgressBarConfig(
-                playingBarColor: ConstantColors.mainBlueTheme,
-                circleHandlerColor: ConstantColors.mainBlueTheme),
-            frameAspectRatio: 16 / 9,
-            videoTitle: Padding(
-              padding: const EdgeInsets.all(16),
+      ),
+      body: widget.videoUrl.contains('http')
+          ? PodVideoPlayer(
+              podProgressBarConfig: const PodProgressBarConfig(
+                  playingBarColor: ConstantColors.mainBlueTheme,
+                  circleHandlerColor: ConstantColors.mainBlueTheme),
+              frameAspectRatio: 16 / 9,
+              videoTitle: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  widget.sectionName,
+                  style: const TextStyle(
+                      color: ConstantColors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15),
+                ),
+              ),
+              controller: controller)
+          : const Center(
               child: Text(
-                widget.sectionName,
-                style: const TextStyle(
-                    color: ConstantColors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15),
+                "No video found",
+                style: TextStyle(color: ConstantColors.white),
               ),
             ),
-            controller: controller));
+    );
   }
 }

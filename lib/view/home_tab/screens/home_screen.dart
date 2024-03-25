@@ -123,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+                  //Standards
                   GridView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     physics: const NeverScrollableScrollPhysics(),
@@ -132,21 +133,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisSpacing: 15.81,
                             crossAxisSpacing: 15.81,
                             crossAxisCount: 3),
-                    itemCount: standardProvider.standardsList.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MediumScreen(
-                                  index: index,
-                                  id: standardProvider
-                                      .standardsList[index].id!),
-                            ));
-                      },
-                      child: SquareStackContainer(
-                        content: standardProvider.standardsList[index].standard,
-                        image: standardProvider.standardsList[index].image,
+                    itemCount: standardProvider.standardsList.length > 6
+                        ? 6
+                        : standardProvider.standardsList.length,
+                    itemBuilder: (context, index) => Skeletonizer(
+                      enabled: standardProvider.isLoading,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MediumScreen(
+                                    index: index,
+                                    id: standardProvider
+                                        .standardsList[index].id!),
+                              ));
+                        },
+                        child: SquareStackContainer(
+                          content:
+                              standardProvider.standardsList[index].standard,
+                          image: standardProvider.standardsList[index].image,
+                        ),
                       ),
                     ),
                   ),
@@ -184,7 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: standardProvider.mediumList.length,
+                      itemCount: standardProvider.mediumList.length > 3
+                          ? 3
+                          : standardProvider.mediumList.length,
                       itemBuilder: (context, index) => RecStackContainer(
                         onPressed: () {
                           Navigator.push(
