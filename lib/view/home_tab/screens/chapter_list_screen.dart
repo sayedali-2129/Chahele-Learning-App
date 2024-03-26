@@ -30,6 +30,10 @@ class _ChapterListScreenState extends State<ChapterListScreen> {
   Widget build(BuildContext context) {
     final subjectProvider = Provider.of<CourseProvider>(context);
 
+    subjectProvider.chapterList.sort(
+      (a, b) => a.chapterNumber.compareTo(b.chapterNumber),
+    );
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -55,6 +59,8 @@ class _ChapterListScreenState extends State<ChapterListScreen> {
                             ));
                       },
                       child: ChapterListTile(
+                          chapterNumber:
+                              subjectProvider.chapterList[index].chapterNumber,
                           chapterName:
                               subjectProvider.chapterList[index].chapter,
                           description: subjectProvider.chapterList[index].about,

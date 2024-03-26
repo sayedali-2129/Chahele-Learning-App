@@ -74,9 +74,11 @@ class ImagePickProvider with ChangeNotifier {
 
   void clearImage() {
     imageUrl = null;
+    notifyListeners();
   }
 
   void editUserImage(UserModel editImage) {
     imageUrl = editImage.image;
+    notifyListeners();
   }
 }

@@ -47,6 +47,7 @@ class _MediumScreenState extends State<MediumScreen> {
                 separatorBuilder: (context, index) => const Gap(16),
                 itemCount: standardProvider.mediumList.length,
                 itemBuilder: (context, index) => RecStackContainer(
+                    isStdContainerEnable: false,
                     onPressed: () {
                       authProvider.firebaseAuth.currentUser == null
                           ? customAlertDailogue(
@@ -66,6 +67,7 @@ class _MediumScreenState extends State<MediumScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SubjectScreen(
+                                    index: index,
                                     id: standardProvider.mediumList[index].id!),
                               ));
                     },

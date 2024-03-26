@@ -7,6 +7,7 @@ import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
 import 'package:chahele_project/view/profile_tab/widgets/textfield_widget.dart';
 import 'package:chahele_project/widgets/button_widget.dart';
+import 'package:chahele_project/widgets/cached_network_image.dart';
 import 'package:chahele_project/widgets/custom_loading.dart';
 import 'package:chahele_project/widgets/custom_toast.dart';
 import 'package:chahele_project/widgets/heading_app_bar.dart';
@@ -69,42 +70,45 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () async {
-                          customLoading(context, "Saving Image");
+                          onTap: () async {
+                            customLoading(context, "Saving Image");
 
-                          await imageProvider.pickImage(onFailure: () {
+                            await imageProvider.pickImage(onFailure: () {
+                              Navigator.pop(context);
+                            });
+
+                            await imageProvider.saveImage(
+                              imageProvider.imageFile!,
+                              () {
+                                successToast(
+                                    context, "Image added successfully");
+                              },
+                            );
+                            // ignore: use_build_context_synchronously
                             Navigator.pop(context);
-                          });
-
-                          await imageProvider.saveImage(
-                            imageProvider.imageFile!,
-                            () {
-                              successToast(context, "Image added successfully");
-                            },
-                          );
-                          // ignore: use_build_context_synchronously
-                          Navigator.pop(context);
-                          // if (imageProvider.imageUrl ==
-                          //     null) {
-                          //   log("null");
-                          // } else {
-                          //   log(imageProvider.imageUrl!);
-                          // }
-                        },
-                        child: imageProvider.imageUrl == null
-                            ? const CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: 70,
-                                backgroundImage:
-                                    AssetImage(ConstantImage.addUSerImage),
-                              )
-                            : CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: 70,
-                                backgroundImage:
-                                    NetworkImage(imageProvider.imageUrl!),
-                              ),
-                      )
+                            // if (imageProvider.imageUrl ==
+                            //     null) {
+                            //   log("null");
+                            // } else {
+                            //   log(imageProvider.imageUrl!);
+                            // }
+                          },
+                          child: imageProvider.imageUrl == null
+                              ? const CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  radius: 70,
+                                  backgroundImage:
+                                      AssetImage(ConstantImage.addUSerImage),
+                                )
+                              : Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  height: 140,
+                                  width: 140,
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle),
+                                  child: CustomCachedNetworkImage(
+                                      image: imageProvider.imageUrl!),
+                                ))
                     ],
                   ),
                   const Gap(16),
@@ -284,7 +288,7 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              BottomNavigationWidget()),
+                                              const BottomNavigationWidget()),
                                       (route) => false);
                                   successToast(
                                       context, "User saved Successfully");
@@ -310,6 +314,8 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                                         builder: (context) =>
                                             const BottomNavigationWidget(),
                                       ));
+                                  successToast(
+                                      context, "User Updated Successfully");
                                 },
                                 onFailure: () {
                                   failedToast(context, "Something went wrong");

@@ -6,6 +6,8 @@ class UserModel {
   String age;
   String? id;
   String image;
+  String? guardianName;
+  String? schoolName;
   UserModel({
     required this.name,
     required this.phoneNumber,
@@ -14,6 +16,8 @@ class UserModel {
     required this.age,
     this.id,
     required this.image,
+    this.guardianName,
+    this.schoolName,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +29,8 @@ class UserModel {
       'age': age,
       'id': id,
       'image': image,
+      'guardianName': guardianName,
+      'schoolName': schoolName,
     };
   }
 
@@ -37,6 +43,10 @@ class UserModel {
       age: map['age'] as String,
       id: map['id'] != null ? map['id'] as String : null,
       image: map['image'] as String,
+      guardianName:
+          map['guardianName'] != null ? map['guardianName'] as String : null,
+      schoolName:
+          map['schoolName'] != null ? map['schoolName'] as String : null,
     );
   }
 
@@ -48,6 +58,8 @@ class UserModel {
     String? age,
     String? id,
     String? image,
+    String? guardianName,
+    String? schoolName,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -57,6 +69,8 @@ class UserModel {
       age: age ?? this.age,
       id: id ?? this.id,
       image: image ?? this.image,
+      guardianName: guardianName ?? this.guardianName,
+      schoolName: schoolName ?? this.schoolName,
     );
   }
 }

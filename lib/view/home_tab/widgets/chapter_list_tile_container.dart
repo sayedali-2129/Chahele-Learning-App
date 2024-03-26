@@ -9,10 +9,12 @@ class ChapterListTile extends StatelessWidget {
     required this.index,
     required this.chapterName,
     required this.description,
+    required this.chapterNumber,
   });
   final int index;
   final String chapterName;
   final String description;
+  final int chapterNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class ChapterListTile extends StatelessWidget {
                 children: [
                   //Chapter Name
                   Text(
-                    "${index + 1} - $chapterName",
+                    "${chapterNumber} - $chapterName",
                     style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

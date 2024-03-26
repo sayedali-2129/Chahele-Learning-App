@@ -53,195 +53,201 @@ class _ExamScreenState extends State<ExamScreen> {
 
     log(questionCount.toString());
 
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const HeadingAppBar(heading: "Chapter Name", isBackButtomn: true),
-          const SliverGap(8),
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            pinned: true,
-            primary: true,
-            flexibleSpace: Container(
-              height: 100,
-              width: screenWidth,
-              decoration: BoxDecoration(
-                color: ConstantColors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                      color: ConstantColors.black.withOpacity(0.1))
-                ],
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Test 1",
-                      style: TextStyle(
-                          color: ConstantColors.headingBlue,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    TimerWidget(
-                      maxTimeAllowed: maxTimeAllowed,
-                      onTimerFinish: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ResultScreen(
-                              selectedOption: selectedOption,
-                              totalQuestion: questionCount,
-                              questionsAnswered: totalAnsweredQuestions(),
-                              totalScore: calculateTotal(),
-                              index: widget.index,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            HeadingAppBar(
+                heading: examProvider.sectionList[widget.index].sectionName,
+                isBackButtomn: false),
+            const SliverGap(8),
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              pinned: true,
+              primary: true,
+              flexibleSpace: Container(
+                height: 100,
+                width: screenWidth,
+                decoration: BoxDecoration(
+                  color: ConstantColors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                        color: ConstantColors.black.withOpacity(0.1))
                   ],
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Test",
+                        style: TextStyle(
+                            color: ConstantColors.headingBlue,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      TimerWidget(
+                        maxTimeAllowed: maxTimeAllowed,
+                        onTimerFinish: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResultScreen(
+                                selectedOption: selectedOption,
+                                totalQuestion: questionCount,
+                                questionsAnswered: totalAnsweredQuestions(),
+                                totalScore: calculateTotal(),
+                                index: widget.index,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          // const SliverGap(16),
+            // const SliverGap(16),
 
-          //Question List
-          SliverList.separated(
-            separatorBuilder: (context, index) => const Gap(8),
-            itemCount: questionCount,
-            itemBuilder: (context, questionIndex) => Container(
-              width: screenWidth,
-              decoration: BoxDecoration(
-                color: ConstantColors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                    color: ConstantColors.black.withOpacity(0.1),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Question ${questionIndex + 1}",
-                      style: const TextStyle(
-                          color: ConstantColors.headingBlue,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
+            //Question List
+            SliverList.separated(
+              separatorBuilder: (context, index) => const Gap(8),
+              itemCount: questionCount,
+              itemBuilder: (context, questionIndex) => Container(
+                width: screenWidth,
+                decoration: BoxDecoration(
+                  color: ConstantColors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                      color: ConstantColors.black.withOpacity(0.1),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 8),
-                      child: Text(
-                        examProvider.examDataList!.examData[questionIndex]
-                                .question ??
-                            "No Question Found",
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Question ${questionIndex + 1}",
                         style: const TextStyle(
                             color: ConstantColors.headingBlue,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
-                    ),
-                    const Gap(8),
-                    const Text(
-                      "Options",
-                      style: TextStyle(
-                          color: ConstantColors.headingBlue,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    //option list
-                    ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) => const Gap(8),
-                      itemCount: optionLength,
-                      itemBuilder: (context, optionIndex) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedOption[questionIndex] = optionIndex;
-                          });
-                        },
-                        child: Container(
-                          width: screenWidth,
-                          decoration: BoxDecoration(
-                            color: selectedOption[questionIndex] == optionIndex
-                                ? ConstantColors.buttonScndColor
-                                : ConstantColors.unselectedIndex,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "${optionLabels[optionIndex]}) ${examProvider.examDataList?.examData[questionIndex].options[optionIndex]}",
-                                    style: const TextStyle(
-                                        color: ConstantColors.headingBlue,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, top: 8),
+                        child: Text(
+                          examProvider.examDataList!.examData[questionIndex]
+                                  .question ??
+                              "No Question Found",
+                          style: const TextStyle(
+                              color: ConstantColors.headingBlue,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                        ),
+                      ),
+                      const Gap(8),
+                      const Text(
+                        "Options",
+                        style: TextStyle(
+                            color: ConstantColors.headingBlue,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      //option list
+                      ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        separatorBuilder: (context, index) => const Gap(8),
+                        itemCount: optionLength,
+                        itemBuilder: (context, optionIndex) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedOption[questionIndex] = optionIndex;
+                            });
+                          },
+                          child: Container(
+                            width: screenWidth,
+                            decoration: BoxDecoration(
+                              color:
+                                  selectedOption[questionIndex] == optionIndex
+                                      ? ConstantColors.buttonScndColor
+                                      : ConstantColors.unselectedIndex,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "${optionLabels[optionIndex]}) ${examProvider.examDataList?.examData[questionIndex].options[optionIndex]}",
+                                      style: const TextStyle(
+                                          color: ConstantColors.headingBlue,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: ButtonWidget(
-                  buttonHeight: 50,
-                  buttonWidth: 200,
-                  buttonColor: ConstantColors.mainBlueTheme,
-                  buttonText: "Finish",
-                  onPressed: () {
-                    // final totalScore = calculateTotal();
-                    // final totalQuestion = SampleQuestions.quizData.length;
-                    // final questionsAnswered = totalAnsweredQuestions();
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: ButtonWidget(
+                    buttonHeight: 50,
+                    buttonWidth: 200,
+                    buttonColor: ConstantColors.mainBlueTheme,
+                    buttonText: "Finish",
+                    onPressed: () {
+                      // final totalScore = calculateTotal();
+                      // final totalQuestion = SampleQuestions.quizData.length;
+                      // final questionsAnswered = totalAnsweredQuestions();
 
-                    customAlertDailogue(
-                      context: context,
-                      message: "Are You Confirm to Finish Exam",
-                      onYes: () {
-                        Navigator.pop(context);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ResultScreen(
-                              selectedOption: selectedOption,
-                              totalQuestion: questionCount,
-                              questionsAnswered: totalAnsweredQuestions(),
-                              totalScore: calculateTotal(),
-                              index: widget.index,
+                      customAlertDailogue(
+                        context: context,
+                        message: "Are You Confirm to Finish Exam",
+                        onYes: () {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResultScreen(
+                                selectedOption: selectedOption,
+                                totalQuestion: questionCount,
+                                questionsAnswered: totalAnsweredQuestions(),
+                                totalScore: calculateTotal(),
+                                index: widget.index,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  }),
-            ),
-          )
-        ],
+                          );
+                        },
+                      );
+                    }),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

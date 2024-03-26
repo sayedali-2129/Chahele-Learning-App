@@ -35,16 +35,14 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
           onYes: () => exit(0),
         ),
         child: Scaffold(
-          body: const TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                HomeScreen(),
-                ChooseScreen(),
-                ExamTabScreen(),
-                // authProvider.firebaseAuth.currentUser == null
-                //     ? const SkipProfileScreen()
-                ProfileScreen()
-              ]),
+          body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
+            HomeScreen(index: selectedIndex),
+            ChooseScreen(),
+            ExamTabScreen(),
+            // authProvider.firebaseAuth.currentUser == null
+            //     ? const SkipProfileScreen()
+            ProfileScreen()
+          ]),
           bottomNavigationBar: TabBar(
               indicatorSize: TabBarIndicatorSize.tab,
               // indicatorPadding: EdgeInsets.all(8),

@@ -1,8 +1,10 @@
+import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/controller/banner_controller.dart';
 import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
+import 'package:chahele_project/view/authentication_screens/login_screen.dart';
 import 'package:chahele_project/view/home_tab/screens/medium_screen.dart';
 import 'package:chahele_project/view/home_tab/screens/standard_screen.dart';
 import 'package:chahele_project/view/home_tab/screens/subjects_screen.dart';
@@ -10,15 +12,16 @@ import 'package:chahele_project/view/home_tab/widgets/ad_slider.dart';
 import 'package:chahele_project/view/home_tab/widgets/rec_stack_container.dart';
 import 'package:chahele_project/view/home_tab/widgets/square_stack_container.dart';
 import 'package:chahele_project/view/notification_screen/notification_screen.dart';
+import 'package:chahele_project/widgets/customAlertDialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.index});
+  final int index;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -28,8 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final standardProvider =
+          Provider.of<CourseProvider>(context, listen: false);
+
       Provider.of<CourseProvider>(context, listen: false).fetchStandards();
-      // Provider.of<CourseProvider>(context, listen: false).fetchMediumData();
+      // Provider.of<CourseProvider>(context, listen: false)
+      //     .fetchMediumData(standardProvider.standardsList[widget.index].id!);
       Provider.of<BannerController>(context, listen: false).fetchBanner();
     });
 
@@ -40,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final standardProvider = Provider.of<CourseProvider>(context);
+    final authProvider = Provider.of<AuthenticationProvider>(context);
 
     return Scaffold(
       body: CustomScrollView(
@@ -136,77 +144,89 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: standardProvider.standardsList.length > 6
                         ? 6
                         : standardProvider.standardsList.length,
-                    itemBuilder: (context, index) => Skeletonizer(
-                      enabled: standardProvider.isLoading,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MediumScreen(
-                                    index: index,
-                                    id: standardProvider
-                                        .standardsList[index].id!),
-                              ));
-                        },
-                        child: SquareStackContainer(
-                          content:
-                              standardProvider.standardsList[index].standard,
-                          image: standardProvider.standardsList[index].image,
-                        ),
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MediumScreen(
+                                  index: index,
+                                  id: standardProvider
+                                      .standardsList[index].id!),
+                            ));
+                      },
+                      child: SquareStackContainer(
+                        content: standardProvider.standardsList[index].standard,
+                        image: standardProvider.standardsList[index].image,
                       ),
                     ),
                   ),
 
                   //List of Classes
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "List of Class",
+                      Text(
+                        "Medium",
                         style: TextStyle(
                             color: ConstantColors.headingBlue,
                             fontSize: 18,
                             fontWeight: FontWeight.w600),
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "View All",
-                          style: TextStyle(
-                              color: ConstantColors.viewAll,
-                              // decoration: TextDecoration.underline,
-                              // decorationColor: ConstantColors.viewAll,
-                              decorationThickness: 2,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
+                      // TextButton(
+                      //   onPressed: () {},
+                      //   child: const Text(
+                      //     "View All",
+                      //     style: TextStyle(
+                      //         color: ConstantColors.viewAll,
+                      //         // decoration: TextDecoration.underline,
+                      //         // decorationColor: ConstantColors.viewAll,
+                      //         decorationThickness: 2,
+                      //         fontSize: 14,
+                      //         fontWeight: FontWeight.w500),
+                      //   ),
+                      // ),
                     ],
                   ),
-                  Skeletonizer(
-                    enabled: standardProvider.isLoading == true,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => const Gap(16),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: standardProvider.mediumList.length > 3
-                          ? 3
-                          : standardProvider.mediumList.length,
-                      itemBuilder: (context, index) => RecStackContainer(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SubjectScreen(
-                                    id: standardProvider.mediumList[index].id!),
-                              ));
-                        },
-                        screenWidth: screenWidth,
-                        image: standardProvider.mediumList[index].image,
-                        content: standardProvider.mediumList[index].medium,
-                      ),
+                  ListView.separated(
+                    separatorBuilder: (context, index) => const Gap(16),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: standardProvider.mediumList.length > 3
+                        ? 3
+                        : standardProvider.mediumList.length,
+                    itemBuilder: (context, index) => RecStackContainer(
+                      isStdContainerEnable: true,
+                      standard: standardProvider.standardsList[index].standard,
+                      onPressed: () {
+                        authProvider.firebaseAuth.currentUser == null
+                            ? customAlertDailogue(
+                                context: context,
+                                message:
+                                    "You need Login to continue\nAre you want to go Login page?",
+                                onYes: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen(),
+                                      ),
+                                      (route) => false);
+                                },
+                              )
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SubjectScreen(
+                                      index: index,
+                                      id: standardProvider
+                                          .mediumList[index].id!),
+                                ));
+                      },
+                      screenWidth: screenWidth,
+                      image: standardProvider.mediumList[index].image,
+                      content: standardProvider.mediumList[index].medium,
                     ),
                   ),
                 ],

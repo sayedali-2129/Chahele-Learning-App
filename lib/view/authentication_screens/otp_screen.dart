@@ -299,7 +299,7 @@ class _OtpScreenState extends State<OtpScreen> {
           log(authProvider.firebaseAuth.currentUser!.uid);
 
           // ignore: use_build_context_synchronously
-          successToast(context, "Loggedin Successfully");
+          successToast(context, "Login Successful");
         },
         onFailure: () {
           failedToast(context, "Invalid OTP");

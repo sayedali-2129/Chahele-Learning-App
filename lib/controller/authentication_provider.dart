@@ -118,8 +118,9 @@ class AuthenticationProvider with ChangeNotifier {
     }
   }
 
-  Future<void> logOutUser() async {
+  Future<void> logOutUser({VoidCallback? onSuccess}) async {
     await firebaseAuth.signOut();
+    onSuccess!();
   }
 
   // Future<void> deleteUser() async {

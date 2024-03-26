@@ -15,6 +15,7 @@ class CourseProvider with ChangeNotifier {
   List<SubjectModel> subjectList = [];
   List<ChapterModel> chapterList = [];
   List<SectionModel> sectionList = [];
+  MediumModel? mediumHome;
   ListExamModel? examDataList;
   bool isLoading = false;
 

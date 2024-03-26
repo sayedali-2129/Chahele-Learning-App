@@ -1,5 +1,5 @@
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
-import 'package:chahele_project/view/home_tab/widgets/cached_network_image.dart';
+import 'package:chahele_project/widgets/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SquareStackContainer extends StatelessWidget {

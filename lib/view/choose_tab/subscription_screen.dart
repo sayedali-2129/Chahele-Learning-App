@@ -102,65 +102,75 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         selectedPlan = index;
                       });
                     },
-                    child: Container(
-                      height: 100,
-                      width: screenWidth,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: ConstantColors.headingBlue,
-                          border: selectedPlan == index
-                              ? Border.all(
-                                  color: ConstantColors.lightBlueTheme,
-                                  width: 4)
-                              : null,
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 40,
-                                offset: const Offset(-1, 1),
-                                color: ConstantColors.white.withOpacity(0.25))
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  planDuration[index],
-                                  style: const TextStyle(
-                                      color: ConstantColors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14),
-                                ),
-                                Text(
-                                  planPrizing[index],
-                                  style: const TextStyle(
-                                      color: ConstantColors.white,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12),
-                                ),
-                              ],
-                            ),
-                            // Container(
-                            //   height: 35,
-                            //   width: 75,
-                            //   decoration: BoxDecoration(
-                            //     color: ConstantColors.onlineDotGreen,
-                            //     borderRadius: BorderRadius.circular(18),
-                            //   ),
-                            //   child: const Center(
-                            //     child: Text(
-                            //       "Best Value",
-                            //       style: TextStyle(
-                            //           color: ConstantColors.white,
-                            //           fontSize: 10),
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: selectedPlan == index ? 0 : 5),
+                      child: Container(
+                        height: 90,
+                        width: screenWidth,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: selectedPlan == index
+                                ? ConstantColors.headingBlue
+                                : ConstantColors.white,
+                            border: selectedPlan == index
+                                ? Border.all(
+                                    color: ConstantColors.lightBlueTheme,
+                                    width: 4)
+                                : null,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 40,
+                                  offset: const Offset(-1, 1),
+                                  color: ConstantColors.white.withOpacity(0.25))
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    planDuration[index],
+                                    style: TextStyle(
+                                        color: selectedPlan == index
+                                            ? ConstantColors.white
+                                            : ConstantColors.headingBlue,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14),
+                                  ),
+                                  Text(
+                                    planPrizing[index],
+                                    style: TextStyle(
+                                        color: selectedPlan == index
+                                            ? ConstantColors.white
+                                            : ConstantColors.headingBlue,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              // Container(
+                              //   height: 35,
+                              //   width: 75,
+                              //   decoration: BoxDecoration(
+                              //     color: ConstantColors.onlineDotGreen,
+                              //     borderRadius: BorderRadius.circular(18),
+                              //   ),
+                              //   child: const Center(
+                              //     child: Text(
+                              //       "Best Value",
+                              //       style: TextStyle(
+                              //           color: ConstantColors.white,
+                              //           fontSize: 10),
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

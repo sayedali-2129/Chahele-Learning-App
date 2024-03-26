@@ -12,6 +12,10 @@ class StandardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final standardProvider = Provider.of<CourseProvider>(context);
 
+    standardProvider.standardsList.sort(
+      (a, b) => a.standard.compareTo(b.standard),
+    );
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [

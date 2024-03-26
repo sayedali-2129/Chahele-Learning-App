@@ -4,7 +4,7 @@ import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
 import 'package:chahele_project/view/choose_tab/subscription_screen.dart';
-import 'package:chahele_project/view/choose_tab/widgets/plan_dialogue_fields.dart';
+import 'package:chahele_project/view/choose_tab/widgets/class_selection_field.dart';
 import 'package:chahele_project/view/choose_tab/widgets/selected_plan.dart';
 import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
 import 'package:chahele_project/widgets/button_widget.dart';
@@ -96,23 +96,9 @@ class _ChooseScreenState extends State<ChooseScreen> {
                           buttonColor: ConstantColors.mainBlueTheme,
                           buttonText: "Confirm",
                           onPressed: () {
-                            planFields(
-                              name: userProvider.nameController,
-                              guardian: planProvider.guardianController,
-                              schoolName: planProvider.schoolNameController,
-                              index: selectedIndex,
-                              screenWidth: screenWidth,
+                            classSelectionField(
                               context: context,
-                              classValue: classValue,
-                              syllabusValue: syllabusValue,
-                              classItems: classes.map<DropdownMenuItem<String>>(
-                                (String classItem) {
-                                  return DropdownMenuItem(
-                                    value: classItem,
-                                    child: Text(classItem),
-                                  );
-                                },
-                              ).toList(),
+                              screenWidth: screenWidth,
                               syllabusItems:
                                   syllabus.map<DropdownMenuItem<String>>(
                                 (String syllabusItem) {
@@ -122,6 +108,16 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                   );
                                 },
                               ).toList(),
+                              classItems: classes.map<DropdownMenuItem<String>>(
+                                (String classItem) {
+                                  return DropdownMenuItem(
+                                    value: classItem,
+                                    child: Text(classItem),
+                                  );
+                                },
+                              ).toList(),
+                              classValue: classValue,
+                              syllabusValue: syllabusValue,
                               onPressed: () {
                                 Navigator.push(
                                   context,

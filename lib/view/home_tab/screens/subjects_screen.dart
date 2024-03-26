@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SubjectScreen extends StatefulWidget {
-  const SubjectScreen({super.key, required this.id});
+  const SubjectScreen({super.key, required this.id, this.index});
   final String id;
+  final int? index;
 
   @override
   State<SubjectScreen> createState() => _SubjectScreenState();
@@ -33,7 +34,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const HeadingAppBar(heading: "Subjects", isBackButtomn: true),
+          HeadingAppBar(
+              heading: provider.mediumList[widget.index!].medium,
+              isBackButtomn: true),
           SliverPadding(
               padding: const EdgeInsets.all(16),
               sliver: SliverSkeletonizer(
@@ -42,6 +45,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                   separatorBuilder: (context, index) => const Gap(16),
                   itemCount: provider.subjectList.length,
                   itemBuilder: (context, index) => RecStackContainer(
+                    isStdContainerEnable: false,
                     screenWidth: screenWidth,
                     content: provider.subjectList[index].subject,
                     image: provider.subjectList[index].image,

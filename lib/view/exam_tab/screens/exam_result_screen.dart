@@ -2,6 +2,7 @@ import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
+import 'package:chahele_project/view/home_tab/screens/chapter_sections_screen.dart';
 import 'package:chahele_project/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -227,8 +228,17 @@ class ExamResultScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //Rewatch Button
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SectionsScreen(
+                              index: index,
+                              id: examProvider.sectionList[index].chapterId),
+                        ));
+                  },
                   child: Container(
                     height: 40,
                     width: screenWidth,

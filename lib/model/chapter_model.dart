@@ -5,6 +5,7 @@ class ChapterModel {
   String stdId;
   String medId;
   String subId;
+  int chapterNumber;
   ChapterModel({
     required this.chapter,
     required this.about,
@@ -12,6 +13,7 @@ class ChapterModel {
     required this.stdId,
     required this.medId,
     required this.subId,
+    required this.chapterNumber,
   });
 
   ChapterModel copyWith({
@@ -21,6 +23,7 @@ class ChapterModel {
     String? stdId,
     String? medId,
     String? subId,
+    int? chapterNumber,
   }) {
     return ChapterModel(
       chapter: chapter ?? this.chapter,
@@ -29,6 +32,7 @@ class ChapterModel {
       stdId: stdId ?? this.stdId,
       medId: medId ?? this.medId,
       subId: subId ?? this.subId,
+      chapterNumber: chapterNumber ?? this.chapterNumber,
     );
   }
 
@@ -40,6 +44,7 @@ class ChapterModel {
       'stdId': stdId,
       'medId': medId,
       'subId': subId,
+      'chapterNumber': chapterNumber,
     };
   }
 
@@ -51,6 +56,7 @@ class ChapterModel {
       stdId: map['stdId'] as String,
       medId: map['medId'] as String,
       subId: map['subId'] as String,
+      chapterNumber: map['chapterNumber'] as int,
     );
   }
 }

@@ -23,7 +23,13 @@ successToast(BuildContext context, String message) {
         const Gap(10),
         //message
 
-        Text(message)
+        Text(
+          message,
+          maxLines: 2,
+          overflow: TextOverflow.clip,
+          style: TextStyle(
+              color: ConstantColors.mainBlueTheme, fontWeight: FontWeight.w500),
+        )
       ],
     ),
   );
@@ -51,11 +57,10 @@ failedToast(BuildContext context, String message) {
         Lottie.asset(ConstantIcons.closeLottie, height: 30, width: 30),
         const Gap(10),
         //message
-        Text(
-          message,
-          maxLines: 2,
-          overflow: TextOverflow.clip,
-        )
+        Text(message,
+            maxLines: 2,
+            overflow: TextOverflow.clip,
+            style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500))
       ],
     ),
   );
@@ -88,7 +93,13 @@ customToast(
         const Gap(10),
         //message
 
-        Text(message)
+        Text(
+          message,
+          maxLines: 2,
+          overflow: TextOverflow.clip,
+          style: TextStyle(
+              color: ConstantColors.mainBlueTheme, fontWeight: FontWeight.w500),
+        )
       ],
     ),
   );

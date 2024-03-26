@@ -74,7 +74,7 @@ Future<dynamic> planFields({
 
                           //Syllabus
                           const Text(
-                            "Syllabus",
+                            "Medium",
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -108,7 +108,7 @@ Future<dynamic> planFields({
 
                           //Class
                           const Text(
-                            "Class",
+                            "Standard",
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,

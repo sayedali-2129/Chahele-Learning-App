@@ -11,6 +11,7 @@ import 'package:chahele_project/view/profile_tab/widgets/account_logout.dart';
 import 'package:chahele_project/view/profile_tab/widgets/more_option_container.dart';
 import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
 import 'package:chahele_project/widgets/customAlertDialogue.dart';
+import 'package:chahele_project/widgets/custom_toast.dart';
 import 'package:chahele_project/widgets/heading_app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +77,7 @@ class ProfileScreen extends StatelessWidget {
                                 emailID: users.email,
                                 imageUrl: users.image,
                                 onTapEdit: () {
+                                  // log(users.image);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -141,7 +143,12 @@ class ProfileScreen extends StatelessWidget {
                                   // if (authProvider.firebaseAuth.currentUser != null) {
                                   //   customLoading(context, "Logging Out...");
                                   // Navigator.pop(context);
-                                  await authProvider.logOutUser();
+                                  await authProvider.logOutUser(
+                                    onSuccess: () {
+                                      successToast(
+                                          context, "Logout Successful");
+                                    },
+                                  );
                                   // await Future.delayed(const Duration(seconds: 2));
                                   // Navigator.pop(context);
                                   Navigator.pushReplacement(
@@ -207,7 +214,8 @@ class ProfileScreen extends StatelessWidget {
                             "Are You Sure Want To Delete Your Account?\nAll Your Details Will be Removed",
                         onYes: () async {
                           await userProvider.deleteUser(
-                              userProvider.firebaseAuth.currentUser!.uid);
+                            userProvider.firebaseAuth.currentUser!.uid,
+                          );
                           await authProvider.logOutUser();
 
                           Navigator.pushAndRemoveUntil(

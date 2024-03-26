@@ -2,7 +2,7 @@ import 'package:chahele_project/controller/image_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
-import 'package:chahele_project/view/home_tab/widgets/cached_network_image.dart';
+import 'package:chahele_project/widgets/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -39,7 +39,7 @@ class ProfileCard extends StatelessWidget {
                 width: 60,
                 decoration: const BoxDecoration(
                     color: ConstantColors.white, shape: BoxShape.circle),
-                child: imageProvider.imageUrl == null
+                child: imageUrl.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: CustomCachedNetworkImage(image: imageUrl))
