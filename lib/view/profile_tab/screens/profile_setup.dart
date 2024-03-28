@@ -245,6 +245,52 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                   ),
                   const Gap(16),
 
+                  //Guardian Name
+
+                  const Text(
+                    "Guardian Name",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ConstantColors.headingBlue),
+                  ),
+                  const Gap(16),
+
+                  TextfieldWidget(
+                    controller: userProvider.guardianNameController,
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (userProvider.guardianNameController.text.isEmpty) {
+                        return "Enter Guardian name";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  const Gap(16),
+                  //School Name
+                  const Text(
+                    "School Name",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: ConstantColors.headingBlue),
+                  ),
+                  const Gap(16),
+
+                  TextfieldWidget(
+                    controller: userProvider.schoolNameController,
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (userProvider.schoolNameController.text.isEmpty) {
+                        return "Enter school name";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  const Gap(16),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -274,15 +320,20 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                                   failedToast(context, "Something went wrong");
                                 },
                                 userModel: UserModel(
-                                    id: authProvider
-                                        .firebaseAuth.currentUser!.uid,
-                                    name: userProvider.nameController.text,
-                                    phoneNumber:
-                                        userProvider.phoneNumberController.text,
-                                    dob: userProvider.dobController.text,
-                                    email: userProvider.emailController.text,
-                                    age: userProvider.ageController.text,
-                                    image: imageProvider.imageUrl!),
+                                  id: authProvider
+                                      .firebaseAuth.currentUser!.uid,
+                                  name: userProvider.nameController.text,
+                                  phoneNumber:
+                                      userProvider.phoneNumberController.text,
+                                  dob: userProvider.dobController.text,
+                                  email: userProvider.emailController.text,
+                                  age: userProvider.ageController.text,
+                                  image: imageProvider.imageUrl!,
+                                  guardianName:
+                                      userProvider.guardianNameController.text,
+                                  schoolName:
+                                      userProvider.schoolNameController.text,
+                                ),
                                 onSuccess: () {
                                   Navigator.pushAndRemoveUntil(
                                       context,
@@ -298,13 +349,20 @@ class _ProfileSetUpState extends State<ProfileSetUp> {
                               userProvider.updateUserDetails(
                                 id: authProvider.firebaseAuth.currentUser!.uid,
                                 userModel: UserModel(
-                                    name: userProvider.nameController.text,
-                                    phoneNumber:
-                                        userProvider.phoneNumberController.text,
-                                    dob: userProvider.dobController.text,
-                                    email: userProvider.emailController.text,
-                                    age: userProvider.ageController.text,
-                                    image: imageProvider.imageUrl!),
+                                  id: authProvider
+                                      .firebaseAuth.currentUser!.uid,
+                                  name: userProvider.nameController.text,
+                                  phoneNumber:
+                                      userProvider.phoneNumberController.text,
+                                  dob: userProvider.dobController.text,
+                                  email: userProvider.emailController.text,
+                                  age: userProvider.ageController.text,
+                                  image: imageProvider.imageUrl!,
+                                  guardianName:
+                                      userProvider.guardianNameController.text,
+                                  schoolName:
+                                      userProvider.schoolNameController.text,
+                                ),
                                 onSuccess: () {
                                   successToast(
                                       context, "Profile updated successfully");

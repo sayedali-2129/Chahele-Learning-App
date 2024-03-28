@@ -256,6 +256,8 @@ class _OtpScreenState extends State<OtpScreen> {
     String otp = pinController.text;
     authProvider.verifyOtp(
         onSuccess: (verificationId) async {
+          authProvider.notificationPermission();
+
           Navigator.pop(context);
           await authProvider.checkUserexist(
             onExist: () {
@@ -275,6 +277,7 @@ class _OtpScreenState extends State<OtpScreen> {
             },
           );
           await userProvider.getUserDetails();
+
           // await Provider.of<UserProvider>(context, listen: false)
           //     .fetchUser()
           //     .then((value) {
@@ -302,6 +305,7 @@ class _OtpScreenState extends State<OtpScreen> {
           successToast(context, "Login Successful");
         },
         onFailure: () {
+          Navigator.pop(context);
           failedToast(context, "Invalid OTP");
         },
         verificationId: widget.verificationId,

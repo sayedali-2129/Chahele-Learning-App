@@ -4,20 +4,22 @@ class UserModel {
   String dob;
   String email;
   String age;
-  String? id;
+  String id;
   String image;
   String? guardianName;
   String? schoolName;
+  bool? isUserActive = true;
   UserModel({
     required this.name,
     required this.phoneNumber,
     required this.dob,
     required this.email,
     required this.age,
-    this.id,
+    required this.id,
     required this.image,
     this.guardianName,
     this.schoolName,
+    this.isUserActive,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +33,7 @@ class UserModel {
       'image': image,
       'guardianName': guardianName,
       'schoolName': schoolName,
+      'isUserActive': isUserActive,
     };
   }
 
@@ -41,12 +44,14 @@ class UserModel {
       dob: map['dob'] as String,
       email: map['email'] as String,
       age: map['age'] as String,
-      id: map['id'] != null ? map['id'] as String : null,
+      id: map['id'] as String,
       image: map['image'] as String,
       guardianName:
           map['guardianName'] != null ? map['guardianName'] as String : null,
       schoolName:
           map['schoolName'] != null ? map['schoolName'] as String : null,
+      isUserActive:
+          map['isUserActive'] != null ? map['isUserActive'] as bool : null,
     );
   }
 
@@ -60,6 +65,7 @@ class UserModel {
     String? image,
     String? guardianName,
     String? schoolName,
+    bool? isUserActive,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -71,6 +77,7 @@ class UserModel {
       image: image ?? this.image,
       guardianName: guardianName ?? this.guardianName,
       schoolName: schoolName ?? this.schoolName,
+      isUserActive: isUserActive ?? this.isUserActive,
     );
   }
 }

@@ -103,23 +103,35 @@ class _SplashScreenState extends State<SplashScreen> {
                             .doc(snapshot.data!.uid)
                             .snapshots(),
                         builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data!.exists) {
-                            final userData =
-                                snapshot.data!.data() as Map<String, dynamic>;
-                            final user = UserModel.fromMap(userData);
-                            if (user.age.isNotEmpty &&
-                                user.dob.isNotEmpty &&
-                                user.email.isNotEmpty &&
-                                user.image.isNotEmpty &&
-                                user.name.isNotEmpty) {
-                              return const BottomNavigationWidget();
-                            } else {
-                              return ProfileSetUp(
-                                phoneNumber: user.phoneNumber,
-                              );
-                            }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: SvgPicture.asset(
+                                ConstantIcons.chahelLogoSmallSvg,
+                                height: 200,
+                                width: 150,
+                              ),
+                            );
                           } else {
-                            return const BottomNavigationWidget();
+                            if (snapshot.hasData && snapshot.data!.exists) {
+                              final userData =
+                                  snapshot.data!.data() as Map<String, dynamic>;
+                              final user = UserModel.fromMap(
+                                  userData); // This line might cause the error
+                              if (user.age.isNotEmpty &&
+                                  user.dob.isNotEmpty &&
+                                  user.email.isNotEmpty &&
+                                  user.image.isNotEmpty &&
+                                  user.name.isNotEmpty) {
+                                return const BottomNavigationWidget();
+                              } else {
+                                return ProfileSetUp(
+                                  phoneNumber: user.phoneNumber,
+                                );
+                              }
+                            } else {
+                              return const BottomNavigationWidget();
+                            }
                           }
                         },
                       );

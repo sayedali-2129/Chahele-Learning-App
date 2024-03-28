@@ -15,9 +15,11 @@ class CourseProvider with ChangeNotifier {
   List<SubjectModel> subjectList = [];
   List<ChapterModel> chapterList = [];
   List<SectionModel> sectionList = [];
-  MediumModel? mediumHome;
+  MediumModel? mediumData;
   ListExamModel? examDataList;
   bool isLoading = false;
+  List<StandardModel> planStandardList = [];
+  List<MediumModel> planMediumList = [];
 
 //Standard Fetch
   Future<void> fetchStandards() async {
@@ -113,6 +115,33 @@ class CourseProvider with ChangeNotifier {
 
     notifyListeners();
 
+    isLoading = false;
+    notifyListeners();
+  }
+
+//fetch standarrd for plans
+  Future<void> fetchPlanStandards() async {
+    isLoading = true;
+    notifyListeners();
+    final responce = await firebase.collection('standards').get();
+
+    planStandardList = responce.docs
+        .map((e) => StandardModel.fromMap(e.data()).copyWith(id: e.id))
+        .toList();
+    isLoading = false;
+    notifyListeners();
+  }
+
+  //Fetch Medium for plans
+  Future<void> fetchPlanMediumData(String id) async {
+    isLoading = true;
+    notifyListeners();
+    final responce =
+        await firebase.collection('medium').where('stdId', isEqualTo: id).get();
+
+    planMediumList = responce.docs
+        .map((e) => MediumModel.fromMap(e.data()).copyWith(id: e.id))
+        .toList();
     isLoading = false;
     notifyListeners();
   }

@@ -107,7 +107,7 @@ class AuthenticationProvider with ChangeNotifier {
       await firebaseAuth.signInWithCredential(credential);
 
       //Notification
-      await messaging.subscribeToTopic('all');
+      await messaging.subscribeToTopic('All');
 
       onSuccess(verificationId);
       isLoading = false;
@@ -168,6 +168,19 @@ class AuthenticationProvider with ChangeNotifier {
         onSuccess();
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  //notification Permission
+  Future<void> notificationPermission() async {
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
     );
   }
 }

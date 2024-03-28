@@ -1,14 +1,27 @@
-import 'package:chahele_project/controller/course_provider.dart';
+import 'dart:developer';
+
+import 'package:chahele_project/controller/authentication_provider.dart';
+import 'package:chahele_project/controller/plan_controller.dart';
+import 'package:chahele_project/controller/user_provider.dart';
+import 'package:chahele_project/model/plan_model.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
 import 'package:chahele_project/widgets/button_widget.dart';
+import 'package:chahele_project/widgets/custom_toast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionScreen extends StatefulWidget {
-  const SubscriptionScreen({super.key, required this.index});
+  const SubscriptionScreen(
+      {super.key,
+      required this.index,
+      required this.stdId,
+      required this.medId});
   final int index;
+  final String stdId;
+  final String medId;
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -16,18 +29,38 @@ class SubscriptionScreen extends StatefulWidget {
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   List planDuration = ["Annually", "Monthly"];
-  List planPrizing = [
-    "First 30 days free - Then   999/Year",
-    "First 7 days free - Then   99/Month"
-  ];
+  // List planPrizing = [
+  //   "First 30 days free - Then   999/Year",
+  //   "First 7 days free - Then   99/Month"
+  // ];
+  final Map<int, String> planDurationMap = {
+    1: "1 Month",
+    2: "3 Month",
+    6: "6 Month",
+    9: "9 Month",
+    12: "12 Month",
+  };
 
   int selectedPlan = 0;
+  Timestamp startDate = Timestamp.now();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<PlanController>(context, listen: false)
+          .fetchPlanDetails(stdId: widget.stdId, medId: widget.medId);
+    });
+
+    super.initState();
+  }
 
   // bool isSelected = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final courseProvider = Provider.of<CourseProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+    final planProvider = Provider.of<PlanController>(context);
+    final authProvider = Provider.of<AuthenticationProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -70,10 +103,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       color: ConstantColors.white),
                 ),
                 const Gap(24),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
-                  "Select your 1st standers CBSE Syllabus plan\nchoose your prefers plan ",
-                  style: TextStyle(
+                  "Select your ${planProvider.planList[widget.index].standard ?? "Standard"} ${planProvider.planList[widget.index].medium ?? "Medium"} Medium plan\nchoose your prefers plan ",
+                  style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: ConstantColors.white),
@@ -101,6 +134,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       setState(() {
                         selectedPlan = index;
                       });
+                      log(planProvider.planList.length.toString());
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -134,7 +168,22 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    planDuration[index],
+                                    planProvider.planList[index].planDuration ==
+                                            1
+                                        ? planDurationMap[1]!
+                                        : planProvider.planList[index]
+                                                    .planDuration ==
+                                                3
+                                            ? planDurationMap[3]!
+                                            : planProvider.planList[index]
+                                                        .planDuration ==
+                                                    6
+                                                ? planDurationMap[6]!
+                                                : planProvider.planList[index]
+                                                            .planDuration ==
+                                                        9
+                                                    ? planDurationMap[9]!
+                                                    : planDurationMap[12]!,
                                     style: TextStyle(
                                         color: selectedPlan == index
                                             ? ConstantColors.white
@@ -143,7 +192,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                         fontSize: 14),
                                   ),
                                   Text(
-                                    planPrizing[index],
+                                    planProvider.planList[index].planDuration ==
+                                            12
+                                        ? "₹ ${planProvider.planList[index].totalAmount} - 12 Month"
+                                        : "₹ ${planProvider.planList[index].totalAmount} /Month",
                                     style: TextStyle(
                                         color: selectedPlan == index
                                             ? ConstantColors.white
@@ -186,14 +238,64 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   buttonColor: ConstantColors.lightBlueTheme,
                   buttonText: "Purchase",
                   textColor: ConstantColors.headingBlue,
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => SubjectScreen(
-                    //         id: courseProvider.),
-                    //   ),
+                  onPressed: () async {
+                    // // User? currentUser = await authProvider.getCurrentUser();
+
+                    // PlanModel newPurchasedPlan = PlanModel(
+                    //   startDate: startDate,
+                    //   endDate: selectedPlan == 0
+                    //       ? Timestamp.fromMillisecondsSinceEpoch(
+                    //           startDate.millisecondsSinceEpoch +
+                    //               (30 * 24 * 60 * 60 * 1000))
+                    //       : Timestamp.fromMicrosecondsSinceEpoch(
+                    //           startDate.millisecondsSinceEpoch +
+                    //               (365 * 24 * 60 * 60 * 1000)),
+                    //   totalAmount:
+                    //       planProvider.planList[widget.index].totalAmount!,
+                    //   planDuration:
+                    //       planProvider.planList[widget.index].planDuration!,
+                    //   userId: authProvider.firebaseAuth.currentUser!.uid,
+                    //   medium: planProvider.planList[widget.index].medium!,
+                    //   standard: planProvider.planList[widget.index].standard!,
+                    //   id: const Uuid().v1(),
+                    //   medId: planProvider.dropMediumValue,
+                    //   stdId: planProvider.dropClassValue,
+                    // ); // Get the new plan instance
+                    // await planProvider.purchasePlanUser(
+                    //   userModel: UserModel(),
+                    //   userId: authProvider.firebaseAuth.currentUser!.uid,
+                    //   purchasedPlan: newPurchasedPlan,
+                    //   onSuccess: () {
+                    //     // Handle success
+                    //   },
                     // );
+
+                    await planProvider.purchasePlanUser(
+                      userId: authProvider.firebaseAuth.currentUser!.uid,
+                      purchasedPlan: PlanModel(
+                        startDate: startDate,
+                        endDate: selectedPlan == 0
+                            ? Timestamp.fromMillisecondsSinceEpoch(
+                                startDate.millisecondsSinceEpoch +
+                                    (30 * 24 * 60 * 60 * 1000))
+                            : Timestamp.fromMicrosecondsSinceEpoch(
+                                startDate.millisecondsSinceEpoch +
+                                    (365 * 24 * 60 * 60 * 1000)),
+                        totalAmount:
+                            planProvider.planList[widget.index].totalAmount!,
+                        planDuration:
+                            planProvider.planList[widget.index].planDuration!,
+                        userId: authProvider.firebaseAuth.currentUser!.uid,
+                        medium: planProvider.planList[widget.index].medium!,
+                        standard: planProvider.planList[widget.index].standard!,
+                        id: planProvider.planList[widget.index].id,
+                        medId: planProvider.dropMediumValue,
+                        stdId: planProvider.dropClassValue,
+                      ),
+                      onSuccess: () {
+                        successToast(context, "Purchsase Successfull");
+                      },
+                    );
                   },
                 ),
                 const Gap(24),

@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PlanModel {
@@ -9,10 +11,9 @@ class PlanModel {
   String? medium;
   int? planDuration;
   int? totalAmount;
-  String? guardianName;
-  String? schoolName;
   Timestamp? startDate;
   Timestamp? endDate;
+  bool? isActive;
   PlanModel({
     this.id,
     this.userId,
@@ -22,10 +23,9 @@ class PlanModel {
     this.medium,
     this.planDuration,
     this.totalAmount,
-    this.guardianName,
-    this.schoolName,
     this.startDate,
     this.endDate,
+    this.isActive,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,10 +38,9 @@ class PlanModel {
       'medium': medium,
       'planDuration': planDuration,
       'totalAmount': totalAmount,
-      'guardianName': guardianName,
-      'schoolName': schoolName,
       'startDate': startDate,
       'endDate': endDate,
+      'isActive': isActive,
     };
   }
 
@@ -57,13 +56,10 @@ class PlanModel {
           map['planDuration'] != null ? map['planDuration'] as int : null,
       totalAmount:
           map['totalAmount'] != null ? map['totalAmount'] as int : null,
-      guardianName:
-          map['guardianName'] != null ? map['guardianName'] as String : null,
-      schoolName:
-          map['schoolName'] != null ? map['schoolName'] as String : null,
       startDate:
           map['startDate'] != null ? map['startDate'] as Timestamp : null,
       endDate: map['endDate'] != null ? map['endDate'] as Timestamp : null,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
     );
   }
 
@@ -76,10 +72,9 @@ class PlanModel {
     String? medium,
     int? planDuration,
     int? totalAmount,
-    String? guardianName,
-    String? schoolName,
     Timestamp? startDate,
     Timestamp? endDate,
+    bool? isActive,
   }) {
     return PlanModel(
       id: id ?? this.id,
@@ -90,10 +85,9 @@ class PlanModel {
       medium: medium ?? this.medium,
       planDuration: planDuration ?? this.planDuration,
       totalAmount: totalAmount ?? this.totalAmount,
-      guardianName: guardianName ?? this.guardianName,
-      schoolName: schoolName ?? this.schoolName,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      isActive: isActive ?? this.isActive,
     );
   }
 }

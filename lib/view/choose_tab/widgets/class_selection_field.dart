@@ -1,17 +1,20 @@
+import 'package:chahele_project/controller/plan_controller.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
-Future<dynamic> classSelectionField({
-  required BuildContext context,
-  required double screenWidth,
-  required List<DropdownMenuItem<String>>? syllabusItems,
-  required List<DropdownMenuItem<String>>? classItems,
-  required String classValue,
-  required String syllabusValue,
-  required void Function()? onPressed,
-}) {
+Future<dynamic> classSelectionField(
+    {required BuildContext context,
+    required double screenWidth,
+    required List<DropdownMenuItem<String>>? syllabusItems,
+    required List<DropdownMenuItem<String>>? classItems,
+    // required String classValue,
+    // required String syllabusValue,
+    required void Function()? onPressed,
+    required String syllabusValue,
+    required String classValue}) {
   return showDialog(
       context: context,
       builder: (context) => Material(
@@ -19,8 +22,8 @@ Future<dynamic> classSelectionField({
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Center(
-                child: StatefulBuilder(
-                  builder: (context, StateSetter setState) {
+                child: Consumer<PlanController>(
+                  builder: (context, planController, _) {
                     return Container(
                       width: screenWidth,
                       decoration: BoxDecoration(
@@ -42,12 +45,11 @@ Future<dynamic> classSelectionField({
                             ),
                             const Gap(8),
                             DropdownButton(
-                                value: classValue,
+                                isExpanded: true,
+                                value: planController.dropClassValue,
                                 items: classItems,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    classValue = newValue!;
-                                  });
+                                onChanged: (String? classValue) {
+                                  planController.dropClassValue = classValue!;
                                 }),
                             const Gap(8),
                             const Text(
@@ -60,11 +62,9 @@ Future<dynamic> classSelectionField({
                             const Gap(8),
                             DropdownButton(
                               items: syllabusItems,
-                              value: syllabusValue,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  syllabusValue = newValue!;
-                                });
+                              value: planController.dropMediumValue,
+                              onChanged: (String? syllabusValue) {
+                                planController.dropMediumValue = syllabusValue!;
                               },
                             ),
                             const Gap(16),

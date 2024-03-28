@@ -13,7 +13,7 @@ class UserProvider with ChangeNotifier {
   // String userUid = FirebaseAuth.instance.currentUser!.uid;
 
   bool isLoading = false;
-
+  UserModel? user;
   List<UserModel> userList = [];
 
 //Userdetails Controllers
@@ -22,6 +22,8 @@ class UserProvider with ChangeNotifier {
   final phoneNumberController = TextEditingController();
   final emailController = TextEditingController();
   final ageController = TextEditingController();
+  final guardianNameController = TextEditingController();
+  final schoolNameController = TextEditingController();
 
   Future<void> addUserDetails(
       {required VoidCallback onSuccess,
@@ -50,6 +52,8 @@ class UserProvider with ChangeNotifier {
     phoneNumberController.clear();
     emailController.clear();
     ageController.clear();
+    guardianNameController.clear();
+    schoolNameController.clear();
   }
 
   void setEditUserData(UserModel editUser) {
@@ -57,6 +61,8 @@ class UserProvider with ChangeNotifier {
     dobController.text = editUser.dob;
     emailController.text = editUser.email;
     ageController.text = editUser.age;
+    guardianNameController.text = editUser.guardianName!;
+    schoolNameController.text = editUser.schoolName!;
   }
 
   // Future<void> fetchUser() async {

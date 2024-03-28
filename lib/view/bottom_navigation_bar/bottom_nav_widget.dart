@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:chahele_project/controller/authentication_provider.dart';
+import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
-import 'package:chahele_project/view/choose_tab/choose_screen.dart';
+import 'package:chahele_project/view/choose_tab/widgets/choose_screen_alternate.dart';
 import 'package:chahele_project/view/exam_tab/screens/exam_tab.dart';
 import 'package:chahele_project/view/home_tab/screens/home_screen.dart';
 import 'package:chahele_project/view/profile_tab/screens/profile_screen.dart';
@@ -20,6 +21,14 @@ class BottomNavigationWidget extends StatefulWidget {
 }
 
 class _BottonNavTabState extends State<BottomNavigationWidget> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CourseProvider>(context, listen: false).fetchPlanStandards();
+    });
+    super.initState();
+  }
+
   int selectedIndex = 0;
 
   @override
@@ -37,7 +46,9 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
         child: Scaffold(
           body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
             HomeScreen(index: selectedIndex),
-            ChooseScreen(),
+            ChooseAlternate(
+              index: selectedIndex,
+            ),
             ExamTabScreen(),
             // authProvider.firebaseAuth.currentUser == null
             //     ? const SkipProfileScreen()
