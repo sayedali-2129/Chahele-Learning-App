@@ -1,3 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:chahele_project/model/plan_model.dart';
+
 class UserModel {
   String name;
   String phoneNumber;
@@ -9,6 +14,7 @@ class UserModel {
   String? guardianName;
   String? schoolName;
   bool? isUserActive = true;
+  List<PlanModel>? purchaseDetails;
   UserModel({
     required this.name,
     required this.phoneNumber,
@@ -20,6 +26,7 @@ class UserModel {
     this.guardianName,
     this.schoolName,
     this.isUserActive,
+    this.purchaseDetails,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,6 +41,7 @@ class UserModel {
       'guardianName': guardianName,
       'schoolName': schoolName,
       'isUserActive': isUserActive,
+      'purchaseDetails': purchaseDetails
     };
   }
 
@@ -52,8 +60,18 @@ class UserModel {
           map['schoolName'] != null ? map['schoolName'] as String : null,
       isUserActive:
           map['isUserActive'] != null ? map['isUserActive'] as bool : null,
+      purchaseDetails: map['purchaseDetails'] != null
+          ? List<PlanModel>.from(
+              (map['purchaseDetails'] as List<dynamic>).map<PlanModel?>(
+                (x) => PlanModel.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
     );
   }
+
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   UserModel copyWith({
     String? name,
@@ -66,6 +84,7 @@ class UserModel {
     String? guardianName,
     String? schoolName,
     bool? isUserActive,
+    List<PlanModel>? purchaseDetails,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -78,6 +97,7 @@ class UserModel {
       guardianName: guardianName ?? this.guardianName,
       schoolName: schoolName ?? this.schoolName,
       isUserActive: isUserActive ?? this.isUserActive,
+      purchaseDetails: purchaseDetails ?? this.purchaseDetails,
     );
   }
 }

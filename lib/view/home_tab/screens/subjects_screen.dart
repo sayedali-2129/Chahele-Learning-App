@@ -34,33 +34,33 @@ class _SubjectScreenState extends State<SubjectScreen> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          HeadingAppBar(
-              heading: provider.mediumList[widget.index!].medium,
-              isBackButtomn: true),
+          HeadingAppBar(heading: "bjjk", isBackButtomn: true),
           SliverPadding(
               padding: const EdgeInsets.all(16),
               sliver: SliverSkeletonizer(
-                enabled: provider.isLoading == true,
-                child: SliverList.separated(
-                  separatorBuilder: (context, index) => const Gap(16),
-                  itemCount: provider.subjectList.length,
-                  itemBuilder: (context, index) => RecStackContainer(
-                    isStdContainerEnable: false,
-                    screenWidth: screenWidth,
-                    content: provider.subjectList[index].subject,
-                    image: provider.subjectList[index].image,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChapterListScreen(
-                                id: provider.subjectList[index].id!,
-                                index: index),
-                          ));
-                    },
-                  ),
-                ),
-              ))
+                  enabled: provider.isLoading == true,
+                  child: provider.subjectList.isNotEmpty
+                      ? SliverList.separated(
+                          separatorBuilder: (context, index) => const Gap(16),
+                          itemCount: provider.subjectList.length,
+                          itemBuilder: (context, index) => RecStackContainer(
+                            isStdContainerEnable: false,
+                            screenWidth: screenWidth,
+                            content: provider.subjectList[index].subject,
+                            image: provider.subjectList[index].image,
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChapterListScreen(
+                                        id: provider.subjectList[index].id!,
+                                        index: index),
+                                  ));
+                            },
+                          ),
+                        )
+                      : SliverToBoxAdapter(
+                          child: Center(child: Text("No Subjects Found")))))
         ],
       ),
     );

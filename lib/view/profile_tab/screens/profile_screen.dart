@@ -61,14 +61,7 @@ class ProfileScreen extends StatelessWidget {
                               .doc(authProvider.firebaseAuth.currentUser!.uid)
                               .snapshots(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            } else if (snapshot.hasData &&
-                                snapshot.data!.exists) {
+                            if (snapshot.hasData && snapshot.data!.exists) {
                               final userData =
                                   snapshot.data!.data() as Map<String, dynamic>;
                               final users = UserModel.fromMap(userData);

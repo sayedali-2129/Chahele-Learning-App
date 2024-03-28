@@ -3,7 +3,6 @@ import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
 import 'package:chahele_project/view/home_tab/screens/subjects_screen.dart';
 import 'package:chahele_project/view/home_tab/widgets/rec_stack_container.dart';
-import 'package:chahele_project/widgets/customAlertDialogue.dart';
 import 'package:chahele_project/widgets/heading_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -50,18 +49,11 @@ class _MediumScreenState extends State<MediumScreen> {
                     isStdContainerEnable: false,
                     onPressed: () {
                       authProvider.firebaseAuth.currentUser == null
-                          ? customAlertDailogue(
-                              context: context,
-                              message:
-                                  "You need Login to continue\nAre you want to go Login page?",
-                              onYes: () {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const LoginScreen(),
-                                    ),
-                                    (route) => false);
-                              },
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
                             )
                           : Navigator.push(
                               context,

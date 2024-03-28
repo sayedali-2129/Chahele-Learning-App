@@ -43,4 +43,19 @@ class MediumModel {
       stdId: map['stdId'] as String,
     );
   }
+
+  @override
+  bool operator ==(covariant MediumModel other) {
+    if (identical(this, other)) return true;
+
+    return other.medium == medium &&
+        other.image == image &&
+        other.id == id &&
+        other.stdId == stdId;
+  }
+
+  @override
+  int get hashCode {
+    return medium.hashCode ^ image.hashCode ^ id.hashCode ^ stdId.hashCode;
+  }
 }

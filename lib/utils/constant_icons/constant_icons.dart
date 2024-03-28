@@ -5,6 +5,7 @@ class ConstantIcons {
   static const String notificationSvg =
       "assets/svg/icons/notification bell.svg";
   static const String playIconSvg = "assets/svg/icons/play rounded icon.svg";
+  static const String lockIconSvg = "assets/svg/icons/lock-icon.svg";
 
   //Bottom navigation Icons
 

@@ -6,34 +6,34 @@ class SelectedPlanContainer extends StatelessWidget {
   const SelectedPlanContainer({
     super.key,
     required this.screenWidth,
-    required this.isSelected,
+    required this.standard,
+    required this.medium,
+    required this.schoolName,
   });
 
   final double screenWidth;
-  final bool isSelected;
+
+  final String standard;
+  final String medium;
+  final String schoolName;
 
   @override
   Widget build(BuildContext context) {
-    final textColor =
-        isSelected ? ConstantColors.white : ConstantColors.headingBlue;
+    const textColor = ConstantColors.headingBlue;
 
     return Padding(
-      padding: isSelected == true
-          ? const EdgeInsets.all(0)
-          : const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         height: 90,
         width: screenWidth,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: isSelected == true
-                ? ConstantColors.mainBlueTheme
-                : ConstantColors.unselectedPlan),
+            color: ConstantColors.unselectedPlan),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Column(
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -53,7 +53,7 @@ class SelectedPlanContainer extends StatelessWidget {
                 ],
               ),
               const Gap(8),
-              VerticalDivider(
+              const VerticalDivider(
                 color: textColor,
               ),
               const Gap(8),
@@ -69,8 +69,8 @@ class SelectedPlanContainer extends StatelessWidget {
                       ),
                       const Gap(5),
                       Text(
-                        "Class VII",
-                        style: TextStyle(
+                        standard,
+                        style: const TextStyle(
                             color: textColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 12),
@@ -78,11 +78,13 @@ class SelectedPlanContainer extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    "Your plane details - CBSE English medium\nSchool name and place ",
-                    style: TextStyle(
+                    "Medium - ${medium}\n${schoolName} ",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: const TextStyle(
                         color: textColor,
                         fontWeight: FontWeight.w400,
-                        fontSize: 10),
+                        fontSize: 10.5),
                   ),
                 ],
               ),

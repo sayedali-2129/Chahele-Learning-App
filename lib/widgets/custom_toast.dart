@@ -60,7 +60,8 @@ failedToast(BuildContext context, String message) {
         Text(message,
             maxLines: 2,
             overflow: TextOverflow.clip,
-            style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500))
+            style: const TextStyle(
+                color: ConstantColors.black, fontWeight: FontWeight.w500))
       ],
     ),
   );

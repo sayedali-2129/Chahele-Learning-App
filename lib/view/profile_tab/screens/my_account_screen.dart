@@ -1,4 +1,5 @@
 import 'package:chahele_project/controller/authentication_provider.dart';
+import 'package:chahele_project/controller/plan_controller.dart';
 import 'package:chahele_project/view/authentication_screens/login_screen.dart';
 import 'package:chahele_project/view/choose_tab/widgets/selected_plan.dart';
 import 'package:chahele_project/view/profile_tab/widgets/profile_card.dart';
@@ -21,6 +22,7 @@ class _ChooseScreenState extends State<MyAccountScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final authProvider = Provider.of<AuthenticationProvider>(context);
+    final planController = Provider.of<PlanController>(context);
 
     return Scaffold(
       body: CustomScrollView(
@@ -48,7 +50,7 @@ class _ChooseScreenState extends State<MyAccountScreen> {
                   )
                 : SliverList.separated(
                     separatorBuilder: (context, index) => const Gap(8),
-                    itemCount: 5,
+                    itemCount: planController.userData!.purchaseDetails!.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
@@ -57,8 +59,12 @@ class _ChooseScreenState extends State<MyAccountScreen> {
                           });
                         },
                         child: SelectedPlanContainer(
+                          schoolName: planController.userData!.schoolName!,
+                          standard: planController
+                              .userData!.purchaseDetails![index].standard!,
+                          medium: planController
+                              .userData!.purchaseDetails![index].medium!,
                           screenWidth: screenWidth,
-                          isSelected: selectedIndex == index,
                         ),
                       );
                     },

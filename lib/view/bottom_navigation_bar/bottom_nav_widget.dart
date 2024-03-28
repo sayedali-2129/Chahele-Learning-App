@@ -1,10 +1,9 @@
 import 'dart:io';
 
-import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/controller/course_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
-import 'package:chahele_project/view/choose_tab/widgets/choose_screen_alternate.dart';
+import 'package:chahele_project/view/choose_tab/choose_screen_alternate.dart';
 import 'package:chahele_project/view/exam_tab/screens/exam_tab.dart';
 import 'package:chahele_project/view/home_tab/screens/home_screen.dart';
 import 'package:chahele_project/view/profile_tab/screens/profile_screen.dart';
@@ -33,8 +32,6 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthenticationProvider>(context);
-
     return DefaultTabController(
       length: 4,
       child: PopScope(
@@ -46,9 +43,7 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
         child: Scaffold(
           body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
             HomeScreen(index: selectedIndex),
-            ChooseAlternate(
-              index: selectedIndex,
-            ),
+            ChooseAlternate(),
             ExamTabScreen(),
             // authProvider.firebaseAuth.currentUser == null
             //     ? const SkipProfileScreen()
@@ -86,7 +81,7 @@ class _BottonNavTabState extends State<BottomNavigationWidget> {
                   text: "Home",
                 ),
                 Tab(
-                  text: "Choose",
+                  text: "Plans",
                   icon: Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: selectedIndex == 1

@@ -13,6 +13,7 @@ class PlanModel {
   int? totalAmount;
   Timestamp? startDate;
   Timestamp? endDate;
+  Timestamp? currentDate;
   bool? isActive;
   PlanModel({
     this.id,

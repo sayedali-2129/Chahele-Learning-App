@@ -6,6 +6,7 @@ import 'package:chahele_project/controller/user_provider.dart';
 import 'package:chahele_project/model/plan_model.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
 import 'package:chahele_project/utils/constant_images/constant_images.dart';
+import 'package:chahele_project/view/bottom_navigation_bar/bottom_nav_widget.dart';
 import 'package:chahele_project/widgets/button_widget.dart';
 import 'package:chahele_project/widgets/custom_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,11 +16,8 @@ import 'package:provider/provider.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen(
-      {super.key,
-      required this.index,
-      required this.stdId,
-      required this.medId});
-  final int index;
+      {super.key, required this.stdId, required this.medId});
+
   final String stdId;
   final String medId;
 
@@ -43,6 +41,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   int selectedPlan = 0;
   Timestamp startDate = Timestamp.now();
+
+  final servrtTime = FieldValue.serverTimestamp();
 
   @override
   void initState() {
@@ -104,12 +104,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 ),
                 const Gap(24),
                 Text(
+                  "Select your ${planProvider.planList.map((plan) => plan.standard ?? "Standard")} ${planProvider.planList.map((plan) => plan.medium ?? "Medium")} Medium plan\nchoose your preferred plan",
                   textAlign: TextAlign.center,
-                  "Select your ${planProvider.planList[widget.index].standard ?? "Standard"} ${planProvider.planList[widget.index].medium ?? "Medium"} Medium plan\nchoose your prefers plan ",
                   style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: ConstantColors.white),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: ConstantColors.white,
+                  ),
                 ),
                 const Gap(8),
                 Container(
@@ -128,13 +129,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   separatorBuilder: (context, index) => const Gap(16),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: 2,
+                  itemCount: planProvider.planList.length,
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
                       setState(() {
                         selectedPlan = index;
                       });
-                      log(planProvider.planList.length.toString());
+                      log(servrtTime.toString());
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -239,6 +240,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   buttonText: "Purchase",
                   textColor: ConstantColors.headingBlue,
                   onPressed: () async {
+                    // planProvider.planList.forEach((element) {
+                    //   log(element.planDuration.toString());
+                    //   log(element.totalAmount.toString());
+                    // });
                     // // User? currentUser = await authProvider.getCurrentUser();
 
                     // PlanModel newPurchasedPlan = PlanModel(
@@ -282,18 +287,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 startDate.millisecondsSinceEpoch +
                                     (365 * 24 * 60 * 60 * 1000)),
                         totalAmount:
-                            planProvider.planList[widget.index].totalAmount!,
+                            planProvider.planList[selectedPlan].totalAmount!,
                         planDuration:
-                            planProvider.planList[widget.index].planDuration!,
+                            planProvider.planList[selectedPlan].planDuration!,
                         userId: authProvider.firebaseAuth.currentUser!.uid,
-                        medium: planProvider.planList[widget.index].medium!,
-                        standard: planProvider.planList[widget.index].standard!,
-                        id: planProvider.planList[widget.index].id,
+                        medium: planProvider.planList[selectedPlan].medium!,
+                        standard: planProvider.planList[selectedPlan].standard!,
+                        id: planProvider.planList[selectedPlan].id,
                         medId: planProvider.dropMediumValue,
                         stdId: planProvider.dropClassValue,
                       ),
                       onSuccess: () {
                         successToast(context, "Purchsase Successfull");
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BottomNavigationWidget(),
+                            ),
+                            (route) => false);
                       },
                     );
                   },

@@ -1,7 +1,11 @@
+import 'package:chahele_project/controller/authentication_provider.dart';
 import 'package:chahele_project/utils/constant_colors/constant_colors.dart';
+import 'package:chahele_project/utils/constant_icons/constant_icons.dart';
 import 'package:chahele_project/widgets/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class RecStackContainer extends StatelessWidget {
   const RecStackContainer({
@@ -23,6 +27,7 @@ class RecStackContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthenticationProvider>(context);
     return GestureDetector(
       onTap: onPressed,
       child: Stack(
@@ -53,7 +58,7 @@ class RecStackContainer extends StatelessWidget {
                     child: Center(
                       child: Text(
                         standard!,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: ConstantColors.headingBlue,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
@@ -61,7 +66,7 @@ class RecStackContainer extends StatelessWidget {
                     ),
                   ),
                 )
-              : Gap(0),
+              : const Gap(0),
           Positioned(
             right: 0,
             child: Center(
@@ -93,7 +98,18 @@ class RecStackContainer extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
+          authProvider.firebaseAuth.currentUser == null
+              ? Positioned(
+                  left: 20,
+                  bottom: 15,
+                  child: SvgPicture.asset(
+                    ConstantIcons.lockIconSvg,
+                    // ignore: deprecated_member_use
+                    color: ConstantColors.white.withOpacity(0.8),
+                  ),
+                )
+              : Gap(0)
         ],
       ),
     );
